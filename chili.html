@@ -114,6 +114,33 @@
             gap: 12px;
             flex-wrap: wrap;
         }
+        .release-calendar {
+            background: white;
+            border-radius: 24px;
+            padding: 20px;
+            margin: 24px 0;
+            border: 1px solid #e0e8d8;
+        }
+        .release-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eef3e6;
+        }
+        .release-week {
+            width: 80px;
+            font-weight: 700;
+        }
+        .release-status {
+            width: 100px;
+        }
+        .release-status.available {
+            color: #2d6a2f;
+        }
+        .release-status.locked {
+            color: #b88b2c;
+        }
         .week-card {
             background: white;
             border-radius: 28px;
@@ -254,14 +281,6 @@
             cursor: pointer;
             margin-top: 20px;
         }
-        .owned-badge-large {
-            background: #eef3e6;
-            color: #2d6a2f;
-            padding: 12px 24px;
-            border-radius: 40px;
-            display: inline-block;
-            margin-bottom: 20px;
-        }
         footer {
             background: #1f2e1c;
             color: #cfdec7;
@@ -320,6 +339,13 @@
 
             <!-- Owned Content -->
             <div id="ownedContent" style="display: none;">
+                <!-- Release Calendar -->
+                <div class="release-calendar">
+                    <h3><i class="fas fa-calendar-alt"></i> Release Schedule</h3>
+                    <p style="margin-bottom: 16px;">New module released every week. Your purchase gives you access to all released content.</p>
+                    <div id="releaseCalendar"></div>
+                </div>
+
                 <div class="module-section">
                     <div class="section-title">
                         <i class="fas fa-graduation-cap"></i> Course Modules
@@ -442,18 +468,15 @@
     const COURSE_ID = 'chili';
     const COURSE_PRICE = 15;
 
-    // Check if owned
     function isOwned() {
         const owned = JSON.parse(localStorage.getItem('purchased_courses') || '[]');
         return owned.includes(COURSE_ID);
     }
 
-    // Get seed balance
     function getSeedBalance() {
         return parseInt(localStorage.getItem('seed_balance') || '0');
     }
 
-    // Save owned course
     function purchaseCourse() {
         const owned = JSON.parse(localStorage.getItem('purchased_courses') || '[]');
         if (!owned.includes(COURSE_ID)) {
@@ -462,11 +485,9 @@
         }
     }
 
-    // Unlock button
     document.getElementById('unlockBtn')?.addEventListener('click', () => {
         const balance = getSeedBalance();
         if (balance >= COURSE_PRICE) {
-            // Deduct seeds
             localStorage.setItem('seed_balance', (balance - COURSE_PRICE).toString());
             purchaseCourse();
             location.reload();
@@ -476,9 +497,8 @@
         }
     });
 
-    // Weekly unlock logic
     function getUnlockedWeeks() {
-        const purchaseDate = localStorage.getItem(`purchase_${COURSE_ID}`);
+        let purchaseDate = localStorage.getItem(`purchase_${COURSE_ID}`);
         if (!purchaseDate) return 0;
         const start = new Date(purchaseDate);
         const today = new Date();
@@ -486,17 +506,39 @@
         return Math.min(1 + Math.floor(daysSince / 7), 6);
     }
 
-    // Progress tracking
+    function updateReleaseCalendar(unlockedWeeks) {
+        const calendar = document.getElementById('releaseCalendar');
+        if (!calendar) return;
+        const weeks = [
+            { name: 'Week 1: Site Selection & Soil Prep', released: true },
+            { name: 'Week 2: Seed Starting & Germination', released: unlockedWeeks >= 2 },
+            { name: 'Week 3: Transplanting & Early Care', released: unlockedWeeks >= 3 },
+            { name: 'Week 4: Watering & Fertilizing', released: unlockedWeeks >= 4 },
+            { name: 'Week 5: Pest & Disease Management', released: unlockedWeeks >= 5 },
+            { name: 'Week 6: Harvesting & Post-Harvest', released: unlockedWeeks >= 6 }
+        ];
+        calendar.innerHTML = weeks.map(week => `
+            <div class="release-item">
+                <div class="release-week">${week.name.split(':')[0]}</div>
+                <div class="release-status ${week.released ? 'available' : 'locked'}">
+                    ${week.released ? '✓ Available' : '🔒 Coming soon'}
+                </div>
+                <div>${week.name.split(':')[1] || ''}</div>
+            </div>
+        `).join('');
+    }
+
     let completedTasks = JSON.parse(localStorage.getItem(`progress_${COURSE_ID}`)) || [];
 
     function updateProgress() {
         const total = document.querySelectorAll('#ownedContent .task-checkbox').length;
         const percent = total > 0 ? Math.floor((completedTasks.length / total) * 100) : 0;
-        document.getElementById('progressFill').style.width = percent + '%';
-        document.getElementById('progressText').innerText = `${percent}% complete (${completedTasks.length}/${total} tasks)`;
+        const fill = document.getElementById('progressFill');
+        const text = document.getElementById('progressText');
+        if (fill) fill.style.width = percent + '%';
+        if (text) text.innerText = `${percent}% complete (${completedTasks.length}/${total} tasks)`;
     }
 
-    // Initialize page
     function init() {
         const owned = isOwned();
         const notOwnedDiv = document.getElementById('notOwned');
@@ -506,12 +548,12 @@
             notOwnedDiv.style.display = 'none';
             ownedDiv.style.display = 'block';
 
-            // Set purchase date if not set
             if (!localStorage.getItem(`purchase_${COURSE_ID}`)) {
                 localStorage.setItem(`purchase_${COURSE_ID}`, new Date().toISOString());
             }
 
             const unlockedWeeks = getUnlockedWeeks();
+            updateReleaseCalendar(unlockedWeeks);
 
             for (let i = 1; i <= 6; i++) {
                 const week = document.getElementById(`week${i}`);
@@ -526,7 +568,6 @@
                 }
             }
 
-            // Load task checkboxes
             document.querySelectorAll('.task-checkbox').forEach(cb => {
                 const taskId = cb.getAttribute('data-task');
                 if (completedTasks.includes(taskId)) {
@@ -551,7 +592,6 @@
             });
 
             updateProgress();
-
         } else {
             notOwnedDiv.style.display = 'block';
             ownedDiv.style.display = 'none';
