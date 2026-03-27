@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>My FarmAgro | Learn to Grow Your Own Food</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fefaf0;
+            color: #1e2a1f;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        header {
+            background: #ffffffdd;
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #e2e6d9;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2b5e2b, #6f9e3f);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .logo i {
+            background: none;
+            color: #4a784a;
+            margin-right: 6px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+            font-weight: 500;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e2b;
+            transition: 0.2s;
+        }
+        .nav-links a:hover {
+            color: #4c9f2f;
+        }
+        .btn-outline {
+            border: 1.5px solid #3f7843;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            background: transparent;
+            cursor: pointer;
+        }
+        .btn-outline:hover {
+            background: #3f7843;
+            color: white;
+        }
+
+        .hero {
+            padding: 60px 0 70px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 40px;
+            justify-content: space-between;
+        }
+        .hero-text {
+            flex: 1.2;
+        }
+        .hero-text h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(145deg, #1f4a1a, #5a8f2c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .hero-text p {
+            font-size: 1.2rem;
+            color: #3b5238;
+            margin-bottom: 32px;
+            line-height: 1.5;
+            max-width: 550px;
+        }
+        .hero-img {
+            flex: 1;
+            background: #e4f0db;
+            border-radius: 48px;
+            padding: 20px;
+            text-align: center;
+        }
+        .hero-img i {
+            font-size: 12rem;
+            color: #4f7a3b;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 60px 0 40px;
+            position: relative;
+        }
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 4px;
+            background: #6aab4a;
+            margin: 12px auto 0;
+            border-radius: 4px;
+        }
+
+        .grid-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
+        .card {
+            background: white;
+            border-radius: 32px;
+            padding: 28px 24px;
+            flex: 1 1 280px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+            transition: 0.25s;
+            border: 1px solid #eef3e6;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+        }
+        .card i {
+            font-size: 2.6rem;
+            color: #3e8841;
+            margin-bottom: 18px;
+        }
+        .card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+        }
+        .card p {
+            color: #485c43;
+            line-height: 1.4;
+        }
+
+        .course-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
+        .course-card {
+            background: white;
+            border-radius: 32px;
+            overflow: hidden;
+            width: 280px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+            border: 1px solid #eef3e6;
+            position: relative;
+        }
+        .course-card:hover {
+            transform: translateY(-8px);
+        }
+        .course-image {
+            background: #e4f0db;
+            padding: 40px 0;
+            text-align: center;
+            font-size: 4rem;
+        }
+        .course-info {
+            padding: 20px;
+        }
+        .course-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+        .course-info .scientific {
+            font-size: 0.8rem;
+            color: #8ba07e;
+            margin-bottom: 12px;
+        }
+        .course-info p {
+            color: #485c43;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+        .veg-badge {
+            display: inline-block;
+            background: #f0f4ea;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            margin: 8px 4px 0 0;
+        }
+        .price-tag {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #2d6a2f;
+            margin: 12px 0;
+        }
+        .price-tag span {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #6c7a63;
+        }
+        .subscribe-btn {
+            width: 100%;
+            background: #2d6a2f;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background 0.2s;
+        }
+        .subscribe-btn:hover {
+            background: #1f4f21;
+        }
+        .unlocked-badge {
+            background: #eef3e6;
+            color: #2d6a2f;
+            padding: 8px 12px;
+            border-radius: 40px;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        .access-btn {
+            width: 100%;
+            background: #f5b642;
+            color: #2a441f;
+            border: none;
+            padding: 10px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .access-btn:hover {
+            background: #ffc107;
+        }
+
+        .testimonials {
+            margin: 70px 0;
+        }
+        .testi-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        .testi {
+            background: white;
+            border-radius: 32px;
+            padding: 28px;
+            width: 300px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+        }
+        .testi i.fa-quote-left {
+            color: #c9e0b4;
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+        .testi p {
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        .user {
+            font-weight: 700;
+            color: #2c5e2c;
+        }
+
+        footer {
+            background: #1f2e1c;
+            color: #cfdec7;
+            padding: 48px 0 30px;
+            margin-top: 60px;
+            border-radius: 48px 48px 0 0;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .footer-logo {
+            font-size: 1.6rem;
+            font-weight: bold;
+        }
+        .social-icons {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+        .social-icons a {
+            color: #bfddaf;
+            font-size: 1.6rem;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        .social-icons a:hover {
+            color: #f5b642;
+        }
+
+        @media (max-width: 800px) {
+            .hero-text h1 { font-size: 2.4rem; }
+            .navbar { flex-direction: column; }
+            .nav-links { flex-wrap: wrap; justify-content: center; }
+            .container { padding: 0 20px; }
+            .footer-content { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <i class="fas fa-seedling"></i> My FarmAgro
+            </div>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#courses">Curriculum</a>
+                <a href="#vegetables">Courses</a>
+                <a href="#testimonials">Stories</a>
+                <button class="btn-outline" id="accountBtn">My Account</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <div class="hero">
+            <div class="hero-text">
+                <h1>Turn soil into gold.<br>Start farming with confidence.</h1>
+                <p>Step-by-step video lessons, planting guides, and expert mentorship. Subscribe to each vegetable course individually. New modules released weekly.</p>
+            </div>
+            <div class="hero-img">
+                <i class="fas fa-tractor"></i>
+                <i class="fas fa-apple-alt" style="font-size: 5rem; margin-left: 20px;"></i>
+            </div>
+        </div>
+
+        <div id="courses">
+            <div class="section-title">🌾 Master the fundamentals</div>
+            <div class="grid-cards">
+                <div class="card"><i class="fas fa-dragon"></i><h3>Soil & Land Prep</h3><p>Learn soil testing, composting, and regenerative techniques to build rich farmland.</p></div>
+                <div class="card"><i class="fas fa-carrot"></i><h3>Crop Planning</h3><p>Seasonal calendars, companion planting, and high-value crop selection.</p></div>
+                <div class="card"><i class="fas fa-water"></i><h3>Irrigation Systems</h3><p>Drip, sprinkler, rainwater harvesting — efficient water management.</p></div>
+                <div class="card"><i class="fas fa-chart-line"></i><h3>Farm Economics</h3><p>Budgeting, pricing, and selling to local markets & CSAs.</p></div>
+            </div>
+        </div>
+
+        <div id="vegetables">
+            <div class="section-title">🌶️ Choose Your Vegetable Course</div>
+            <div class="course-grid" id="courseGrid">
+                <div class="course-card" data-course="chili">
+                    <div class="course-image">🌶️</div>
+                    <div class="course-info">
+                        <h3>Chili (Cili)</h3>
+                        <div class="scientific">Capsicum annuum</div>
+                        <p>Learn to grow spicy chilies from seed to harvest. Perfect for containers or garden beds.</p>
+                        <div><span class="veg-badge">6 weeks</span><span class="veg-badge">6 videos</span><span class="veg-badge">Beginner</span></div>
+                        <div class="price-tag">$9.99 <span>/ month</span></div>
+                        <div class="course-action" id="chiliAction"></div>
+                    </div>
+                </div>
+
+                <div class="course-card" data-course="tomato">
+                    <div class="course-image">🍅</div>
+                    <div class="course-info">
+                        <h3>Tomato</h3>
+                        <div class="scientific">Solanum lycopersicum</div>
+                        <p>Juicy, sweet tomatoes. Learn pruning, staking, and preventing common diseases.</p>
+                        <div><span class="veg-badge">8 weeks</span><span class="veg-badge">7 videos</span><span class="veg-badge">Beginner</span></div>
+                        <div class="price-tag">$9.99 <span>/ month</span></div>
+                        <div class="course-action" id="tomatoAction"></div>
+                    </div>
+                </div>
+
+                <div class="course-card" data-course="brinjal">
+                    <div class="course-image">🍆</div>
+                    <div class="course-info">
+                        <h3>Brinjal (Eggplant)</h3>
+                        <div class="scientific">Solanum melongena</div>
+                        <p>Glossy purple eggplants perfect for curries. Heat-loving and rewarding.</p>
+                        <div><span class="veg-badge">10 weeks</span><span class="veg-badge">6 videos</span><span class="veg-badge">Intermediate</span></div>
+                        <div class="price-tag">$9.99 <span>/ month</span></div>
+                        <div class="course-action" id="brinjalAction"></div>
+                    </div>
+                </div>
+
+                <div class="course-card" data-course="bendi">
+                    <div class="course-image">🌿</div>
+                    <div class="course-info">
+                        <h3>Bendi (Okra)</h3>
+                        <div class="scientific">Abelmoschus esculentus</div>
+                        <p>Fast-growing, heat-tolerant. Harvest tender pods all season long.</p>
+                        <div><span class="veg-badge">6 weeks</span><span class="veg-badge">5 videos</span><span class="veg-badge">Beginner</span></div>
+                        <div class="price-tag">$9.99 <span>/ month</span></div>
+                        <div class="course-action" id="bendiAction"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="testimonials" class="testimonials">
+            <div class="section-title">💬 What our farmers say</div>
+            <div class="testi-grid">
+                <div class="testi"><i class="fas fa-quote-left"></i><p>“I started with the Chili course. Now I'm harvesting my own chilies and selling at the local market!”</p><div class="user">— Sarah, first-time farmer</div></div>
+                <div class="testi"><i class="fas fa-quote-left"></i><p>“The weekly releases kept me on track. Best $10 I spend every month.”</p><div class="user">— Ahmad, urban farmer</div></div>
+                <div class="testi"><i class="fas fa-quote-left"></i><p>“Finally, a platform that teaches everything in one place. My tomatoes are thriving!”</p><div class="user">— Mei Ling, home gardener</div></div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-logo"><i class="fas fa-seedling"></i> My FarmAgro</div>
+            <div class="social-icons">
+                <a href="https://www.youtube.com/watch?v=b2wUL6D5IgQ" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.instagram.com/petanimuda_my/" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+            </div>
+            <div class="copyright"><p>© 2025 My FarmAgro — Cultivate knowledge, grow your future.</p></div>
+        </div>
+    </div>
+</footer>
+
+<!-- Simple Subscribe Modal (No Trial) -->
+<div id="subscribeModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000;">
+    <div style="background: white; max-width: 400px; width: 90%; border-radius: 48px; padding: 32px; text-align: center;">
+        <i class="fas fa-credit-card" style="font-size: 3rem; color: #3f8845;"></i>
+        <h3 id="modalCourseName" style="margin: 16px 0;">Subscribe to Course</h3>
+        <p id="modalPrice" style="margin-bottom: 8px;">$9.99/month • Cancel anytime</p>
+        <p style="margin-bottom: 24px; font-size: 0.9rem;">New modules released weekly. Access all course content while subscribed.</p>
+        <button id="confirmSubscribeBtn" style="background: #2d6a2f; color: white; border: none; padding: 14px 28px; border-radius: 40px; font-weight: 700; width: 100%; cursor: pointer;">Subscribe Now →</button>
+        <button id="closeSubscribeModal" style="background: none; border: none; color: #888; margin-top: 16px; cursor: pointer;">Cancel</button>
+    </div>
+</div>
+
+<!-- Account Modal -->
+<div id="accountModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000;">
+    <div style="background: white; max-width: 400px; width: 90%; border-radius: 48px; padding: 32px; text-align: center;">
+        <i class="fas fa-user-circle" style="font-size: 3rem; color: #3f8845;"></i>
+        <h3 style="margin: 16px 0;">My Subscriptions</h3>
+        <div id="accountStatus" style="margin-bottom: 20px;"></div>
+        <button id="closeAccountModal" style="background: #2d6a2f; color: white; border: none; padding: 12px 28px; border-radius: 40px; cursor: pointer;">Close</button>
+    </div>
+</div>
+
+<script>
+    const courses = ['chili', 'tomato', 'brinjal', 'bendi'];
+    const courseNames = { chili: 'Chili', tomato: 'Tomato', brinjal: 'Brinjal', bendi: 'Bendi' };
+    const coursePages = { chili: 'chili.html', tomato: 'tomato.html', brinjal: 'brinjal.html', bendi: 'bendi.html' };
+    
+    function isSubscribed(course) {
+        return localStorage.getItem(`sub_${course}`) === 'true';
+    }
+    
+    function subscribeToCourse(course) {
+        localStorage.setItem(`sub_${course}`, 'true');
+        localStorage.setItem(`sub_date_${course}`, new Date().toISOString());
+        updateAllButtons();
+    }
+    
+    function unsubscribeFromCourse(course) {
+        localStorage.removeItem(`sub_${course}`);
+        localStorage.removeItem(`sub_date_${course}`);
+        updateAllButtons();
+    }
+    
+    function updateAllButtons() {
+        courses.forEach(course => {
+            const active = isSubscribed(course);
+            const actionDiv = document.getElementById(`${course}Action`);
+            if (actionDiv) {
+                if (active) {
+                    actionDiv.innerHTML = `
+                        <div class="unlocked-badge"><i class="fas fa-check-circle"></i> Subscribed • Active</div>
+                        <button class="access-btn" onclick="accessCourse('${course}')"><i class="fas fa-play-circle"></i> Access Course</button>
+                    `;
+                } else {
+                    actionDiv.innerHTML = `<button class="subscribe-btn" onclick="showSubscribeModal('${course}')"><i class="fas fa-calendar-alt"></i> Subscribe $9.99/month</button>`;
+                }
+            }
+        });
+    }
+    
+    let currentCourse = null;
+    
+    function showSubscribeModal(course) {
+        currentCourse = course;
+        document.getElementById('modalCourseName').innerHTML = `🌶️ Subscribe to ${courseNames[course]} Masterclass`;
+        document.getElementById('subscribeModal').style.display = 'flex';
+    }
+    
+    function accessCourse(course) {
+        window.location.href = coursePages[course];
+    }
+    
+    document.getElementById('confirmSubscribeBtn')?.addEventListener('click', () => {
+        if (currentCourse) {
+            alert(`✅ You've subscribed to the ${courseNames[currentCourse]} Masterclass!\n\nYour subscription is active. You'll be charged $9.99/month. New modules release weekly.`);
+            subscribeToCourse(currentCourse);
+            document.getElementById('subscribeModal').style.display = 'none';
+            currentCourse = null;
+        }
+    });
+    
+    document.getElementById('closeSubscribeModal')?.addEventListener('click', () => {
+        document.getElementById('subscribeModal').style.display = 'none';
+        currentCourse = null;
+    });
+    
+    // Account button
+    document.getElementById('accountBtn')?.addEventListener('click', () => {
+        const activeSubs = courses.filter(c => isSubscribed(c)).map(c => courseNames[c]);
+        const statusDiv = document.getElementById('accountStatus');
+        if (activeSubs.length > 0) {
+            statusDiv.innerHTML = `
+                <ul style="text-align: left; margin-bottom: 16px;">
+                    ${activeSubs.map(s => `<li style="margin-bottom: 8px;">🌱 ${s} Masterclass - $9.99/month</li>`).join('')}
+                </ul>
+                <p style="font-size: 0.8rem; color: #666;">Cancel anytime from your account settings.</p>
+            `;
+        } else {
+            statusDiv.innerHTML = `<p>No active subscriptions. Subscribe to a course to start learning!</p>`;
+        }
+        document.getElementById('accountModal').style.display = 'flex';
+    });
+    
+    document.getElementById('closeAccountModal')?.addEventListener('click', () => {
+        document.getElementById('accountModal').style.display = 'none';
+    });
+    
+    window.addEventListener('click', (e) => {
+        if (e.target === document.getElementById('subscribeModal')) document.getElementById('subscribeModal').style.display = 'none';
+        if (e.target === document.getElementById('accountModal')) document.getElementById('accountModal').style.display = 'none';
+    });
+    
+    document.querySelectorAll('.nav-links a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const hash = this.getAttribute('href');
+            if (hash && hash.startsWith('#')) {
+                e.preventDefault();
+                const target = document.querySelector(hash);
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+    
+    window.showSubscribeModal = showSubscribeModal;
+    window.accessCourse = accessCourse;
+    
+    updateAllButtons();
+</script>
+</body>
+</html>

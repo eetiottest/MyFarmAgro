@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍅 Tomato Growing Masterclass | AgroHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fefaf0;
+            color: #1e2a1f;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        header {
+            background: #ffffffdd;
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #e2e6d9;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2b5e2b, #6f9e3f);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .logo i {
+            color: #4a784a;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e2b;
+            margin-left: 28px;
+            font-weight: 500;
+        }
+        .btn-outline {
+            border: 1.5px solid #3f7843;
+            padding: 6px 18px;
+            border-radius: 40px;
+            background: transparent;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+        .veg-hero {
+            background: linear-gradient(135deg, #2c5e2c20, #e0e8d8);
+            border-radius: 48px;
+            padding: 48px 40px;
+            margin: 32px 0 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .veg-title h1 {
+            font-size: 3rem;
+            margin-bottom: 8px;
+        }
+        .veg-stats {
+            display: flex;
+            gap: 24px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .stat {
+            background: white;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .module-section {
+            margin: 48px 0;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .week-card {
+            background: white;
+            border-radius: 28px;
+            padding: 28px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-left: 6px solid #6aab4a;
+            transition: 0.2s;
+        }
+        .week-card.locked {
+            opacity: 0.6;
+            border-left-color: #aaa;
+            background: #f5f5f0;
+        }
+        .week-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .week-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+        .week-badge {
+            background: #eef3e6;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        .video-container {
+            background: #1f2e1c;
+            border-radius: 24px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .video-container iframe,
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+        .video-placeholder {
+            background: #1f2e1c;
+            border-radius: 24px;
+            padding: 60px 40px;
+            text-align: center;
+            color: white;
+            margin: 20px 0;
+            cursor: pointer;
+        }
+        .checklist-section {
+            margin: 24px 0 20px;
+            background: #f8faf5;
+            border-radius: 20px;
+            padding: 20px;
+        }
+        .checklist-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .task-list {
+            list-style: none;
+        }
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e8d8;
+        }
+        .task-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: #2d6a2f;
+        }
+        .task-text {
+            flex: 1;
+            line-height: 1.5;
+        }
+        .task-text.completed {
+            text-decoration: line-through;
+            color: #8ba07e;
+        }
+        .tips-box {
+            background: #eef3e6;
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 16px;
+            border-left: 4px solid #f5b642;
+        }
+        .complete-btn {
+            background: #2d6a2f;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+        .complete-btn:disabled {
+            background: #9bbf8b;
+            cursor: not-allowed;
+        }
+        .resource-box {
+            background: #f4f8ef;
+            border-radius: 24px;
+            padding: 24px;
+            margin: 32px 0;
+        }
+        .progress-bar-container {
+            background: white;
+            border-radius: 20px;
+            height: 12px;
+            width: 100%;
+            margin: 16px 0;
+        }
+        .progress-fill {
+            background: #2d6a2f;
+            width: 0%;
+            height: 12px;
+            border-radius: 20px;
+            transition: width 0.3s;
+        }
+        footer {
+            background: #1f2e1c;
+            color: #cfdec7;
+            padding: 40px 0;
+            margin-top: 60px;
+            text-align: center;
+        }
+        @media (max-width: 700px) {
+            .veg-hero { padding: 32px 20px; }
+            .week-title { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo"><i class="fas fa-seedling"></i> AgroHub</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#courses">Courses</a>
+                <a href="index.html#pricing">Subscribe</a>
+                <button class="btn-outline" onclick="location.href='index.html'">← Back to Hub</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <div class="veg-hero">
+            <div class="veg-title">
+                <h1>🍅 Tomato Masterclass</h1>
+                <p>Juicy, sweet, and homegrown — master the art of tomato farming</p>
+                <div class="veg-stats">
+                    <span class="stat"><i class="fas fa-clock"></i> 10 weeks total</span>
+                    <span class="stat"><i class="fas fa-chart-line"></i> Beginner-Intermediate</span>
+                    <span class="stat"><i class="fas fa-leaf"></i> 6 video lessons</span>
+                </div>
+            </div>
+            <div style="font-size: 4rem;">🍅🌿</div>
+        </div>
+
+        <div class="module-section">
+            <div class="section-title">
+                <i class="fas fa-calendar-week"></i> Weekly Modules
+                <span style="font-size: 0.9rem; background:#eef3e6; padding:4px 12px; border-radius:20px;">📅 New lesson every week</span>
+            </div>
+
+            <!-- WEEK 1 - UNLOCKED -->
+            <div id="week1" class="week-card">
+                <div class="week-header">
+                    <span class="week-title">Week 1: Variety Selection & Site Prep</span>
+                    <span class="week-badge"><i class="fas fa-unlock-alt"></i> Available now</span>
+                </div>
+                
+                <div class="video-container">
+                    <iframe 
+                        width="100%" 
+                        height="400" 
+                        src="https://www.youtube.com/embed/b2wUL6D5IgQ" 
+                        title="Tomato Growing Guide"
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                
+                <div class="checklist-section">
+                    <div class="checklist-title">
+                        <i class="fas fa-list-check"></i> Week 1 Tasks & Checklist
+                    </div>
+                    <ul class="task-list" id="week1-tasks">
+                        <li class="task-item"><input type="checkbox" class="task-checkbox" data-week="1" data-task="1.1"><span class="task-text">☐ Choose tomato variety: Determinate (bush) vs Indeterminate (vining)</span></li>
+                        <li class="task-item"><input type="checkbox" class="task-checkbox" data-week="1" data-task="1.2"><span class="task-text">☐ Select a sunny spot with 6-8 hours of direct sunlight</span></li>
+                        <li class="task-item"><input type="checkbox" class="task-checkbox" data-week="1" data-task="1.3"><span class="task-text">☐ Test soil pH (ideal: 6.0-6.8)</span></li>
+                        <li class="task-item"><input type="checkbox" class="task-checkbox" data-week="1" data-task="1.4"><span class="task-text">☐ Add compost and aged manure to enrich soil</span></li>
+                        <li class="task-item"><input type="checkbox" class="task-checkbox" data-week="1" data-task="1.5"><span class="task-text">☐ Prepare support structures: cages, stakes, or trellis</span></li>
+                        <li class="task-item"><input type="checkbox" class="task-checkbox" data-week="1" data-task="1.6"><span class="task-text">☐ Plan spacing: 45-60cm apart for good airflow</span></li>
+                        <li class="task-item"><input type="checkbox" class="task-checkbox" data-week="1" data-task="1.7"><span class="task-text">☐ Clear area of weeds and debris</span></li>
+                        <li class="task-item"><input type="checkbox" class="task-checkbox" data-week="1" data-task="1.8"><span class="task-text">☐ Water soil deeply and let settle for 2-3 days before planting</span></li>
+                    </ul>
+                    <div class="tips-box">
+                        <strong><i class="fas fa-lightbulb"></i> Pro Tip:</strong> Heirloom varieties have amazing flavor but less disease resistance. Cherry tomatoes are easiest for beginners!
+                    </div>
+                </div>
+                <button class="complete-btn week-complete-btn" data-week="1">✅ Mark Week 1 as Completed</button>
+            </div>
+
+            <!-- WEEK 2 -->
+            <div id="week2" class="week-card locked">
+                <div class="week-header">
+                    <span class="week-title">Week 2: Seed Starting & Germination</span>
+                    <span class="week-badge"><i class="fas fa-lock"></i> Complete Week 1 to unlock</span>
+                </div>
+                <div class="video-placeholder" onclick="alert('🔓 Complete Week 1 first to unlock this video!')">
+                    <i class="fas fa-lock" style="font-size: 3rem;"></i>
+                    <p>Video: Starting tomato seeds indoors (locked)</p>
+                </div>
+                <div class="checklist-section">
+                    <div class="checklist-title">📋 Week 2 Tasks (Preview)</div>
+                    <ul>
+                        <li>🌱 Start seeds indoors 6-8 weeks before last frost</li>
+                        <li>🌡️ Maintain soil temperature at 21-27°C for germination</li>
+                        <li>💧 Keep soil moist but not waterlogged</li>
+                        <li>☀️ Provide 14-16 hours of light using grow lights</li>
+                        <li>🌿 Thin seedlings to one per cell after true leaves appear</li>
+                        <li>🔄 Rotate trays daily for even growth</li>
+                    </ul>
+                </div>
+                <button class="complete-btn" disabled>🔒 Complete Week 1 First</button>
+            </div>
+
+            <!-- WEEK 3 -->
+            <div id="week3" class="week-card locked">
+                <div class="week-header">
+                    <span class="week-title">Week 3: Transplanting & Staking</span>
+                    <span class="week-badge"><i class="fas fa-lock"></i> Unlocks after Week 2</span>
+                </div>
+                <div class="checklist-section">
+                    <div class="checklist-title">📋 Week 3 Tasks Preview</div>
+                    <ul>
+                        <li>✔️ Harden off seedlings over 7-10 days</li>
+                        <li>✔️ Transplant after last frost when soil is warm</li>
+                        <li>✔️ Plant deeper than container (tomatoes root from stem)</li>
+                        <li>✔️ Install stakes or cages immediately after planting</li>
+                        <li>✔️ Water deeply with compost tea</li>
+                        <li>✔️ Apply mulch to retain moisture</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- WEEK 4 -->
+            <div id="week4" class="week-card locked">
+                <div class="week-header">
+                    <span class="week-title">Week 4: Pruning & Training</span>
+                    <span class="week-badge"><i class="fas fa-lock"></i> Coming soon</span>
+                </div>
+                <div class="checklist-section">
+                    <p>📋 Topics: Removing suckers, determinate vs indeterminate pruning, tying vines, airflow management</p>
+                </div>
+            </div>
+
+            <!-- WEEK 5 -->
+            <div id="week5" class="week-card locked">
+                <div class="week-header">
+                    <span class="week-title">Week 5: Watering & Fertilizing</span>
+                    <span class="week-badge"><i class="fas fa-lock"></i> Coming soon</span>
+                </div>
+            </div>
+
+            <!-- WEEK 6 -->
+            <div id="week6" class="week-card locked">
+                <div class="week-header">
+                    <span class="week-title">Week 6: Pest & Disease Management</span>
+                    <span class="week-badge"><i class="fas fa-lock"></i> Coming soon</span>
+                </div>
+            </div>
+
+            <!-- WEEK 7 -->
+            <div id="week7" class="week-card locked">
+                <div class="week-header">
+                    <span class="week-title">Week 7: Harvesting & Storage</span>
+                    <span class="week-badge"><i class="fas fa-lock"></i> Coming soon</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="resource-box">
+            <h3><i class="fas fa-download"></i> Tomato Growing Resources</h3>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px;">
+                <span><i class="fas fa-file-pdf"></i> Tomato variety guide (PDF)</span>
+                <span><i class="fas fa-chart-simple"></i> Weekly feeding schedule</span>
+                <span><i class="fas fa-list-check"></i> Disease identification chart</span>
+                <span><i class="fas fa-book"></i> Pruning diagram & guide</span>
+            </div>
+            <button class="btn-outline" style="margin-top: 20px;" onclick="alert('🔒 Full resources unlock with Master Farmer subscription.')">Upgrade to access all</button>
+        </div>
+
+        <div style="background: #e4f0db; border-radius: 32px; padding: 24px; margin: 40px 0;">
+            <h3><i class="fas fa-chart-simple"></i> Your Progress</h3>
+            <div class="progress-bar-container">
+                <div id="progressFill" class="progress-fill" style="width: 0%;"></div>
+            </div>
+            <p id="progressText">0/7 modules completed</p>
+        </div>
+
+        <div style="margin: 40px 0;">
+            <h3>🌱 Other vegetable modules</h3>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
+                <a href="chili.html" style="background: white; padding: 12px 24px; border-radius: 40px; text-decoration: none; color: #2d6a2f;">🌶️ Chili Masterclass</a>
+                <a href="brinjal.html" style="background: white; padding: 12px 24px; border-radius: 40px; text-decoration: none; color: #2d6a2f;">🍆 Brinjal Masterclass</a>
+                <a href="bendi.html" style="background: white; padding: 12px 24px; border-radius: 40px; text-decoration: none; color: #2d6a2f;">🌿 Bendi Masterclass</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <p>© 2025 AgroHub — Cultivate knowledge, grow your future.</p>
+    </div>
+</footer>
+
+<script>
+    let completedWeeks = JSON.parse(localStorage.getItem('tomato_completed_weeks')) || [];
+    let taskProgress = JSON.parse(localStorage.getItem('tomato_tasks')) || {};
+
+    function updateProgress() {
+        const totalWeeks = 7;
+        const completedCount = completedWeeks.length;
+        const percent = (completedCount / totalWeeks) * 100;
+        const progressFill = document.getElementById('progressFill');
+        if (progressFill) progressFill.style.width = percent + '%';
+        const progressText = document.getElementById('progressText');
+        if (progressText) progressText.innerText = `${completedCount}/${totalWeeks} modules completed`;
+        
+        const week1Btn = document.querySelector('.week-complete-btn');
+        if (week1Btn && completedWeeks.includes('1')) {
+            week1Btn.innerText = '✅ Week 1 Completed';
+            week1Btn.disabled = true;
+            week1Btn.style.background = '#9bbf8b';
+        }
+        
+        const week2Card = document.getElementById('week2');
+        if (completedWeeks.includes('1') && week2Card && week2Card.classList.contains('locked')) {
+            week2Card.classList.remove('locked');
+            week2Card.querySelector('.week-badge').innerHTML = '<i class="fas fa-unlock-alt"></i> Unlocked!';
+            const placeholder = week2Card.querySelector('.video-placeholder');
+            if (placeholder) {
+                placeholder.innerHTML = `<iframe width="100%" height="400" src="https://www.youtube.com/embed/YOUR_VIDEO_ID_TOMATO_WEEK2" frameborder="0" allowfullscreen></iframe>`;
+                placeholder.classList.remove('video-placeholder');
+                placeholder.classList.add('video-container');
+                placeholder.onclick = null;
+            }
+            const btn = week2Card.querySelector('button');
+            if (btn) {
+                btn.disabled = false;
+                btn.innerText = '✅ Mark Week 2 as Completed';
+            }
+        }
+    }
+
+    document.querySelectorAll('.task-checkbox').forEach(checkbox => {
+        const taskId = checkbox.getAttribute('data-task');
+        if (taskProgress[taskId]) {
+            checkbox.checked = true;
+            const taskText = checkbox.closest('.task-item')?.querySelector('.task-text');
+            if (taskText) taskText.classList.add('completed');
+        }
+        checkbox.addEventListener('change', function() {
+            const taskId = this.getAttribute('data-task');
+            const taskText = this.closest('.task-item')?.querySelector('.task-text');
+            if (this.checked) {
+                taskProgress[taskId] = true;
+                if (taskText) taskText.classList.add('completed');
+            } else {
+                delete taskProgress[taskId];
+                if (taskText) taskText.classList.remove('completed');
+            }
+            localStorage.setItem('tomato_tasks', JSON.stringify(taskProgress));
+        });
+    });
+
+    const weekCompleteBtn = document.querySelector('.week-complete-btn');
+    if (weekCompleteBtn) {
+        weekCompleteBtn.addEventListener('click', function() {
+            if (!completedWeeks.includes('1')) {
+                completedWeeks.push('1');
+                localStorage.setItem('tomato_completed_weeks', JSON.stringify(completedWeeks));
+                updateProgress();
+                alert('🎉 Week 1 completed! Week 2 is now unlocked.');
+                location.reload();
+            }
+        });
+    }
+
+    updateProgress();
+</script>
+</body>
+</html>
