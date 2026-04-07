@@ -112,14 +112,15 @@
         }
         .hero-img {
             flex: 1;
-            background: #e4f0db;
             border-radius: 48px;
-            padding: 20px;
-            text-align: center;
+            overflow: hidden;
+            box-shadow: 0 25px 35px -12px rgba(0,0,0,0.1);
         }
-        .hero-img i {
-            font-size: 12rem;
-            color: #4f7a3b;
+        .hero-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .section-title {
@@ -240,7 +241,7 @@
             color: #2d6a2f;
         }
 
-        /* Course Cards */
+        /* Course Cards with Real Images */
         .course-grid {
             display: flex;
             flex-wrap: wrap;
@@ -262,10 +263,18 @@
             transform: translateY(-8px);
         }
         .course-image {
-            background: #e4f0db;
-            padding: 40px 0;
-            text-align: center;
-            font-size: 4rem;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+        .course-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        .course-card:hover .course-image img {
+            transform: scale(1.05);
         }
         .course-info {
             padding: 20px;
@@ -281,14 +290,6 @@
             margin-bottom: 16px;
             text-align: center;
             line-height: 1.4;
-        }
-        .veg-badge {
-            display: inline-block;
-            background: #f0f4ea;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            margin: 8px 4px 0;
         }
         .course-price {
             font-size: 1.2rem;
@@ -446,8 +447,7 @@
                 <p>Step-by-step video lessons, planting guides, and expert mentorship. Buy Seeds to unlock courses. New modules released weekly.</p>
             </div>
             <div class="hero-img">
-                <i class="fas fa-tractor"></i>
-                <i class="fas fa-apple-alt" style="font-size: 5rem; margin-left: 20px;"></i>
+                <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=600&h=400&fit=crop" alt="Farm field with vegetables">
             </div>
         </div>
 
@@ -495,77 +495,89 @@
             <p style="font-size: 0.8rem; opacity: 0.8;">✓ Instant delivery • Use Seeds to purchase any course</p>
         </div>
 
-<!-- Vegetable Courses Section -->
-<div id="vegetables">
-    <div class="section-title">🌶️ Choose Your Vegetable Course</div>
-    <div class="course-grid" id="courseGrid">
-        <!-- Chili -->
-        <div class="course-card" data-course="chili" data-price="15">
-            <div class="course-image">🌶️</div>
-            <div class="course-info">
-                <h3>Chili</h3>
-                <p>Spicy and versatile.</p>
-                <div class="course-price"><i class="fas fa-seedling"></i> 15 Seeds</div>
-                <div class="course-action" id="chiliAction"></div>
-            </div>
+        <!-- Vegetable Courses Section with Real Images -->
+        <div id="vegetables">
+            <div class="section-title">🌶️ Choose Your Vegetable Course</div>
+            <div class="course-grid" id="courseGrid">
+    <!-- Chili -->
+    <div class="course-card" data-course="chili" data-price="15">
+        <div class="course-image">
+            <img src="https://images.unsplash.com/photo-1518006959466-0db0b6b4c1d0?w=280&h=200&fit=crop" alt="Red chili peppers">
         </div>
-
-        <!-- Tomato -->
-        <div class="course-card" data-course="tomato" data-price="20">
-            <div class="course-image">🍅</div>
-            <div class="course-info">
-                <h3>Tomato</h3>
-                <p>Juicy and sweet.</p>
-                <div class="course-price"><i class="fas fa-seedling"></i> 20 Seeds</div>
-                <div class="course-action" id="tomatoAction"></div>
-            </div>
+        <div class="course-info">
+            <h3>Chili</h3>
+            <p>Spicy and versatile.</p>
+            <div class="course-price"><i class="fas fa-seedling"></i> 15 Seeds</div>
+            <div class="course-action" id="chiliAction"></div>
         </div>
+    </div>
 
-        <!-- Brinjal -->
-        <div class="course-card" data-course="brinjal" data-price="10">
-            <div class="course-image">🍆</div>
-            <div class="course-info">
-                <h3>Brinjal</h3>
-                <p>Glossy and versatile.</p>
-                <div class="course-price"><i class="fas fa-seedling"></i> 10 Seeds</div>
-                <div class="course-action" id="brinjalAction"></div>
-            </div>
+    <!-- Tomato -->
+    <div class="course-card" data-course="tomato" data-price="20">
+        <div class="course-image">
+            <img src="https://images.unsplash.com/photo-1518977822534-7049a61ee0c2?w=280&h=200&fit=crop" alt="Ripe red tomatoes on vine">
         </div>
-
-        <!-- Bendi -->
-        <div class="course-card" data-course="bendi" data-price="10">
-            <div class="course-image">🌿</div>
-            <div class="course-info">
-                <h3>Bendi</h3>
-                <p>Fast-growing and heat-tolerant.</p>
-                <div class="course-price"><i class="fas fa-seedling"></i> 10 Seeds</div>
-                <div class="course-action" id="bendiAction"></div>
-            </div>
+        <div class="course-info">
+            <h3>Tomato</h3>
+            <p>Juicy and sweet.</p>
+            <div class="course-price"><i class="fas fa-seedling"></i> 20 Seeds</div>
+            <div class="course-action" id="tomatoAction"></div>
         </div>
+    </div>
 
-        <!-- Cili Padi -->
-        <div class="course-card" data-course="cilipadi" data-price="15">
-            <div class="course-image">🌶️</div>
-            <div class="course-info">
-                <h3>Cili Padi</h3>
-                <p>Extra spicy and aromatic.</p>
-                <div class="course-price"><i class="fas fa-seedling"></i> 15 Seeds</div>
-                <div class="course-action" id="cilipadiAction"></div>
-            </div>
+    <!-- Brinjal -->
+    <div class="course-card" data-course="brinjal" data-price="10">
+        <div class="course-image">
+            <img src="https://images.unsplash.com/photo-1659261111792-66709e46d53d?w=280&h=200&fit=crop" alt="Purple eggplants">
         </div>
+        <div class="course-info">
+            <h3>Brinjal</h3>
+            <p>Glossy and versatile.</p>
+            <div class="course-price"><i class="fas fa-seedling"></i> 10 Seeds</div>
+            <div class="course-action" id="brinjalAction"></div>
+        </div>
+    </div>
 
-        <!-- Mango -->
-        <div class="course-card" data-course="mango" data-price="20">
-            <div class="course-image">🥭</div>
-            <div class="course-info">
-                <h3>Mango</h3>
-                <p>Sweet tropical fruit.</p>
-                <div class="course-price"><i class="fas fa-seedling"></i> 20 Seeds</div>
-                <div class="course-action" id="mangoAction"></div>
-            </div>
+    <!-- Bendi -->
+    <div class="course-card" data-course="bendi" data-price="10">
+        <div class="course-image">
+            <img src="https://images.unsplash.com/photo-1632014530325-3911c738b779?w=280&h=200&fit=crop" alt="Fresh okra pods">
+        </div>
+        <div class="course-info">
+            <h3>Bendi</h3>
+            <p>Fast-growing and heat-tolerant.</p>
+            <div class="course-price"><i class="fas fa-seedling"></i> 10 Seeds</div>
+            <div class="course-action" id="bendiAction"></div>
+        </div>
+    </div>
+
+    <!-- Cili Padi -->
+    <div class="course-card" data-course="cilipadi" data-price="15">
+        <div class="course-image">
+            <img src="https://cdn.shopify.com/s/files/1/0750/9190/2779/files/Birds-Eye-Chilli-003-700x575.webp?w=280&h=200&fit=crop" alt="Bird's eye chili peppers">
+        </div>
+        <div class="course-info">
+            <h3>Cili Padi</h3>
+            <p>Extra spicy and aromatic.</p>
+            <div class="course-price"><i class="fas fa-seedling"></i> 15 Seeds</div>
+            <div class="course-action" id="cilipadiAction"></div>
+        </div>
+    </div>
+
+    <!-- Mango -->
+    <div class="course-card" data-course="mango" data-price="20">
+        <div class="course-image">
+            <img src="https://images.unsplash.com/photo-1685429631345-3de21cc2eb65?w=280&h=200&fit=crop" alt="Ripe mangoes">
+        </div>
+        <div class="course-info">
+            <h3>Mango</h3>
+            <p>Sweet tropical fruit.</p>
+            <div class="course-price"><i class="fas fa-seedling"></i> 20 Seeds</div>
+            <div class="course-action" id="mangoAction"></div>
         </div>
     </div>
 </div>
+        </div>
 
         <div id="testimonials" class="testimonials">
             <div class="section-title">💬 What our farmers say</div>
@@ -679,10 +691,6 @@
             purchased.push(course);
             localStorage.setItem('purchased_courses', JSON.stringify(purchased));
         }
-    }
-    
-    function isCourseOwned(course) {
-        return getPurchasedCourses().includes(course);
     }
     
     function updateAllCourseButtons() {
