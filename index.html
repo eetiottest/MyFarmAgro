@@ -406,6 +406,68 @@
             color: #f5b642;
         }
 
+        /* Profile Setup Modal */
+        .profile-setup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .profile-setup-card {
+            background: white;
+            max-width: 450px;
+            width: 90%;
+            border-radius: 48px;
+            padding: 40px;
+            text-align: center;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .profile-setup-card h2 {
+            color: #2d6a2f;
+            margin-bottom: 8px;
+        }
+        .profile-setup-card p {
+            color: #6c7a63;
+            margin-bottom: 24px;
+        }
+        .profile-setup-card input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 40px;
+            border: 1px solid #ddd;
+            margin-bottom: 16px;
+            font-size: 1rem;
+        }
+        .profile-setup-card input:focus {
+            outline: none;
+            border-color: #2d6a2f;
+        }
+        .profile-setup-btn {
+            background: #2d6a2f;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 40px;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 8px;
+        }
+        .profile-setup-btn:hover {
+            background: #1f4f21;
+        }
+
         /* Account Modal Styles */
         .account-profile {
             display: flex;
@@ -417,14 +479,15 @@
             border-bottom: 1px solid #eef3e6;
         }
         .profile-avatar {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             background: linear-gradient(135deg, #2b5e2b, #6f9e3f);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1.5rem;
+            font-weight: 700;
             color: white;
         }
         .profile-info h4 {
@@ -719,7 +782,22 @@
     </div>
 </div>
 
-<!-- Account Modal - Detailed -->
+<!-- Profile Setup Modal (No Avatar) -->
+<div id="profileSetupModal" class="profile-setup-overlay" style="display: none;">
+    <div class="profile-setup-card">
+        <i class="fas fa-seedling" style="font-size: 3rem; color: #2d6a2f; margin-bottom: 16px;"></i>
+        <h2>Welcome to My FarmAgro</h2>
+        <p>Create your account to start learning</p>
+        
+        <input type="text" id="setupName" placeholder="Full Name" value="">
+        <input type="email" id="setupEmail" placeholder="Email Address" value="">
+        <input type="text" id="setupLocation" placeholder="Location (e.g., Kuala Lumpur, Malaysia)" value="">
+        
+        <button id="completeSetupBtn" class="profile-setup-btn">Start Learning →</button>
+    </div>
+</div>
+
+<!-- Account Modal -->
 <div id="accountModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000;">
     <div style="background: white; max-width: 500px; width: 90%; border-radius: 48px; padding: 32px; max-height: 85vh; overflow-y: auto;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -727,18 +805,18 @@
             <button id="closeAccountModal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
         </div>
 
-        <!-- Profile Section -->
         <div class="account-profile">
-            <div class="profile-avatar" id="profileAvatar">🌱</div>
+            <div class="profile-avatar" id="profileAvatar">
+                <i class="fas fa-user"></i>
+            </div>
             <div class="profile-info">
-                <h4 id="profileName">Ahmad Faiz</h4>
-                <p><i class="fas fa-envelope"></i> <span id="profileEmail">ahmad@myfarmagro.com</span></p>
-                <p><i class="fas fa-map-marker-alt"></i> <span id="profileLocation">Kuala Lumpur, Malaysia</span></p>
-                <p><i class="fas fa-calendar-alt"></i> Member since <span id="memberSince">March 2025</span></p>
+                <h4 id="profileName">-</h4>
+                <p><i class="fas fa-envelope"></i> <span id="profileEmail">-</span></p>
+                <p><i class="fas fa-map-marker-alt"></i> <span id="profileLocation">-</span></p>
+                <p><i class="fas fa-calendar-alt"></i> Member since <span id="memberSince">-</span></p>
             </div>
         </div>
 
-        <!-- Stats Grid -->
         <div class="stat-grid">
             <div class="stat-card">
                 <i class="fas fa-seedling"></i>
@@ -762,19 +840,12 @@
             </div>
         </div>
 
-        <!-- Active Subscriptions -->
         <h3 style="font-size: 1.1rem; margin-bottom: 12px;"><i class="fas fa-check-circle" style="color: #2d6a2f;"></i> My Courses</h3>
-        <div id="subscriptionList" class="subscription-list">
-            <!-- Dynamic content -->
-        </div>
+        <div id="subscriptionList" class="subscription-list"></div>
 
-        <!-- Transaction History -->
         <h3 style="font-size: 1.1rem; margin: 16px 0 12px;"><i class="fas fa-history"></i> Transaction History</h3>
-        <div id="transactionList" class="transaction-list">
-            <!-- Dynamic content -->
-        </div>
+        <div id="transactionList" class="transaction-list"></div>
 
-        <!-- Edit Profile Button -->
         <button id="editProfileBtn" class="edit-profile-btn"><i class="fas fa-edit"></i> Edit Profile</button>
     </div>
 </div>
@@ -805,15 +876,39 @@
         chili: 'chili.html', tomato: 'tomato.html', brinjal: 'brinjal.html', bendi: 'bendi.html', cilipadi: 'cilipadi.html', mango: 'mango.html'
     };
 
-    // User profile data (stored in localStorage)
-    let userProfile = JSON.parse(localStorage.getItem('userProfile')) || {
-        name: 'Ahmad Faiz',
-        email: 'ahmad@myfarmagro.com',
-        location: 'Kuala Lumpur, Malaysia',
-        memberSince: new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
-        totalSpent: 0
-    };
+    // Check if user has completed profile setup
+    let userProfile = JSON.parse(localStorage.getItem('userProfile'));
 
+    // Complete profile setup
+    function completeSetup() {
+        const name = document.getElementById('setupName').value.trim();
+        const email = document.getElementById('setupEmail').value.trim();
+        const location = document.getElementById('setupLocation').value.trim();
+        
+        if (!name || !email || !location) {
+            alert('Please fill in all fields!');
+            return;
+        }
+        
+        userProfile = {
+            name: name,
+            email: email,
+            location: location,
+            memberSince: new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+            totalSpent: 0
+        };
+        
+        localStorage.setItem('userProfile', JSON.stringify(userProfile));
+        localStorage.setItem('profileCompleted', 'true');
+        localStorage.setItem('seed_balance', '0');
+        localStorage.setItem('purchased_courses', '[]');
+        localStorage.setItem('transactions', '[]');
+        
+        document.getElementById('profileSetupModal').style.display = 'none';
+        updateAccountModal();
+    }
+
+    // Save user profile
     function saveUserProfile() {
         localStorage.setItem('userProfile', JSON.stringify(userProfile));
     }
@@ -824,13 +919,13 @@
 
     function setSeedBalance(amount) {
         localStorage.setItem('seed_balance', amount.toString());
-        document.getElementById('seedBalance').innerHTML = `${amount} <span>Seeds</span>`;
+        const balanceEl = document.getElementById('seedBalance');
+        if (balanceEl) balanceEl.innerHTML = `${amount} <span>Seeds</span>`;
     }
 
     function addSeeds(amount, price) {
         const current = getSeedBalance();
         setSeedBalance(current + amount);
-        // Add transaction
         userProfile.totalSpent += price;
         saveUserProfile();
         addTransaction(`Purchased ${amount} Seeds`, price, 'positive');
@@ -845,7 +940,6 @@
             type: type,
             date: new Date().toLocaleDateString()
         });
-        // Keep only last 10 transactions
         transactions = transactions.slice(0, 10);
         localStorage.setItem('transactions', JSON.stringify(transactions));
     }
@@ -865,10 +959,6 @@
             localStorage.setItem('purchased_courses', JSON.stringify(purchased));
             addTransaction(`Unlocked ${courseNames[course]} Masterclass`, price, 'positive');
         }
-    }
-
-    function isCourseOwned(course) {
-        return getPurchasedCourses().includes(course);
     }
 
     function updateAllCourseButtons() {
@@ -916,24 +1006,22 @@
         window.location.href = coursePages[course];
     }
 
-    // Update Account Modal with all details
     function updateAccountModal() {
+        if (!userProfile) return;
+        
         const balance = getSeedBalance();
         const purchased = getPurchasedCourses();
         const transactions = getTransactions();
         
-        // Update profile info
         document.getElementById('profileName').innerText = userProfile.name;
         document.getElementById('profileEmail').innerText = userProfile.email;
         document.getElementById('profileLocation').innerText = userProfile.location;
         document.getElementById('memberSince').innerText = userProfile.memberSince;
         
-        // Update stats
         document.getElementById('accountSeedsBalance').innerText = balance;
         document.getElementById('accountCoursesOwned').innerText = purchased.length;
         document.getElementById('totalSpent').innerText = `RM${userProfile.totalSpent}`;
         
-        // Calculate completed lessons (simulated from progress data)
         let completedCount = 0;
         purchased.forEach(course => {
             const progress = JSON.parse(localStorage.getItem(`progress_${course}`) || '[]');
@@ -941,7 +1029,6 @@
         });
         document.getElementById('completedLessons').innerText = completedCount;
         
-        // Update subscriptions list
         const subscriptionDiv = document.getElementById('subscriptionList');
         if (purchased.length > 0) {
             subscriptionDiv.innerHTML = purchased.map(course => `
@@ -954,7 +1041,6 @@
             subscriptionDiv.innerHTML = '<p style="text-align: center; color: #8ba07e;">No courses purchased yet.</p>';
         }
         
-        // Update transaction history
         const transactionDiv = document.getElementById('transactionList');
         if (transactions.length > 0) {
             transactionDiv.innerHTML = transactions.map(t => `
@@ -1009,8 +1095,12 @@
     
     // Account button
     document.getElementById('accountBtn')?.addEventListener('click', () => {
-        updateAccountModal();
-        document.getElementById('accountModal').style.display = 'flex';
+        if (!userProfile) {
+            document.getElementById('profileSetupModal').style.display = 'flex';
+        } else {
+            updateAccountModal();
+            document.getElementById('accountModal').style.display = 'flex';
+        }
     });
     
     document.getElementById('closeAccountModal')?.addEventListener('click', () => {
@@ -1039,16 +1129,21 @@
         document.getElementById('editProfileModal').style.display = 'none';
     });
     
+    // Complete setup button
+    document.getElementById('completeSetupBtn')?.addEventListener('click', completeSetup);
+    
     // Close modals on outside click
     window.addEventListener('click', (e) => {
         const buyModal = document.getElementById('buySeedsModal');
         const insuffModal = document.getElementById('insufficientModal');
         const accModal = document.getElementById('accountModal');
         const editModal = document.getElementById('editProfileModal');
+        const setupModal = document.getElementById('profileSetupModal');
         if (e.target === buyModal) buyModal.style.display = 'none';
         if (e.target === insuffModal) insuffModal.style.display = 'none';
         if (e.target === accModal) accModal.style.display = 'none';
         if (e.target === editModal) editModal.style.display = 'none';
+        if (e.target === setupModal) setupModal.style.display = 'none';
     });
     
     // Smooth scroll
@@ -1064,10 +1159,14 @@
     });
     
     // Initialize
-    if (getSeedBalance() === 0) {
-        setSeedBalance(0);
+    const profileCompleted = localStorage.getItem('profileCompleted') === 'true';
+    userProfile = JSON.parse(localStorage.getItem('userProfile'));
+    
+    if (!profileCompleted || !userProfile) {
+        document.getElementById('profileSetupModal').style.display = 'flex';
     } else {
-        document.getElementById('seedBalance').innerHTML = `${getSeedBalance()} <span>Seeds</span>`;
+        const balance = getSeedBalance();
+        document.getElementById('seedBalance').innerHTML = `${balance} <span>Seeds</span>`;
     }
     
     window.attemptPurchase = attemptPurchase;
