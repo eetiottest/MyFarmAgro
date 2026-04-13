@@ -1,587 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+        <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2d6a2f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>My FarmAgro | Learn to Grow Your Own Food</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #fefaf0;
-            color: #1e2a1f;
-            scroll-behavior: smooth;
-        }
-
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 32px;
-        }
-
-        header {
-            background: #ffffffdd;
-            backdrop-filter: blur(12px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid #e2e6d9;
-        }
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 0;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .logo {
-            font-size: 1.6rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #2b5e2b, #6f9e3f);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .logo i {
-            background: none;
-            color: #4a784a;
-            margin-right: 6px;
-        }
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            align-items: center;
-            font-weight: 500;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: #2c3e2b;
-            transition: 0.2s;
-        }
-        .nav-links a:hover {
-            color: #4c9f2f;
-        }
-        .btn-outline {
-            border: 1.5px solid #3f7843;
-            padding: 8px 20px;
-            border-radius: 40px;
-            font-weight: 600;
-            background: transparent;
-            cursor: pointer;
-        }
-        .btn-outline:hover {
-            background: #3f7843;
-            color: white;
-        }
-
-        .hero {
-            padding: 60px 0 70px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 40px;
-            justify-content: space-between;
-        }
-        .hero-text {
-            flex: 1.2;
-        }
-        .hero-text h1 {
-            font-size: 3.2rem;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            background: linear-gradient(145deg, #1f4a1a, #5a8f2c);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .hero-text p {
-            font-size: 1.2rem;
-            color: #3b5238;
-            margin-bottom: 32px;
-            line-height: 1.5;
-            max-width: 550px;
-        }
-        .hero-img {
-            flex: 1;
-            border-radius: 48px;
-            overflow: hidden;
-            box-shadow: 0 25px 35px -12px rgba(0,0,0,0.1);
-        }
-        .hero-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin: 60px 0 40px;
-            position: relative;
-        }
-        .section-title:after {
-            content: '';
-            display: block;
-            width: 70px;
-            height: 4px;
-            background: #6aab4a;
-            margin: 12px auto 0;
-            border-radius: 4px;
-        }
-
-        .grid-cards {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 32px;
-            justify-content: center;
-            margin-bottom: 60px;
-        }
-        .card {
-            background: white;
-            border-radius: 32px;
-            padding: 28px 24px;
-            flex: 1 1 280px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
-            transition: 0.25s;
-            border: 1px solid #eef3e6;
-        }
-        .card:hover {
-            transform: translateY(-8px);
-        }
-        .card i {
-            font-size: 2.6rem;
-            color: #3e8841;
-            margin-bottom: 18px;
-        }
-        .card h3 {
-            font-size: 1.6rem;
-            margin-bottom: 12px;
-        }
-        .card p {
-            color: #485c43;
-            line-height: 1.4;
-        }
-
-        .credit-section {
-            background: linear-gradient(135deg, #2b5e2b, #1f4f21);
-            border-radius: 48px;
-            padding: 40px;
-            margin: 40px 0;
-            color: white;
-            text-align: center;
-        }
-        .credit-balance {
-            background: rgba(255,255,255,0.2);
-            border-radius: 60px;
-            padding: 20px 32px;
-            display: inline-block;
-            margin-bottom: 24px;
-        }
-        .credit-balance h3 {
-            font-size: 1rem;
-            font-weight: 400;
-            letter-spacing: 1px;
-        }
-        .credit-balance .balance-amount {
-            font-size: 3rem;
-            font-weight: 800;
-        }
-        .credit-balance .balance-amount span {
-            font-size: 1rem;
-            font-weight: 400;
-        }
-        .credit-packs {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin: 32px 0;
-        }
-        .credit-pack {
-            background: white;
-            color: #1e2a1f;
-            border-radius: 32px;
-            padding: 20px 24px;
-            width: 180px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .credit-pack:hover {
-            transform: translateY(-5px);
-        }
-        .credit-pack .seed-icon {
-            font-size: 2rem;
-            margin-bottom: 8px;
-        }
-        .credit-pack .seeds-amount {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #2d6a2f;
-        }
-        .credit-pack .price {
-            color: #6c7a63;
-            font-size: 0.9rem;
-            margin-top: 8px;
-        }
-        .credit-pack .price span {
-            font-weight: 700;
-            color: #2d6a2f;
-        }
-
-        .course-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 32px;
-            justify-content: center;
-            margin-bottom: 60px;
-        }
-        .course-card {
-            background: white;
-            border-radius: 32px;
-            overflow: hidden;
-            width: 280px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-            transition: transform 0.2s;
-            border: 1px solid #eef3e6;
-            position: relative;
-        }
-        .course-card:hover {
-            transform: translateY(-8px);
-        }
-        .course-image {
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-        }
-        .course-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-        .course-card:hover .course-image img {
-            transform: scale(1.05);
-        }
-        .course-info {
-            padding: 20px;
-            text-align: center;
-        }
-        .course-info h3 {
-            font-size: 1.5rem;
-            margin-bottom: 8px;
-        }
-        .course-info p {
-            color: #485c43;
-            font-size: 0.9rem;
-            margin-bottom: 16px;
-            text-align: center;
-            line-height: 1.4;
-        }
-        .course-price {
-            font-size: 1.2rem;
-            font-weight: 700;
-            background: #f5b64220;
-            display: inline-block;
-            padding: 8px 16px;
-            border-radius: 40px;
-            margin: 12px auto;
-            text-align: center;
-            width: auto;
-        }
-        .course-price i {
-            color: #f5b642;
-        }
-        .purchase-btn {
-            width: 100%;
-            background: #2d6a2f;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 8px;
-            transition: background 0.2s;
-        }
-        .purchase-btn:hover {
-            background: #1f4f21;
-        }
-        .owned-badge {
-            background: #eef3e6;
-            color: #2d6a2f;
-            padding: 8px 12px;
-            border-radius: 40px;
-            text-align: center;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-top: 8px;
-        }
-        .access-btn {
-            width: 100%;
-            background: #f5b642;
-            color: #2a441f;
-            border: none;
-            padding: 10px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 8px;
-        }
-        .access-btn:hover {
-            background: #ffc107;
-        }
-
-        .testimonials {
-            margin: 70px 0;
-        }
-        .testi-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            justify-content: center;
-        }
-        .testi {
-            background: white;
-            border-radius: 32px;
-            padding: 28px;
-            width: 300px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
-        }
-        .testi i.fa-quote-left {
-            color: #c9e0b4;
-            font-size: 2rem;
-            margin-bottom: 12px;
-        }
-        .testi p {
-            font-style: italic;
-            margin-bottom: 20px;
-        }
-        .user {
-            font-weight: 700;
-            color: #2c5e2c;
-        }
-
-        footer {
-            background: #1f2e1c;
-            color: #cfdec7;
-            padding: 48px 0 30px;
-            margin-top: 60px;
-            border-radius: 48px 48px 0 0;
-        }
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .footer-logo {
-            font-size: 1.6rem;
-            font-weight: bold;
-        }
-        .social-icons {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-        }
-        .social-icons a {
-            color: #bfddaf;
-            font-size: 1.6rem;
-            transition: all 0.2s ease;
-            text-decoration: none;
-        }
-        .social-icons a:hover {
-            color: #f5b642;
-        }
-
-        /* Profile Setup Modal */
-        .profile-setup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-        }
-        .profile-setup-card {
-            background: white;
-            max-width: 450px;
-            width: 90%;
-            border-radius: 48px;
-            padding: 40px;
-            text-align: center;
-            animation: fadeIn 0.3s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .profile-setup-card h2 {
-            color: #2d6a2f;
-            margin-bottom: 8px;
-        }
-        .profile-setup-card p {
-            color: #6c7a63;
-            margin-bottom: 24px;
-        }
-        .profile-setup-card input {
-            width: 100%;
-            padding: 14px;
-            border-radius: 40px;
-            border: 1px solid #ddd;
-            margin-bottom: 16px;
-            font-size: 1rem;
-        }
-        .profile-setup-card input:focus {
-            outline: none;
-            border-color: #2d6a2f;
-        }
-        .profile-setup-btn {
-            background: #2d6a2f;
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 40px;
-            font-weight: 700;
-            width: 100%;
-            cursor: pointer;
-            font-size: 1rem;
-            margin-top: 8px;
-        }
-        .profile-setup-btn:hover {
-            background: #1f4f21;
-        }
-
-        /* Account Modal Styles */
-        .account-profile {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            text-align: left;
-            margin-bottom: 24px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eef3e6;
-        }
-        .profile-avatar {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #2b5e2b, #6f9e3f);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: white;
-        }
-        .profile-info h4 {
-            font-size: 1.2rem;
-            margin-bottom: 4px;
-        }
-        .profile-info p {
-            color: #6c7a63;
-            font-size: 0.8rem;
-        }
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-        .stat-card {
-            background: #f8faf5;
-            border-radius: 24px;
-            padding: 16px;
-            text-align: center;
-        }
-        .stat-card i {
-            font-size: 1.8rem;
-            color: #2d6a2f;
-            margin-bottom: 8px;
-        }
-        .stat-card .stat-value {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #2d6a2f;
-        }
-        .stat-card .stat-label {
-            font-size: 0.75rem;
-            color: #6c7a63;
-        }
-        .subscription-list {
-            text-align: left;
-            margin: 16px 0;
-            max-height: 150px;
-            overflow-y: auto;
-        }
-        .subscription-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #eef3e6;
-        }
-        .transaction-list {
-            text-align: left;
-            margin: 16px 0;
-            max-height: 150px;
-            overflow-y: auto;
-        }
-        .transaction-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #eef3e6;
-            font-size: 0.85rem;
-        }
-        .transaction-positive {
-            color: #2d6a2f;
-            font-weight: 600;
-        }
-        .edit-profile-btn {
-            background: none;
-            border: 1px solid #2d6a2f;
-            color: #2d6a2f;
-            padding: 8px 16px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            margin-top: 16px;
-            width: 100%;
-        }
-        .edit-profile-btn:hover {
-            background: #2d6a2f;
-            color: white;
-        }
-
-        @media (max-width: 800px) {
-            .hero-text h1 { font-size: 2.4rem; }
-            .navbar { flex-direction: column; }
-            .nav-links { flex-wrap: wrap; justify-content: center; }
-            .container { padding: 0 20px; }
-            .footer-content { flex-direction: column; text-align: center; }
-            .credit-packs { gap: 12px; }
-            .credit-pack { width: 150px; padding: 16px; }
-            .stat-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -597,7 +29,8 @@
                 <a href="#vegetables">Courses</a>
                 <a href="#credits">Buy Seeds</a>
                 <a href="#testimonials">Stories</a>
-                <button class="btn-outline" id="accountBtn">My Account</button>
+                <button class="btn-outline" id="accountBtn" style="display: none;">My Account</button>
+                <button class="btn-outline" id="loginLogoutBtn">Log In</button>
             </div>
         </div>
     </div>
@@ -782,21 +215,6 @@
     </div>
 </div>
 
-<!-- Profile Setup Modal (No Avatar) -->
-<div id="profileSetupModal" class="profile-setup-overlay" style="display: none;">
-    <div class="profile-setup-card">
-        <i class="fas fa-seedling" style="font-size: 3rem; color: #2d6a2f; margin-bottom: 16px;"></i>
-        <h2>Welcome to My FarmAgro</h2>
-        <p>Create your account to start learning</p>
-        
-        <input type="text" id="setupName" placeholder="Full Name" value="">
-        <input type="email" id="setupEmail" placeholder="Email Address" value="">
-        <input type="text" id="setupLocation" placeholder="Location (e.g., Kuala Lumpur, Malaysia)" value="">
-        
-        <button id="completeSetupBtn" class="profile-setup-btn">Start Learning →</button>
-    </div>
-</div>
-
 <!-- Account Modal -->
 <div id="accountModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000;">
     <div style="background: white; max-width: 500px; width: 90%; border-radius: 48px; padding: 32px; max-height: 85vh; overflow-y: auto;">
@@ -864,7 +282,22 @@
     </div>
 </div>
 
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+
+<!-- Firebase Config -->
+<script src="firebase-config.js"></script>
+
 <script>
+    // ============================================
+    // MAIN APPLICATION CODE
+    // ============================================
+    
+    let currentUser = null;
+    let userProfile = null;
+    
     // Course data
     const coursePrices = {
         chili: 15, tomato: 20, brinjal: 10, bendi: 10, cilipadi: 15, mango: 20
@@ -873,94 +306,58 @@
         chili: 'Chili', tomato: 'Tomato', brinjal: 'Brinjal', bendi: 'Bendi', cilipadi: 'Cili Padi', mango: 'Mango'
     };
     const coursePages = {
-        chili: 'chili.html', tomato: 'tomato.html', brinjal: 'brinjal.html', bendi: 'bendi.html', cilipadi: 'cilipadi.html', mango: 'mango.html'
+        chili: 'crops/chili.html', tomato: 'crops/tomato.html', brinjal: 'crops/brinjal.html', 
+        bendi: 'crops/bendi.html', cilipadi: 'crops/cilipadi.html', mango: 'crops/mango.html'
     };
-
-    // Check if user has completed profile setup
-    let userProfile = JSON.parse(localStorage.getItem('userProfile'));
-
-    // Complete profile setup
-    function completeSetup() {
-        const name = document.getElementById('setupName').value.trim();
-        const email = document.getElementById('setupEmail').value.trim();
-        const location = document.getElementById('setupLocation').value.trim();
-        
-        if (!name || !email || !location) {
-            alert('Please fill in all fields!');
-            return;
-        }
-        
-        userProfile = {
-            name: name,
-            email: email,
-            location: location,
-            memberSince: new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
-            totalSpent: 0
-        };
-        
-        localStorage.setItem('userProfile', JSON.stringify(userProfile));
-        localStorage.setItem('profileCompleted', 'true');
-        localStorage.setItem('seed_balance', '0');
-        localStorage.setItem('purchased_courses', '[]');
-        localStorage.setItem('transactions', '[]');
-        
-        document.getElementById('profileSetupModal').style.display = 'none';
-        updateAccountModal();
-    }
-
-    // Save user profile
-    function saveUserProfile() {
-        localStorage.setItem('userProfile', JSON.stringify(userProfile));
-    }
-
+    
+    // DOM Elements
+    const loginLogoutBtn = document.getElementById('loginLogoutBtn');
+    const accountBtn = document.getElementById('accountBtn');
+    const seedBalanceEl = document.getElementById('seedBalance');
+    
+    // ============================================
+    // SEED BALANCE FUNCTIONS
+    // ============================================
+    
     function getSeedBalance() {
         return parseInt(localStorage.getItem('seed_balance') || '0');
     }
-
+    
     function setSeedBalance(amount) {
         localStorage.setItem('seed_balance', amount.toString());
-        const balanceEl = document.getElementById('seedBalance');
-        if (balanceEl) balanceEl.innerHTML = `${amount} <span>Seeds</span>`;
+        if (seedBalanceEl) seedBalanceEl.innerHTML = `${amount} <span>Seeds</span>`;
+        
+        // Sync to Firestore if logged in
+        if (currentUser) {
+            db.collection('users').doc(currentUser.uid).update({
+                seedsBalance: amount
+            }).catch(err => console.error('Error syncing seeds:', err));
+        }
     }
-
-    function addSeeds(amount, price) {
-        const current = getSeedBalance();
-        setSeedBalance(current + amount);
-        userProfile.totalSpent += price;
-        saveUserProfile();
-        addTransaction(`Purchased ${amount} Seeds`, price, 'positive');
-    }
-
-    function addTransaction(description, amount, type) {
-        let transactions = JSON.parse(localStorage.getItem('transactions') || '[]');
-        transactions.unshift({
-            id: Date.now(),
-            description: description,
-            amount: amount,
-            type: type,
-            date: new Date().toLocaleDateString()
-        });
-        transactions = transactions.slice(0, 10);
-        localStorage.setItem('transactions', JSON.stringify(transactions));
-    }
-
-    function getTransactions() {
-        return JSON.parse(localStorage.getItem('transactions') || '[]');
-    }
-
+    
+    // ============================================
+    // COURSE FUNCTIONS
+    // ============================================
+    
     function getPurchasedCourses() {
         return JSON.parse(localStorage.getItem('purchased_courses') || '[]');
     }
-
+    
     function purchaseCourse(course, price) {
         const purchased = getPurchasedCourses();
         if (!purchased.includes(course)) {
             purchased.push(course);
             localStorage.setItem('purchased_courses', JSON.stringify(purchased));
-            addTransaction(`Unlocked ${courseNames[course]} Masterclass`, price, 'positive');
+            
+            // Sync to Firestore
+            if (currentUser) {
+                db.collection('users').doc(currentUser.uid).update({
+                    purchasedCourses: purchased
+                }).catch(err => console.error('Error syncing purchases:', err));
+            }
         }
     }
-
+    
     function updateAllCourseButtons() {
         const balance = getSeedBalance();
         const purchased = getPurchasedCourses();
@@ -987,75 +384,35 @@
             }
         });
     }
-
+    
     function attemptPurchase(course, price) {
+        if (!currentUser) {
+            alert('Please log in to unlock courses');
+            showLoginModal();
+            return;
+        }
+        
         const balance = getSeedBalance();
         if (balance >= price) {
             setSeedBalance(balance - price);
             purchaseCourse(course, price);
             updateAllCourseButtons();
-            alert(`✅ You've unlocked ${courseNames[course]} Masterclass!\n\n${price} Seeds were deducted from your balance. You now have ${getSeedBalance()} Seeds remaining.`);
+            alert(`✅ You've unlocked ${courseNames[course]} Masterclass!\n\n${price} Seeds were deducted. You now have ${getSeedBalance()} Seeds.`);
         } else {
             const needed = price - balance;
             document.getElementById('insufficientMessage').innerHTML = `You need ${needed} more Seeds to unlock ${courseNames[course]} Masterclass.`;
             document.getElementById('insufficientModal').style.display = 'flex';
         }
     }
-
+    
     function accessCourse(course) {
         window.location.href = coursePages[course];
     }
-
-    function updateAccountModal() {
-        if (!userProfile) return;
-        
-        const balance = getSeedBalance();
-        const purchased = getPurchasedCourses();
-        const transactions = getTransactions();
-        
-        document.getElementById('profileName').innerText = userProfile.name;
-        document.getElementById('profileEmail').innerText = userProfile.email;
-        document.getElementById('profileLocation').innerText = userProfile.location;
-        document.getElementById('memberSince').innerText = userProfile.memberSince;
-        
-        document.getElementById('accountSeedsBalance').innerText = balance;
-        document.getElementById('accountCoursesOwned').innerText = purchased.length;
-        document.getElementById('totalSpent').innerText = `RM${userProfile.totalSpent}`;
-        
-        let completedCount = 0;
-        purchased.forEach(course => {
-            const progress = JSON.parse(localStorage.getItem(`progress_${course}`) || '[]');
-            completedCount += progress.length;
-        });
-        document.getElementById('completedLessons').innerText = completedCount;
-        
-        const subscriptionDiv = document.getElementById('subscriptionList');
-        if (purchased.length > 0) {
-            subscriptionDiv.innerHTML = purchased.map(course => `
-                <div class="subscription-item">
-                    <span><i class="fas fa-seedling"></i> ${courseNames[course]} Masterclass</span>
-                    <span style="color: #2d6a2f;">Active</span>
-                </div>
-            `).join('');
-        } else {
-            subscriptionDiv.innerHTML = '<p style="text-align: center; color: #8ba07e;">No courses purchased yet.</p>';
-        }
-        
-        const transactionDiv = document.getElementById('transactionList');
-        if (transactions.length > 0) {
-            transactionDiv.innerHTML = transactions.map(t => `
-                <div class="transaction-item">
-                    <span>${t.description}</span>
-                    <span class="transaction-positive">RM${t.amount}</span>
-                    <span style="font-size: 0.7rem; color: #8ba07e;">${t.date}</span>
-                </div>
-            `).join('');
-        } else {
-            transactionDiv.innerHTML = '<p style="text-align: center; color: #8ba07e;">No transactions yet.</p>';
-        }
-    }
-
-    // Credit pack purchase
+    
+    // ============================================
+    // SEED PURCHASE
+    // ============================================
+    
     let selectedPack = null;
     
     function showBuySeedsModal(seeds, price) {
@@ -1067,16 +424,35 @@
     
     document.querySelectorAll('.credit-pack').forEach(pack => {
         pack.addEventListener('click', () => {
+            if (!currentUser) {
+                alert('Please log in to buy Seeds');
+                showLoginModal();
+                return;
+            }
             const seeds = parseInt(pack.getAttribute('data-seeds'));
             const price = parseInt(pack.getAttribute('data-price'));
             showBuySeedsModal(seeds, price);
         });
     });
     
-    document.getElementById('confirmBuySeedsBtn')?.addEventListener('click', () => {
-        if (selectedPack) {
-            alert(`✅ You've purchased ${selectedPack.seeds} Seeds for RM ${selectedPack.price}!\n\nSeeds have been added to your balance.`);
-            addSeeds(selectedPack.seeds, selectedPack.price);
+    document.getElementById('confirmBuySeedsBtn')?.addEventListener('click', async () => {
+        if (selectedPack && currentUser) {
+            alert(`✅ You've purchased ${selectedPack.seeds} Seeds for RM ${selectedPack.price}!`);
+            
+            const current = getSeedBalance();
+            const newBalance = current + selectedPack.seeds;
+            setSeedBalance(newBalance);
+            
+            // Update Firestore
+            try {
+                await db.collection('users').doc(currentUser.uid).update({
+                    seedsBalance: newBalance,
+                    totalSpent: firebase.firestore.FieldValue.increment(selectedPack.price)
+                });
+            } catch (error) {
+                console.error('Error updating Firestore:', error);
+            }
+            
             updateAllCourseButtons();
             document.getElementById('buySeedsModal').style.display = 'none';
             selectedPack = null;
@@ -1093,57 +469,296 @@
         document.getElementById('credits').scrollIntoView({ behavior: 'smooth' });
     });
     
-    // Account button
-    document.getElementById('accountBtn')?.addEventListener('click', () => {
-        if (!userProfile) {
-            document.getElementById('profileSetupModal').style.display = 'flex';
+    // ============================================
+    // AUTH UI
+    // ============================================
+    
+    // Add auth modal
+    function addAuthModal() {
+        if (document.getElementById('authModal')) return;
+        
+        const modalHTML = `
+            <div id="authModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 2000;">
+                <div style="background: white; max-width: 400px; width: 90%; border-radius: 48px; padding: 40px; text-align: center;">
+                    <i class="fas fa-seedling" style="font-size: 3rem; color: #2d6a2f; margin-bottom: 16px;"></i>
+                    
+                    <div id="loginForm">
+                        <h2>Welcome Back</h2>
+                        <input type="email" id="loginEmail" placeholder="Email" style="width: 100%; padding: 14px; border-radius: 40px; border: 1px solid #ddd; margin-bottom: 12px;">
+                        <input type="password" id="loginPassword" placeholder="Password" style="width: 100%; padding: 14px; border-radius: 40px; border: 1px solid #ddd; margin-bottom: 12px;">
+                        <button id="doLoginBtn" style="background: #2d6a2f; color: white; border: none; padding: 14px; border-radius: 40px; font-weight: 700; width: 100%; cursor: pointer;">Log In</button>
+                        <p style="margin-top: 16px;"><a href="#" id="showSignupBtn" style="color: #2d6a2f;">Don't have an account? Sign Up</a></p>
+                        <p><a href="#" id="forgotPasswordBtn" style="color: #2d6a2f; font-size: 0.8rem;">Forgot Password?</a></p>
+                    </div>
+                    
+                    <div id="signupForm" style="display: none;">
+                        <h2>Create Account</h2>
+                        <input type="text" id="signupName" placeholder="Full Name" style="width: 100%; padding: 14px; border-radius: 40px; border: 1px solid #ddd; margin-bottom: 12px;">
+                        <input type="email" id="signupEmail" placeholder="Email" style="width: 100%; padding: 14px; border-radius: 40px; border: 1px solid #ddd; margin-bottom: 12px;">
+                        <input type="password" id="signupPassword" placeholder="Password (min 6)" style="width: 100%; padding: 14px; border-radius: 40px; border: 1px solid #ddd; margin-bottom: 12px;">
+                        <button id="doSignupBtn" style="background: #2d6a2f; color: white; border: none; padding: 14px; border-radius: 40px; font-weight: 700; width: 100%; cursor: pointer;">Sign Up</button>
+                        <p style="margin-top: 16px;"><a href="#" id="showLoginBtn" style="color: #2d6a2f;">Already have an account? Log In</a></p>
+                    </div>
+                    
+                    <div id="forgotPasswordForm" style="display: none;">
+                        <h2>Reset Password</h2>
+                        <input type="email" id="resetEmail" placeholder="Email" style="width: 100%; padding: 14px; border-radius: 40px; border: 1px solid #ddd; margin-bottom: 12px;">
+                        <button id="doResetBtn" style="background: #2d6a2f; color: white; border: none; padding: 14px; border-radius: 40px; font-weight: 700; width: 100%; cursor: pointer;">Send Reset Link</button>
+                        <p style="margin-top: 16px;"><a href="#" id="backToLoginBtn" style="color: #2d6a2f;">Back to Login</a></p>
+                    </div>
+                    
+                    <button id="closeAuthModal" style="background: none; border: none; color: #888; margin-top: 20px; cursor: pointer;">Close</button>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        
+        // Event listeners for modal navigation
+        document.getElementById('showSignupBtn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'block';
+            document.getElementById('forgotPasswordForm').style.display = 'none';
+        });
+        document.getElementById('showLoginBtn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('signupForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('forgotPasswordForm').style.display = 'none';
+        });
+        document.getElementById('forgotPasswordBtn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('forgotPasswordForm').style.display = 'block';
+        });
+        document.getElementById('backToLoginBtn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('forgotPasswordForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        });
+        document.getElementById('closeAuthModal')?.addEventListener('click', () => {
+            document.getElementById('authModal').style.display = 'none';
+        });
+        
+        // Button handlers
+        document.getElementById('doSignupBtn')?.addEventListener('click', handleSignup);
+        document.getElementById('doLoginBtn')?.addEventListener('click', handleLogin);
+        document.getElementById('doResetBtn')?.addEventListener('click', handleResetPassword);
+    }
+    
+    async function handleSignup() {
+        const name = document.getElementById('signupName').value;
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+        
+        if (!name || !email || !password) {
+            alert('Please fill in all fields');
+            return;
+        }
+        if (password.length < 6) {
+            alert('Password must be at least 6 characters');
+            return;
+        }
+        
+        try {
+            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+            const user = userCredential.user;
+            await user.sendEmailVerification();
+            
+            await db.collection('users').doc(user.uid).set({
+                name: name,
+                email: email,
+                seedsBalance: 0,
+                purchasedCourses: [],
+                totalSpent: 0,
+                memberSince: new Date().toLocaleDateString()
+            });
+            
+            alert('Account created! Please check your email to verify.');
+            document.getElementById('authModal').style.display = 'none';
+            await auth.signOut();
+        } catch (error) {
+            alert('Error: ' + error.message);
+        }
+    }
+    
+    async function handleLogin() {
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        
+        if (!email || !password) {
+            alert('Please enter email and password');
+            return;
+        }
+        
+        try {
+            const userCredential = await auth.signInWithEmailAndPassword(email, password);
+            if (!userCredential.user.emailVerified) {
+                await auth.signOut();
+                alert('Please verify your email first. Check your inbox.');
+                return;
+            }
+            alert('Logged in successfully!');
+            document.getElementById('authModal').style.display = 'none';
+        } catch (error) {
+            alert('Error: ' + error.message);
+        }
+    }
+    
+    async function handleResetPassword() {
+        const email = document.getElementById('resetEmail').value;
+        if (!email) {
+            alert('Please enter your email');
+            return;
+        }
+        try {
+            await auth.sendPasswordResetEmail(email);
+            alert(`Password reset email sent to ${email}`);
+            document.getElementById('forgotPasswordForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        } catch (error) {
+            alert('Error: ' + error.message);
+        }
+    }
+    
+    function showLoginModal() {
+        addAuthModal();
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('signupForm').style.display = 'none';
+        document.getElementById('forgotPasswordForm').style.display = 'none';
+        document.getElementById('authModal').style.display = 'flex';
+    }
+    
+    function logout() {
+        auth.signOut().then(() => {
+            localStorage.clear();
+            setSeedBalance(0);
+            updateAllCourseButtons();
+            alert('Logged out successfully');
+            location.reload();
+        });
+    }
+    
+    // ============================================
+    // ACCOUNT MODAL
+    // ============================================
+    
+    function updateAccountModal() {
+        if (!userProfile) return;
+        
+        const balance = getSeedBalance();
+        const purchased = getPurchasedCourses();
+        
+        document.getElementById('profileName').innerText = userProfile.name || '-';
+        document.getElementById('profileEmail').innerText = userProfile.email || '-';
+        document.getElementById('profileLocation').innerText = userProfile.location || '-';
+        document.getElementById('memberSince').innerText = userProfile.memberSince || '-';
+        document.getElementById('accountSeedsBalance').innerText = balance;
+        document.getElementById('accountCoursesOwned').innerText = purchased.length;
+        document.getElementById('totalSpent').innerText = `RM${userProfile.totalSpent || 0}`;
+        
+        const subscriptionDiv = document.getElementById('subscriptionList');
+        if (purchased.length > 0) {
+            subscriptionDiv.innerHTML = purchased.map(course => `
+                <div class="subscription-item">
+                    <span><i class="fas fa-seedling"></i> ${courseNames[course]} Masterclass</span>
+                    <span style="color: #2d6a2f;">Owned</span>
+                </div>
+            `).join('');
         } else {
-            updateAccountModal();
-            document.getElementById('accountModal').style.display = 'flex';
+            subscriptionDiv.innerHTML = '<p style="text-align: center; color: #8ba07e;">No courses purchased yet.</p>';
+        }
+    }
+    
+    // ============================================
+    // FIREBASE AUTH STATE LISTENER
+    // ============================================
+    
+    auth.onAuthStateChanged(async (user) => {
+        if (user && user.emailVerified) {
+            currentUser = user;
+            loginLogoutBtn.textContent = 'Log Out';
+            accountBtn.style.display = 'inline-block';
+            
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            if (userDoc.exists) {
+                userProfile = userDoc.data();
+                // Sync cloud data to localStorage
+                if (userProfile.seedsBalance !== undefined) {
+                    localStorage.setItem('seed_balance', userProfile.seedsBalance.toString());
+                    if (seedBalanceEl) seedBalanceEl.innerHTML = `${userProfile.seedsBalance} <span>Seeds</span>`;
+                }
+                if (userProfile.purchasedCourses) {
+                    localStorage.setItem('purchased_courses', JSON.stringify(userProfile.purchasedCourses));
+                }
+                updateAllCourseButtons();
+            }
+            
+            loginLogoutBtn.onclick = () => logout();
+            accountBtn.onclick = () => {
+                updateAccountModal();
+                document.getElementById('accountModal').style.display = 'flex';
+            };
+        } else {
+            currentUser = null;
+            userProfile = null;
+            loginLogoutBtn.textContent = 'Log In';
+            accountBtn.style.display = 'none';
+            loginLogoutBtn.onclick = () => showLoginModal();
         }
     });
+    
+    // ============================================
+    // MODAL CLOSE HANDLERS
+    // ============================================
     
     document.getElementById('closeAccountModal')?.addEventListener('click', () => {
         document.getElementById('accountModal').style.display = 'none';
     });
     
-    // Edit Profile
     document.getElementById('editProfileBtn')?.addEventListener('click', () => {
-        document.getElementById('editName').value = userProfile.name;
-        document.getElementById('editEmail').value = userProfile.email;
-        document.getElementById('editLocation').value = userProfile.location;
+        if (userProfile) {
+            document.getElementById('editName').value = userProfile.name || '';
+            document.getElementById('editEmail').value = userProfile.email || '';
+            document.getElementById('editLocation').value = userProfile.location || '';
+        }
         document.getElementById('accountModal').style.display = 'none';
         document.getElementById('editProfileModal').style.display = 'flex';
     });
     
-    document.getElementById('saveProfileBtn')?.addEventListener('click', () => {
-        userProfile.name = document.getElementById('editName').value;
-        userProfile.email = document.getElementById('editEmail').value;
-        userProfile.location = document.getElementById('editLocation').value;
-        saveUserProfile();
+    document.getElementById('saveProfileBtn')?.addEventListener('click', async () => {
+        if (currentUser && userProfile) {
+            const newName = document.getElementById('editName').value;
+            const newEmail = document.getElementById('editEmail').value;
+            const newLocation = document.getElementById('editLocation').value;
+            
+            userProfile.name = newName;
+            userProfile.email = newEmail;
+            userProfile.location = newLocation;
+            
+            await db.collection('users').doc(currentUser.uid).update({
+                name: newName, email: newEmail, location: newLocation
+            });
+            alert('Profile updated!');
+        }
         document.getElementById('editProfileModal').style.display = 'none';
-        alert('Profile updated successfully!');
     });
     
     document.getElementById('closeEditModal')?.addEventListener('click', () => {
         document.getElementById('editProfileModal').style.display = 'none';
     });
     
-    // Complete setup button
-    document.getElementById('completeSetupBtn')?.addEventListener('click', completeSetup);
-    
-    // Close modals on outside click
     window.addEventListener('click', (e) => {
         const buyModal = document.getElementById('buySeedsModal');
         const insuffModal = document.getElementById('insufficientModal');
         const accModal = document.getElementById('accountModal');
         const editModal = document.getElementById('editProfileModal');
-        const setupModal = document.getElementById('profileSetupModal');
+        const authModal = document.getElementById('authModal');
         if (e.target === buyModal) buyModal.style.display = 'none';
         if (e.target === insuffModal) insuffModal.style.display = 'none';
         if (e.target === accModal) accModal.style.display = 'none';
         if (e.target === editModal) editModal.style.display = 'none';
-        if (e.target === setupModal) setupModal.style.display = 'none';
+        if (e.target === authModal) authModal.style.display = 'none';
     });
     
     // Smooth scroll
@@ -1159,20 +774,17 @@
     });
     
     // Initialize
-    const profileCompleted = localStorage.getItem('profileCompleted') === 'true';
-    userProfile = JSON.parse(localStorage.getItem('userProfile'));
+    const balance = getSeedBalance();
+    if (seedBalanceEl) seedBalanceEl.innerHTML = `${balance} <span>Seeds</span>`;
+    updateAllCourseButtons();
     
-    if (!profileCompleted || !userProfile) {
-        document.getElementById('profileSetupModal').style.display = 'flex';
-    } else {
-        const balance = getSeedBalance();
-        document.getElementById('seedBalance').innerHTML = `${balance} <span>Seeds</span>`;
-    }
-    
+    // Expose functions globally
     window.attemptPurchase = attemptPurchase;
     window.accessCourse = accessCourse;
-    
-    updateAllCourseButtons();
+    window.showLoginModal = showLoginModal;
+
+
+
 </script>
 </body>
 </html>
