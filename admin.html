@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | My FarmAgro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fefaf0;
+            color: #1e2a1f;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1f4f21, #2d6a2f);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .login-card {
+            background: white;
+            max-width: 400px;
+            width: 90%;
+            border-radius: 48px;
+            padding: 48px 40px;
+            text-align: center;
+        }
+
+        .login-card h2 {
+            color: #2d6a2f;
+            margin-bottom: 8px;
+        }
+
+        .login-card input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 40px;
+            border: 1px solid #ddd;
+            margin-bottom: 16px;
+            font-size: 1rem;
+        }
+
+        .login-card button {
+            width: 100%;
+            background: #2d6a2f;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .error-msg {
+            color: #e74c3c;
+            font-size: 0.8rem;
+            margin-top: 12px;
+            display: none;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+        }
+
+        header {
+            background: #ffffffdd;
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #e2e6d9;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2b5e2b, #6f9e3f);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 28px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #eef3e6;
+        }
+
+        .stat-card i {
+            font-size: 2rem;
+            color: #2d6a2f;
+            margin-bottom: 12px;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #2d6a2f;
+        }
+
+        .stat-card .label {
+            color: #6c7a63;
+            font-size: 0.8rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 32px 0 20px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .btn-primary {
+            background: #2d6a2f;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-warning {
+            background: #f5b642;
+            color: #2a441f;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        table {
+            width: 100%;
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #eef3e6;
+        }
+
+        th {
+            background: #f8faf5;
+            font-weight: 600;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 500px;
+            width: 90%;
+            border-radius: 48px;
+            padding: 32px;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 40px;
+            border: 1px solid #ddd;
+            margin-bottom: 16px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .course-image-preview {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+
+        @media (max-width: 800px) {
+            th, td { padding: 10px; font-size: 0.8rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Admin Login Screen -->
+<div id="loginScreen" class="login-screen">
+    <div class="login-card">
+        <i class="fas fa-shield-alt" style="font-size: 3rem; color: #2d6a2f; margin-bottom: 16px;"></i>
+        <h2>Admin Login</h2>
+        <p style="margin-bottom: 24px; color: #6c7a63;">Enter your admin credentials</p>
+        <input type="text" id="adminUsername" placeholder="Username">
+        <input type="password" id="adminPassword" placeholder="Password" >
+        <button id="adminLoginBtn">Login</button>
+        <div id="loginError" class="error-msg">Invalid username or password</div>
+    </div>
+</div>
+
+<!-- Admin Dashboard -->
+<div id="dashboard" class="dashboard">
+    <header>
+        <div class="container">
+            <div class="navbar">
+                <div class="logo"><i class="fas fa-seedling"></i> My FarmAgro Admin</div>
+                <div class="nav-links">
+                    <span style="color: #2d6a2f;"><i class="fas fa-user-shield"></i> Admin</span>
+                    <button class="btn-outline" id="logoutBtn" style="margin-left: 20px;">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Stats -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <div class="value" id="totalUsers">0</div>
+                <div class="label">Total Users</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-coins"></i>
+                <div class="value" id="totalSeeds">0</div>
+                <div class="label">Credits Sold</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-money-bill"></i>
+                <div class="value" id="totalRevenue">RM0</div>
+                <div class="label">Revenue</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-book-open"></i>
+                <div class="value" id="totalEnrollments">0</div>
+                <div class="label">Course Enrollments</div>
+            </div>
+        </div>
+
+        <!-- Users Section -->
+        <div class="section-header">
+            <h2><i class="fas fa-users"></i> Users</h2>
+        </div>
+        <div style="overflow-x: auto;">
+            <table id="usersTable">
+                <thead>
+                    <tr><th>Name</th><th>Email</th><th>Credits</th><th>Courses</th><th>Spent</th><th>Joined</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="usersList"></tbody>
+            </table>
+        </div>
+
+        <!-- Courses Section -->
+        <div class="section-header">
+            <h2><i class="fas fa-seedling"></i> Courses</h2>
+            <button class="btn-primary" id="addCourseBtn"><i class="fas fa-plus"></i> Add Course</button>
+        </div>
+        <div style="overflow-x: auto;">
+            <table id="coursesTable">
+                <thead>
+                    <tr><th>Image</th><th>Course</th><th>Price (Credits)</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="coursesList"></tbody>
+            </table>
+        </div>
+
+        <!-- Transactions Section -->
+        <div class="section-header">
+            <h2><i class="fas fa-history"></i> Recent Transactions</h2>
+        </div>
+        <div style="overflow-x: auto;">
+            <table id="transactionsTable">
+                <thead>
+                    <tr><th>User</th><th>Description</th><th>Amount</th><th>Date</th></tr>
+                </thead>
+                <tbody id="transactionsList"></tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<!-- Add/Edit Course Modal -->
+<div id="courseModal" class="modal">
+    <div class="modal-content">
+        <h3 id="modalTitle" style="margin-bottom: 20px;">Add Course</h3>
+        <input type="text" id="courseName" placeholder="Course Name (e.g., Chili)">
+        <input type="number" id="coursePrice" placeholder="Price (Credits)">
+        <input type="text" id="courseImage" placeholder="Image URL">
+        <div class="modal-buttons">
+            <button id="saveCourseBtn" style="background: #2d6a2f; color: white; border: none;">Save</button>
+            <button id="closeCourseModal" style="background: #ccc; border: none;">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+
+<script>
+    // Fixed admin credentials
+    const ADMIN_USERNAME = 'MyFarmAgro-Admin';
+    const ADMIN_PASSWORD = 'MFA-321';
+
+    // Course data
+    const courseNames = {
+        chili: 'Chili', tomato: 'Tomato', brinjal: 'Brinjal', bendi: 'Bendi', cilipadi: 'Cili Padi', mango: 'Mango'
+    };
+    const coursePrices = {
+        chili: 15, tomato: 20, brinjal: 10, bendi: 10, cilipadi: 15, mango: 20
+    };
+    const courseImages = {
+        chili: 'https://images.unsplash.com/photo-1518006959466-0db0b6b4c1d0?w=280&h=200&fit=crop',
+        tomato: 'https://images.unsplash.com/photo-1518977822534-7049a61ee0c2?w=280&h=200&fit=crop',
+        brinjal: 'https://images.unsplash.com/photo-1659261111792-66709e46d53d?w=280&h=200&fit=crop',
+        bendi: 'https://images.unsplash.com/photo-1632014530325-3911c738b779?w=280&h=200&fit=crop',
+        cilipadi: 'https://cdn.shopify.com/s/files/1/0750/9190/2779/files/Birds-Eye-Chilli-003-700x575.webp?w=280&h=200&fit=crop',
+        mango: 'https://images.unsplash.com/photo-1685429631345-3de21cc2eb65?w=280&h=200&fit=crop'
+    };
+
+    let isAdminLoggedIn = false;
+    let allUsers = [];
+
+    // Login with fixed credentials
+    document.getElementById('adminLoginBtn')?.addEventListener('click', async () => {
+        const username = document.getElementById('adminUsername').value;
+        const password = document.getElementById('adminPassword').value;
+        
+        if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+            isAdminLoggedIn = true;
+            localStorage.setItem('adminLoggedIn', 'true');
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            await loadDashboardData();
+        } else {
+            document.getElementById('loginError').style.display = 'block';
+        }
+    });
+
+    // Check if already logged in
+    if (localStorage.getItem('adminLoggedIn') === 'true') {
+        isAdminLoggedIn = true;
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        loadDashboardData();
+    }
+
+    // Logout
+    document.getElementById('logoutBtn')?.addEventListener('click', () => {
+        localStorage.removeItem('adminLoggedIn');
+        isAdminLoggedIn = false;
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('dashboard').style.display = 'none';
+    });
+
+    async function loadDashboardData() {
+        // Load users from Firestore
+        const usersSnapshot = await db.collection('users').get();
+        allUsers = [];
+        let totalSeeds = 0;
+        let totalRevenue = 0;
+        let totalEnrollments = 0;
+
+        usersSnapshot.forEach(doc => {
+            const user = doc.data();
+            user.id = doc.id;
+            allUsers.push(user);
+            totalSeeds += user.seedsBalance || 0;
+            totalRevenue += user.totalSpent || 0;
+            totalEnrollments += (user.purchasedCourses || []).length;
+        });
+
+        document.getElementById('totalUsers').innerText = allUsers.length;
+        document.getElementById('totalSeeds').innerText = totalSeeds;
+        document.getElementById('totalRevenue').innerText = `RM${totalRevenue}`;
+        document.getElementById('totalEnrollments').innerText = totalEnrollments;
+
+        // Render users table
+        const usersList = document.getElementById('usersList');
+        usersList.innerHTML = allUsers.map(user => `
+            <tr>
+                <td>${user.name || '-'}</td>
+                <td>${user.email}</td>
+                <td>${user.seedsBalance || 0}</td>
+                <td>${(user.purchasedCourses || []).length}</td>
+                <td>RM${user.totalSpent || 0}</td>
+                <td>${user.memberSince || '-'}</td>
+                <td>
+                    <button class="btn-warning" onclick="addCreditsToUser('${user.id}')"><i class="fas fa-plus"></i> Add Credits</button>
+                </td>
+            </tr>
+        `).join('');
+
+        // Render courses table
+        renderCoursesTable();
+        
+        // Load transactions
+        loadTransactions();
+    }
+
+    function renderCoursesTable() {
+        const coursesList = document.getElementById('coursesList');
+        const courses = Object.keys(courseNames);
+        coursesList.innerHTML = courses.map(course => `
+            <tr>
+                <td><img src="${courseImages[course]}" class="course-image-preview"></td>
+                <td>${courseNames[course]}</td>
+                <td>${coursePrices[course]} Credits</td>
+                <td>
+                    <button class="btn-warning" onclick="editCourse('${course}')"><i class="fas fa-edit"></i> Edit</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    async function loadTransactions() {
+        const transactionsList = document.getElementById('transactionsList');
+        let allTrans = [];
+        allUsers.forEach(user => {
+            const userTrans = JSON.parse(localStorage.getItem(`transactions_${user.id}`) || '[]');
+            userTrans.forEach(t => {
+                allTrans.push({ ...t, userName: user.name || user.email });
+            });
+        });
+        allTrans.sort((a, b) => new Date(b.date) - new Date(a.date));
+        allTrans = allTrans.slice(0, 20);
+        
+        transactionsList.innerHTML = allTrans.map(t => `
+            <tr>
+                <td>${t.userName}</td>
+                <td>${t.description}</td>
+                <td>RM${t.amount}</td>
+                <td>${t.date}</td>
+            </tr>
+        `).join('');
+    }
+
+    // Add credits to user
+    window.addCreditsToUser = async (userId) => {
+        const credits = prompt('Enter number of Credits to add:');
+        if (credits && !isNaN(credits)) {
+            const userRef = db.collection('users').doc(userId);
+            const userDoc = await userRef.get();
+            const currentSeeds = userDoc.data().seedsBalance || 0;
+            await userRef.update({
+                seedsBalance: currentSeeds + parseInt(credits)
+            });
+            alert(`Added ${credits} Credits to user!`);
+            loadDashboardData();
+        }
+    };
+
+    // Edit course
+    window.editCourse = (courseId) => {
+        document.getElementById('modalTitle').innerText = 'Edit Course';
+        document.getElementById('courseName').value = courseNames[courseId];
+        document.getElementById('coursePrice').value = coursePrices[courseId];
+        document.getElementById('courseImage').value = courseImages[courseId];
+        document.getElementById('courseModal').style.display = 'flex';
+        
+        document.getElementById('saveCourseBtn').onclick = () => {
+            alert(`Course ${courseNames[courseId]} updated!\n\nNote: In production, this would save to database.`);
+            document.getElementById('courseModal').style.display = 'none';
+            renderCoursesTable();
+        };
+    };
+
+    // Add course
+    document.getElementById('addCourseBtn')?.addEventListener('click', () => {
+        document.getElementById('modalTitle').innerText = 'Add Course';
+        document.getElementById('courseName').value = '';
+        document.getElementById('coursePrice').value = '';
+        document.getElementById('courseImage').value = '';
+        document.getElementById('courseModal').style.display = 'flex';
+        
+        document.getElementById('saveCourseBtn').onclick = () => {
+            alert('Add course feature - would save to database in production');
+            document.getElementById('courseModal').style.display = 'none';
+        };
+    });
+
+    document.getElementById('closeCourseModal')?.addEventListener('click', () => {
+        document.getElementById('courseModal').style.display = 'none';
+    });
+
+    // Close modal on outside click
+    window.addEventListener('click', (e) => {
+        const modal = document.getElementById('courseModal');
+        if (e.target === modal) modal.style.display = 'none';
+    });
+</script>
+</body>
+</html>
