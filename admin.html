@@ -7,24 +7,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #fefaf0;
-            color: #1e2a1f;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #fefaf0; color: #1e2a1f; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+        
+        /* Login Screen */
         .login-screen {
             position: fixed;
             top: 0;
@@ -37,7 +24,6 @@
             justify-content: center;
             z-index: 1000;
         }
-
         .login-card {
             background: white;
             max-width: 400px;
@@ -46,12 +32,7 @@
             padding: 48px 40px;
             text-align: center;
         }
-
-        .login-card h2 {
-            color: #2d6a2f;
-            margin-bottom: 8px;
-        }
-
+        .login-card h2 { color: #2d6a2f; margin-bottom: 8px; }
         .login-card input {
             width: 100%;
             padding: 14px;
@@ -60,7 +41,6 @@
             margin-bottom: 16px;
             font-size: 1rem;
         }
-
         .login-card button {
             width: 100%;
             background: #2d6a2f;
@@ -70,20 +50,11 @@
             border-radius: 40px;
             font-weight: 700;
             cursor: pointer;
-            font-size: 1rem;
         }
-
-        .error-msg {
-            color: #e74c3c;
-            font-size: 0.8rem;
-            margin-top: 12px;
-            display: none;
-        }
-
-        .dashboard {
-            display: none;
-        }
-
+        .error-msg { color: #e74c3c; font-size: 0.8rem; margin-top: 12px; display: none; }
+        
+        /* Dashboard */
+        .dashboard { display: none; }
         header {
             background: #ffffffdd;
             backdrop-filter: blur(12px);
@@ -92,7 +63,6 @@
             z-index: 100;
             border-bottom: 1px solid #e2e6d9;
         }
-
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -101,7 +71,6 @@
             flex-wrap: wrap;
             gap: 20px;
         }
-
         .logo {
             font-size: 1.6rem;
             font-weight: 800;
@@ -110,14 +79,12 @@
             background-clip: text;
             color: transparent;
         }
-
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 24px;
             margin: 32px 0;
         }
-
         .stat-card {
             background: white;
             border-radius: 28px;
@@ -126,24 +93,9 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             border: 1px solid #eef3e6;
         }
-
-        .stat-card i {
-            font-size: 2rem;
-            color: #2d6a2f;
-            margin-bottom: 12px;
-        }
-
-        .stat-card .value {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #2d6a2f;
-        }
-
-        .stat-card .label {
-            color: #6c7a63;
-            font-size: 0.8rem;
-        }
-
+        .stat-card i { font-size: 2rem; color: #2d6a2f; margin-bottom: 12px; }
+        .stat-card .value { font-size: 2rem; font-weight: 800; color: #2d6a2f; }
+        .stat-card .label { color: #6c7a63; font-size: 0.8rem; }
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -152,11 +104,7 @@
             flex-wrap: wrap;
             gap: 16px;
         }
-
-        .section-header h2 {
-            font-size: 1.5rem;
-        }
-
+        .section-header h2 { font-size: 1.5rem; }
         .btn-primary {
             background: #2d6a2f;
             color: white;
@@ -166,7 +114,6 @@
             font-weight: 600;
             cursor: pointer;
         }
-
         .btn-warning {
             background: #f5b642;
             color: #2a441f;
@@ -177,7 +124,6 @@
             cursor: pointer;
             font-size: 0.8rem;
         }
-
         .btn-danger {
             background: #e74c3c;
             color: white;
@@ -188,7 +134,6 @@
             cursor: pointer;
             font-size: 0.8rem;
         }
-
         table {
             width: 100%;
             background: white;
@@ -196,18 +141,8 @@
             overflow: hidden;
             border-collapse: collapse;
         }
-
-        th, td {
-            padding: 16px;
-            text-align: left;
-            border-bottom: 1px solid #eef3e6;
-        }
-
-        th {
-            background: #f8faf5;
-            font-weight: 600;
-        }
-
+        th, td { padding: 16px; text-align: left; border-bottom: 1px solid #eef3e6; }
+        th { background: #f8faf5; font-weight: 600; }
         .modal {
             display: none;
             position: fixed;
@@ -220,7 +155,6 @@
             justify-content: center;
             z-index: 1000;
         }
-
         .modal-content {
             background: white;
             max-width: 600px;
@@ -230,7 +164,6 @@
             max-height: 85vh;
             overflow-y: auto;
         }
-
         .modal-content input, .modal-content textarea {
             width: 100%;
             padding: 12px;
@@ -239,33 +172,13 @@
             margin-bottom: 16px;
             font-family: inherit;
         }
-
-        .modal-content textarea {
-            border-radius: 24px;
-            resize: vertical;
-        }
-
         .modal-buttons {
             display: flex;
             gap: 12px;
             margin-top: 20px;
         }
-
-        .modal-buttons button {
-            flex: 1;
-            padding: 12px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .course-image-preview {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            object-fit: cover;
-        }
-
+        .modal-buttons button { flex: 1; padding: 12px; border-radius: 40px; font-weight: 600; cursor: pointer; }
+        .course-image-preview { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; }
         .tab-bar {
             display: flex;
             gap: 8px;
@@ -273,7 +186,6 @@
             border-bottom: 1px solid #eef3e6;
             padding-bottom: 12px;
         }
-
         .tab {
             padding: 8px 20px;
             border-radius: 40px;
@@ -281,19 +193,13 @@
             background: #f0f4ea;
             transition: 0.2s;
         }
-
-        .tab.active {
-            background: #2d6a2f;
-            color: white;
-        }
-
+        .tab.active { background: #2d6a2f; color: white; }
         .week-item {
             background: #f8faf5;
             border-radius: 24px;
             padding: 20px;
             margin-bottom: 16px;
         }
-
         .week-header {
             display: flex;
             justify-content: space-between;
@@ -302,7 +208,6 @@
             flex-wrap: wrap;
             gap: 12px;
         }
-
         .task-item {
             background: white;
             border-radius: 16px;
@@ -312,7 +217,6 @@
             justify-content: space-between;
             align-items: center;
         }
-
         @media (max-width: 800px) {
             th, td { padding: 10px; font-size: 0.8rem; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -321,16 +225,17 @@
 </head>
 <body>
 
-<!-- Login Screen -->
+<!-- Login Screen (Firebase Auth) -->
 <div id="loginScreen" class="login-screen">
     <div class="login-card">
         <i class="fas fa-shield-alt" style="font-size: 3rem; color: #2d6a2f; margin-bottom: 16px;"></i>
         <h2>Admin Login</h2>
-        <p style="margin-bottom: 24px; color: #6c7a63;">Enter your admin credentials</p>
-        <input type="text" id="adminUsername" placeholder="Username">
+        <p style="margin-bottom: 24px; color: #6c7a63;">Login with your My FarmAgro account</p>
+        <input type="email" id="adminEmail" placeholder="Email">
         <input type="password" id="adminPassword" placeholder="Password">
         <button id="adminLoginBtn">Login</button>
-        <div id="loginError" class="error-msg">Invalid username or password</div>
+        <div id="loginError" class="error-msg"></div>
+        <p style="margin-top: 16px; font-size: 0.7rem; color: #999;">Use the same email/password from your My FarmAgro account.<br>Only users with admin access can log in.</p>
     </div>
 </div>
 
@@ -341,7 +246,7 @@
             <div class="navbar">
                 <div class="logo"><i class="fas fa-seedling"></i> My FarmAgro Admin</div>
                 <div class="nav-links">
-                    <span style="color: #2d6a2f;"><i class="fas fa-user-shield"></i> Admin</span>
+                    <span style="color: #2d6a2f;"><i class="fas fa-user-shield"></i> <span id="adminName">Admin</span></span>
                     <button class="btn-outline" id="logoutBtn" style="margin-left: 20px;">Logout</button>
                 </div>
             </div>
@@ -358,14 +263,12 @@
 
         <div class="section-header">
             <h2><i class="fas fa-users"></i> Users</h2>
-            <button class="btn-primary" id="refreshUsersBtn"><i class="fas fa-sync-alt"></i> Refresh Users</button>
+            <button class="btn-primary" id="refreshUsersBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
         </div>
         <div style="overflow-x: auto;">
             <table id="usersTable">
                 <thead><tr><th>Name</th><th>Email</th><th>Credits</th><th>Courses</th><th>Spent</th><th>Joined</th><th>Actions</th></tr></thead>
-                <tbody id="usersList">
-                    <tr><td colspan="7" style="text-align: center;">Loading users...</td></tr>
-                </tbody>
+                <tbody id="usersList"><tr><td colspan="7" style="text-align: center;">Loading users...</td></tr></tbody>
             </table>
         </div>
 
@@ -376,9 +279,7 @@
         <div style="overflow-x: auto;">
             <table id="coursesTable">
                 <thead><tr><th>Image</th><th>ID</th><th>Name</th><th>Price</th><th>Weeks</th><th>Actions</th></tr></thead>
-                <tbody id="coursesList">
-                    <tr><td colspan="6" style="text-align: center;">Loading courses...</td></tr>
-                </tbody>
+                <tbody id="coursesList"><tr><td colspan="6" style="text-align: center;">Loading courses...</td></tr></tbody>
             </table>
         </div>
 
@@ -388,9 +289,7 @@
         <div style="overflow-x: auto;">
             <table id="transactionsTable">
                 <thead><tr><th>User</th><th>Description</th><th>Amount</th><th>Date</th></tr></thead>
-                <tbody id="transactionsList">
-                    <tr><td colspan="4" style="text-align: center;">Loading transactions...</td></tr>
-                </tbody>
+                <tbody id="transactionsList"><tr><td colspan="4" style="text-align: center;">Loading transactions...</td></tr></tbody>
             </table>
         </div>
     </main>
@@ -400,28 +299,24 @@
 <div id="courseBuilderModal" class="modal">
     <div class="modal-content">
         <h3 id="builderTitle" style="margin-bottom: 20px;">Course Builder</h3>
-        
         <div class="tab-bar">
             <div class="tab active" data-tab="basic">Basic Info</div>
             <div class="tab" data-tab="weeks">Weeks & Lessons</div>
         </div>
-        
         <div id="basicTab">
-            <input type="text" id="builderCourseId" placeholder="Course ID (e.g., carrot) - lowercase" readonly style="background:#f5f5f5;">
+            <input type="text" id="builderCourseId" placeholder="Course ID" readonly style="background:#f5f5f5;">
             <input type="text" id="builderCourseName" placeholder="Course Name">
             <input type="number" id="builderCoursePrice" placeholder="Price (Credits)">
             <input type="text" id="builderCourseImage" placeholder="Image URL">
             <textarea id="builderCourseDescription" rows="2" placeholder="Short description"></textarea>
         </div>
-        
         <div id="weeksTab" style="display: none;">
             <div id="weeksContainer"></div>
-            <button class="btn-primary" id="addWeekBtn" style="width: 100%; margin-top: 16px;"><i class="fas fa-plus"></i> Add Week</button>
+            <button class="btn-primary" id="addWeekBtn" style="width:100%; margin-top:16px;"><i class="fas fa-plus"></i> Add Week</button>
         </div>
-        
         <div class="modal-buttons">
-            <button id="saveCourseBuilderBtn" style="background: #2d6a2f; color: white; border: none;">Save Course</button>
-            <button id="closeBuilderModal" style="background: #ccc; border: none;">Cancel</button>
+            <button id="saveCourseBuilderBtn" style="background:#2d6a2f; color:white;">Save Course</button>
+            <button id="closeBuilderModal" style="background:#ccc;">Cancel</button>
         </div>
     </div>
 </div>
@@ -429,16 +324,16 @@
 <!-- Week Modal -->
 <div id="weekModal" class="modal">
     <div class="modal-content">
-        <h3 id="weekModalTitle" style="margin-bottom: 20px;">Edit Week</h3>
-        <input type="text" id="weekTitle" placeholder="Week Title (e.g., Week 1: Soil Preparation)">
-        <input type="text" id="weekVideoUrl" placeholder="YouTube Video URL (embed link)">
-        <textarea id="weekContent" rows="4" placeholder="Week content / description"></textarea>
-        <h4 style="margin: 16px 0 8px;">Tasks Checklist</h4>
+        <h3 id="weekModalTitle">Edit Week</h3>
+        <input type="text" id="weekTitle" placeholder="Week Title">
+        <input type="text" id="weekVideoUrl" placeholder="YouTube Video URL">
+        <textarea id="weekContent" rows="4" placeholder="Week content"></textarea>
+        <h4>Tasks Checklist</h4>
         <div id="tasksContainer"></div>
-        <button class="btn-primary" id="addTaskBtn" style="width: 100%; margin-bottom: 16px;"><i class="fas fa-plus"></i> Add Task</button>
+        <button class="btn-primary" id="addTaskBtn" style="width:100%; margin-bottom:16px;"><i class="fas fa-plus"></i> Add Task</button>
         <div class="modal-buttons">
-            <button id="saveWeekBtn" style="background: #2d6a2f; color: white; border: none;">Save Week</button>
-            <button id="closeWeekModal" style="background: #ccc; border: none;">Cancel</button>
+            <button id="saveWeekBtn" style="background:#2d6a2f; color:white;">Save Week</button>
+            <button id="closeWeekModal" style="background:#ccc;">Cancel</button>
         </div>
     </div>
 </div>
@@ -450,16 +345,12 @@
 <script src="firebase-config.js"></script>
 
 <script>
-    // SIMPLE HARDCODED ADMIN LOGIN
-    const ADMIN_USERNAME = 'MyFarmAgro-Admin';
-    const ADMIN_PASSWORD = 'MFA-321';
-
+    let currentUser = null;
     let courseData = {};
     let allUsers = [];
     let currentEditingCourse = null;
     let currentEditingWeekIndex = null;
 
-    // Default courses
     const defaultCourses = {
         chili: { id: 'chili', name: 'Chili', price: 15, image: 'https://images.unsplash.com/photo-1518006959466-0db0b6b4c1d0?w=280&h=200&fit=crop', description: 'Spicy and versatile.', weeks: [] },
         tomato: { id: 'tomato', name: 'Tomato', price: 20, image: 'https://images.unsplash.com/photo-1518977822534-7049a61ee0c2?w=280&h=200&fit=crop', description: 'Juicy and sweet.', weeks: [] },
@@ -469,39 +360,78 @@
         mango: { id: 'mango', name: 'Mango', price: 20, image: 'https://images.unsplash.com/photo-1685429631345-3de21cc2eb65?w=280&h=200&fit=crop', description: 'Sweet tropical fruit.', weeks: [] }
     };
 
-    // Login with hardcoded credentials
+    // Login with Firebase Auth
     document.getElementById('adminLoginBtn')?.addEventListener('click', async () => {
-        const username = document.getElementById('adminUsername').value;
+        const email = document.getElementById('adminEmail').value;
         const password = document.getElementById('adminPassword').value;
         
-        if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-            localStorage.setItem('adminLoggedIn', 'true');
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'block';
-            await loadAllData();
-        } else {
-            document.getElementById('loginError').style.display = 'block';
+        if (!email || !password) {
+            showError('Please enter email and password');
+            return;
+        }
+        
+        try {
+            const userCredential = await auth.signInWithEmailAndPassword(email, password);
+            const user = userCredential.user;
+            
+            if (!user.emailVerified) {
+                showError('Please verify your email first. Check your inbox.');
+                await auth.signOut();
+                return;
+            }
+            
+            // Check if user is admin
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            if (userDoc.exists && userDoc.data().isAdmin === true) {
+                currentUser = user;
+                localStorage.setItem('adminLoggedIn', 'true');
+                localStorage.setItem('adminUid', user.uid);
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('adminName').innerText = user.email.split('@')[0];
+                await loadAllData();
+            } else {
+                showError('You do not have admin access.');
+                await auth.signOut();
+            }
+        } catch (error) {
+            showError(error.message);
         }
     });
 
-    // Check if already logged in
+    function showError(msg) {
+        const errorDiv = document.getElementById('loginError');
+        errorDiv.style.display = 'block';
+        errorDiv.innerText = msg;
+        setTimeout(() => errorDiv.style.display = 'none', 3000);
+    }
+
+    // Check existing session
     if (localStorage.getItem('adminLoggedIn') === 'true') {
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('dashboard').style.display = 'block';
-        loadAllData();
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (userDoc.exists && userDoc.data().isAdmin === true) {
+                    currentUser = user;
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'block';
+                    document.getElementById('adminName').innerText = user.email.split('@')[0];
+                    await loadAllData();
+                }
+            }
+        });
     }
 
     // Logout
-    document.getElementById('logoutBtn')?.addEventListener('click', () => {
+    document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+        await auth.signOut();
         localStorage.removeItem('adminLoggedIn');
+        localStorage.removeItem('adminUid');
         document.getElementById('loginScreen').style.display = 'flex';
         document.getElementById('dashboard').style.display = 'none';
     });
 
-    // Refresh button
-    document.getElementById('refreshUsersBtn')?.addEventListener('click', () => {
-        loadAllData();
-    });
+    document.getElementById('refreshUsersBtn')?.addEventListener('click', () => loadAllData());
 
     async function loadAllData() {
         await loadDashboardData();
@@ -510,7 +440,6 @@
 
     async function loadDashboardData() {
         try {
-            console.log('Loading users from Firestore...');
             const usersSnapshot = await db.collection('users').get();
             allUsers = [];
             let totalSeeds = 0, totalRevenue = 0, totalEnrollments = 0;
@@ -524,15 +453,13 @@
                 totalEnrollments += (user.purchasedCourses || []).length;
             });
 
-            console.log(`Loaded ${allUsers.length} users`);
-
             document.getElementById('totalUsers').innerText = allUsers.length;
             document.getElementById('totalSeeds').innerText = totalSeeds;
             document.getElementById('totalRevenue').innerText = `RM${totalRevenue}`;
             document.getElementById('totalEnrollments').innerText = totalEnrollments;
 
             if (allUsers.length === 0) {
-                document.getElementById('usersList').innerHTML = '<tr><td colspan="7" style="text-align: center;">No users found. Create an account on the main site first.</td></tr>';
+                document.getElementById('usersList').innerHTML = '<tr><td colspan="7" style="text-align: center;">No users found.</td></tr>';
             } else {
                 document.getElementById('usersList').innerHTML = allUsers.map(user => `
                     <tr>
@@ -546,11 +473,9 @@
                     </tr>
                 `).join('');
             }
-
             loadTransactions();
         } catch (error) {
             console.error('Error loading users:', error);
-            document.getElementById('usersList').innerHTML = `<tr><td colspan="7" style="text-align: center; color: red;">Error loading users: ${error.message}</td></tr>`;
         }
     }
 
@@ -564,7 +489,6 @@
                 await db.collection('courses').doc('course_data').set({ data: courseData });
             }
         } catch (error) {
-            console.error('Error loading courses:', error);
             courseData = { ...defaultCourses };
         }
         renderCoursesTable();
@@ -594,7 +518,7 @@
                 <td>${course.weeks?.length || 0} weeks</td>
                 <td>
                     <button class="btn-warning" onclick="openCourseBuilder('${course.id}')"><i class="fas fa-edit"></i> Edit</button>
-                    <button class="btn-danger" onclick="deleteCourse('${course.id}')" style="margin-left: 8px;"><i class="fas fa-trash"></i> Delete</button>
+                    <button class="btn-danger" onclick="deleteCourse('${course.id}')" style="margin-left:8px;"><i class="fas fa-trash"></i> Delete</button>
                 </td>
             </tr>
         `).join('');
@@ -604,21 +528,14 @@
         let allTrans = [];
         allUsers.forEach(user => {
             const userTrans = JSON.parse(localStorage.getItem(`transactions_${user.id}`) || '[]');
-            userTrans.forEach(t => {
-                allTrans.push({ ...t, userName: user.name || user.email });
-            });
+            userTrans.forEach(t => allTrans.push({ ...t, userName: user.name || user.email }));
         });
         allTrans.sort((a, b) => new Date(b.date) - new Date(a.date));
         if (allTrans.length === 0) {
             document.getElementById('transactionsList').innerHTML = '<tr><td colspan="4" style="text-align: center;">No transactions yet.</td></tr>';
         } else {
             document.getElementById('transactionsList').innerHTML = allTrans.slice(0, 20).map(t => `
-                <tr>
-                    <td>${t.userName}</td>
-                    <td>${t.description}</td>
-                    <td>RM${t.amount}</td>
-                    <td>${t.date}</td>
-                </tr>
+                <tr><td>${t.userName}</td><td>${t.description}</td><td>RM${t.amount}</td><td>${t.date}</td></tr>
             `).join('');
         }
     }
@@ -626,31 +543,23 @@
     window.addCreditsToUser = async (userId) => {
         const credits = prompt('Enter number of Credits to add:');
         if (credits && !isNaN(credits)) {
-            try {
-                const userRef = db.collection('users').doc(userId);
-                const userDoc = await userRef.get();
-                const currentSeeds = userDoc.data().seedsBalance || 0;
-                await userRef.update({ seedsBalance: currentSeeds + parseInt(credits) });
-                alert(`Added ${credits} Credits to user!`);
-                await loadDashboardData(); // Refresh the user list
-            } catch (error) {
-                console.error('Error adding credits:', error);
-                alert('Error adding credits: ' + error.message);
-            }
+            const userRef = db.collection('users').doc(userId);
+            const userDoc = await userRef.get();
+            await userRef.update({ seedsBalance: (userDoc.data().seedsBalance || 0) + parseInt(credits) });
+            alert(`Added ${credits} Credits!`);
+            await loadDashboardData();
         }
     };
 
     window.openCourseBuilder = (courseId) => {
         currentEditingCourse = courseId;
         const course = courseData[courseId];
-        
         document.getElementById('builderTitle').innerText = `Edit Course: ${course.name}`;
         document.getElementById('builderCourseId').value = course.id;
         document.getElementById('builderCourseName').value = course.name;
         document.getElementById('builderCoursePrice').value = course.price;
         document.getElementById('builderCourseImage').value = course.image || '';
         document.getElementById('builderCourseDescription').value = course.description || '';
-        
         renderWeeksList();
         document.getElementById('courseBuilderModal').style.display = 'flex';
     };
@@ -658,12 +567,10 @@
     function renderWeeksList() {
         const course = courseData[currentEditingCourse];
         const container = document.getElementById('weeksContainer');
-        
         if (!course.weeks || course.weeks.length === 0) {
-            container.innerHTML = '<p style="text-align: center; color: #8ba07e; padding: 40px;">No weeks added yet. Click "Add Week" to create your first lesson.</p>';
+            container.innerHTML = '<p style="text-align:center; color:#8ba07e; padding:40px;">No weeks added yet.</p>';
             return;
         }
-        
         container.innerHTML = course.weeks.map((week, index) => `
             <div class="week-item">
                 <div class="week-header">
@@ -673,7 +580,7 @@
                         <button class="btn-danger" onclick="deleteWeek(${index})"><i class="fas fa-trash"></i> Delete</button>
                     </div>
                 </div>
-                <div style="font-size: 0.8rem; color: #6c7a63;">Video: ${week.videoUrl ? 'Yes' : 'No'} | Tasks: ${week.tasks?.length || 0}</div>
+                <div style="font-size:0.8rem; color:#6c7a63;">Video: ${week.videoUrl ? 'Yes' : 'No'} | Tasks: ${week.tasks?.length || 0}</div>
             </div>
         `).join('');
     }
@@ -681,18 +588,16 @@
     window.editWeek = (index) => {
         currentEditingWeekIndex = index;
         const week = courseData[currentEditingCourse].weeks[index];
-        
         document.getElementById('weekModalTitle').innerText = 'Edit Week';
         document.getElementById('weekTitle').value = week.title || '';
         document.getElementById('weekVideoUrl').value = week.videoUrl || '';
         document.getElementById('weekContent').value = week.content || '';
-        
         renderTasksList(week.tasks || []);
         document.getElementById('weekModal').style.display = 'flex';
     };
 
     window.deleteWeek = (index) => {
-        if (confirm('Delete this week? All tasks will be lost.')) {
+        if (confirm('Delete this week?')) {
             courseData[currentEditingCourse].weeks.splice(index, 1);
             saveCourseData();
             renderWeeksList();
@@ -702,14 +607,13 @@
     function renderTasksList(tasks) {
         const container = document.getElementById('tasksContainer');
         if (!tasks || tasks.length === 0) {
-            container.innerHTML = '<p style="color: #8ba07e;">No tasks yet. Click "Add Task" to create checklist items.</p>';
+            container.innerHTML = '<p style="color:#8ba07e;">No tasks yet.</p>';
             return;
         }
-        
         container.innerHTML = tasks.map((task, idx) => `
             <div class="task-item">
                 <span>${idx + 1}. ${task}</span>
-                <button class="btn-danger" onclick="removeTask(${idx})" style="padding: 4px 12px;">Remove</button>
+                <button class="btn-danger" onclick="removeTask(${idx})" style="padding:4px 12px;">Remove</button>
             </div>
         `).join('');
     }
@@ -725,7 +629,6 @@
         if (taskText && taskText.trim()) {
             const tasks = courseData[currentEditingCourse].weeks[currentEditingWeekIndex].tasks || [];
             tasks.push(taskText.trim());
-            courseData[currentEditingCourse].weeks[currentEditingWeekIndex].tasks = tasks;
             renderTasksList(tasks);
         }
     });
@@ -737,16 +640,8 @@
             content: document.getElementById('weekContent').value,
             tasks: courseData[currentEditingCourse].weeks[currentEditingWeekIndex]?.tasks || []
         };
-        
-        if (!week.title) {
-            alert('Please enter a week title');
-            return;
-        }
-        
-        if (currentEditingWeekIndex !== null) {
-            courseData[currentEditingCourse].weeks[currentEditingWeekIndex] = week;
-        }
-        
+        if (!week.title) { alert('Please enter a week title'); return; }
+        courseData[currentEditingCourse].weeks[currentEditingWeekIndex] = week;
         saveCourseData();
         renderWeeksList();
         document.getElementById('weekModal').style.display = 'none';
@@ -758,17 +653,11 @@
 
     document.getElementById('addWeekBtn')?.addEventListener('click', () => {
         if (!courseData[currentEditingCourse].weeks) courseData[currentEditingCourse].weeks = [];
-        courseData[currentEditingCourse].weeks.push({
-            title: 'New Week',
-            videoUrl: '',
-            content: '',
-            tasks: []
-        });
+        courseData[currentEditingCourse].weeks.push({ title: 'New Week', videoUrl: '', content: '', tasks: [] });
         saveCourseData();
         renderWeeksList();
     });
 
-    // Tab switching
     document.querySelectorAll('.tab').forEach(tab => {
         tab.addEventListener('click', () => {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -785,14 +674,8 @@
         course.price = parseInt(document.getElementById('builderCoursePrice').value);
         course.image = document.getElementById('builderCourseImage').value;
         course.description = document.getElementById('builderCourseDescription').value;
-        
-        if (!course.name || isNaN(course.price)) {
-            alert('Please fill in Name and Price');
-            return;
-        }
-        
+        if (!course.name || isNaN(course.price)) { alert('Please fill in Name and Price'); return; }
         saveCourseData();
-        renderCoursesTable();
         document.getElementById('courseBuilderModal').style.display = 'none';
         alert(`Course "${course.name}" saved!`);
     });
@@ -802,43 +685,25 @@
     });
 
     document.getElementById('addCourseBtn')?.addEventListener('click', () => {
-        const newId = prompt('Enter Course ID (lowercase, no spaces, e.g., spinach):');
+        const newId = prompt('Enter Course ID (lowercase, no spaces):');
         if (!newId) return;
-        if (courseData[newId]) {
-            alert('Course ID already exists!');
-            return;
-        }
-        
-        courseData[newId] = {
-            id: newId,
-            name: newId.charAt(0).toUpperCase() + newId.slice(1),
-            price: 10,
-            image: '',
-            description: '',
-            weeks: []
-        };
+        if (courseData[newId]) { alert('Course ID already exists!'); return; }
+        courseData[newId] = { id: newId, name: newId.charAt(0).toUpperCase() + newId.slice(1), price: 10, image: '', description: '', weeks: [] };
         saveCourseData();
-        renderCoursesTable();
         openCourseBuilder(newId);
     });
 
     window.deleteCourse = (courseId) => {
-        if (defaultCourses[courseId]) {
-            alert('Cannot delete default courses!');
-            return;
-        }
-        if (confirm(`Delete course "${courseData[courseId]?.name}"? This cannot be undone.`)) {
+        if (defaultCourses[courseId]) { alert('Cannot delete default courses!'); return; }
+        if (confirm(`Delete course "${courseData[courseId]?.name}"?`)) {
             delete courseData[courseId];
             saveCourseData();
-            renderCoursesTable();
         }
     };
 
     window.addEventListener('click', (e) => {
-        const builderModal = document.getElementById('courseBuilderModal');
-        const weekModal = document.getElementById('weekModal');
-        if (e.target === builderModal) builderModal.style.display = 'none';
-        if (e.target === weekModal) weekModal.style.display = 'none';
+        if (e.target === document.getElementById('courseBuilderModal')) document.getElementById('courseBuilderModal').style.display = 'none';
+        if (e.target === document.getElementById('weekModal')) document.getElementById('weekModal').style.display = 'none';
     });
 </script>
 </body>
