@@ -330,7 +330,7 @@
         <input type="text" id="adminUsername" placeholder="Username">
         <input type="password" id="adminPassword" placeholder="Password">
         <button id="adminLoginBtn">Login</button>
-        <div id="loginError" class="error-msg"></div>
+        <div id="loginError" class="error-msg">Invalid username or password</div>
     </div>
 </div>
 
@@ -443,7 +443,7 @@
 <script src="firebase-config.js"></script>
 
 <script>
-    // HARDCODED ADMIN CREDENTIALS - Simple and secure enough for your use
+    // SIMPLE HARDCODED ADMIN LOGIN - NO EMAIL, NO FIREBASE AUTH
     const ADMIN_USERNAME = 'MyFarmAgro-Admin';
     const ADMIN_PASSWORD = 'MFA-321';
 
@@ -475,7 +475,6 @@
             await loadCourseData();
         } else {
             document.getElementById('loginError').style.display = 'block';
-            document.getElementById('loginError').innerText = 'Invalid username or password';
         }
     });
 
@@ -570,7 +569,7 @@
                     <button class="btn-warning" onclick="openCourseBuilder('${course.id}')"><i class="fas fa-edit"></i> Edit</button>
                     <button class="btn-danger" onclick="deleteCourse('${course.id}')" style="margin-left: 8px;"><i class="fas fa-trash"></i> Delete</button>
                 </td>
-            </tr>
+            20\
         `).join('');
     }
 
@@ -582,7 +581,12 @@
         });
         allTrans.sort((a, b) => new Date(b.date) - new Date(a.date));
         document.getElementById('transactionsList').innerHTML = allTrans.slice(0, 20).map(t => `
-            <tr><td>${t.userName}</td><td>${t.description}</td><td>RM${t.amount}</td><td>${t.date}</td></tr>
+            <tr>
+                <td>${t.userName}</td>
+                <td>${t.description}</td>
+                <td>RM${t.amount}</td>
+                <td>${t.date}</td>
+            </tr>
         `).join('');
     }
 
