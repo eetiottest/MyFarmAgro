@@ -358,11 +358,14 @@
 
         <div class="section-header">
             <h2><i class="fas fa-users"></i> Users</h2>
+            <button class="btn-primary" id="refreshUsersBtn"><i class="fas fa-sync-alt"></i> Refresh Users</button>
         </div>
         <div style="overflow-x: auto;">
             <table id="usersTable">
                 <thead><tr><th>Name</th><th>Email</th><th>Credits</th><th>Courses</th><th>Spent</th><th>Joined</th><th>Actions</th></tr></thead>
-                <tbody id="usersList"></tbody>
+                <tbody id="usersList">
+                    <tr><td colspan="7" style="text-align: center;">Loading users...</td></tr>
+                </tbody>
             </table>
         </div>
 
@@ -373,7 +376,9 @@
         <div style="overflow-x: auto;">
             <table id="coursesTable">
                 <thead><tr><th>Image</th><th>ID</th><th>Name</th><th>Price</th><th>Weeks</th><th>Actions</th></tr></thead>
-                <tbody id="coursesList"></tbody>
+                <tbody id="coursesList">
+                    <tr><td colspan="6" style="text-align: center;">Loading courses...</td></tr>
+                </tbody>
             </table>
         </div>
 
@@ -383,7 +388,9 @@
         <div style="overflow-x: auto;">
             <table id="transactionsTable">
                 <thead><tr><th>User</th><th>Description</th><th>Amount</th><th>Date</th></tr></thead>
-                <tbody id="transactionsList"></tbody>
+                <tbody id="transactionsList">
+                    <tr><td colspan="4" style="text-align: center;">Loading transactions...</td></tr>
+                </tbody>
             </table>
         </div>
     </main>
@@ -443,7 +450,7 @@
 <script src="firebase-config.js"></script>
 
 <script>
-    // SIMPLE HARDCODED ADMIN LOGIN - NO EMAIL, NO FIREBASE AUTH
+    // SIMPLE HARDCODED ADMIN LOGIN
     const ADMIN_USERNAME = 'MyFarmAgro-Admin';
     const ADMIN_PASSWORD = 'MFA-321';
 
@@ -471,8 +478,7 @@
             localStorage.setItem('adminLoggedIn', 'true');
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('dashboard').style.display = 'block';
-            await loadDashboardData();
-            await loadCourseData();
+            await loadAllData();
         } else {
             document.getElementById('loginError').style.display = 'block';
         }
@@ -482,8 +488,7 @@
     if (localStorage.getItem('adminLoggedIn') === 'true') {
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('dashboard').style.display = 'block';
-        loadDashboardData();
-        loadCourseData();
+        loadAllData();
     }
 
     // Logout
@@ -493,8 +498,19 @@
         document.getElementById('dashboard').style.display = 'none';
     });
 
+    // Refresh button
+    document.getElementById('refreshUsersBtn')?.addEventListener('click', () => {
+        loadAllData();
+    });
+
+    async function loadAllData() {
+        await loadDashboardData();
+        await loadCourseData();
+    }
+
     async function loadDashboardData() {
         try {
+            console.log('Loading users from Firestore...');
             const usersSnapshot = await db.collection('users').get();
             allUsers = [];
             let totalSeeds = 0, totalRevenue = 0, totalEnrollments = 0;
@@ -508,26 +524,33 @@
                 totalEnrollments += (user.purchasedCourses || []).length;
             });
 
+            console.log(`Loaded ${allUsers.length} users`);
+
             document.getElementById('totalUsers').innerText = allUsers.length;
             document.getElementById('totalSeeds').innerText = totalSeeds;
             document.getElementById('totalRevenue').innerText = `RM${totalRevenue}`;
             document.getElementById('totalEnrollments').innerText = totalEnrollments;
 
-            document.getElementById('usersList').innerHTML = allUsers.map(user => `
-                <tr>
-                    <td>${user.name || '-'}</td>
-                    <td>${user.email}</td>
-                    <td>${user.seedsBalance || 0}</td>
-                    <td>${(user.purchasedCourses || []).length}</td>
-                    <td>RM${user.totalSpent || 0}</td>
-                    <td>${user.memberSince || '-'}</td>
-                    <td><button class="btn-warning" onclick="addCreditsToUser('${user.id}')"><i class="fas fa-plus"></i> Add Credits</button></td>
-                </tr>
-            `).join('');
+            if (allUsers.length === 0) {
+                document.getElementById('usersList').innerHTML = '<tr><td colspan="7" style="text-align: center;">No users found. Create an account on the main site first.</td></tr>';
+            } else {
+                document.getElementById('usersList').innerHTML = allUsers.map(user => `
+                    <tr>
+                        <td>${user.name || '-'}</td>
+                        <td>${user.email}</td>
+                        <td>${user.seedsBalance || 0}</td>
+                        <td>${(user.purchasedCourses || []).length}</td>
+                        <td>RM${user.totalSpent || 0}</td>
+                        <td>${user.memberSince || '-'}</td>
+                        <td><button class="btn-warning" onclick="addCreditsToUser('${user.id}')"><i class="fas fa-plus"></i> Add Credits</button></td>
+                    </tr>
+                `).join('');
+            }
 
             loadTransactions();
         } catch (error) {
             console.error('Error loading users:', error);
+            document.getElementById('usersList').innerHTML = `<tr><td colspan="7" style="text-align: center; color: red;">Error loading users: ${error.message}</td></tr>`;
         }
     }
 
@@ -558,6 +581,10 @@
 
     function renderCoursesTable() {
         const coursesList = document.getElementById('coursesList');
+        if (Object.values(courseData).length === 0) {
+            coursesList.innerHTML = '<tr><td colspan="6" style="text-align: center;">No courses found.</td></tr>';
+            return;
+        }
         coursesList.innerHTML = Object.values(courseData).map(course => `
             <tr>
                 <td><img src="${course.image}" class="course-image-preview" onerror="this.src='https://placehold.co/50x50?text=No+Image'"></td>
@@ -569,7 +596,7 @@
                     <button class="btn-warning" onclick="openCourseBuilder('${course.id}')"><i class="fas fa-edit"></i> Edit</button>
                     <button class="btn-danger" onclick="deleteCourse('${course.id}')" style="margin-left: 8px;"><i class="fas fa-trash"></i> Delete</button>
                 </td>
-            20\
+            </tr>
         `).join('');
     }
 
@@ -577,27 +604,39 @@
         let allTrans = [];
         allUsers.forEach(user => {
             const userTrans = JSON.parse(localStorage.getItem(`transactions_${user.id}`) || '[]');
-            userTrans.forEach(t => allTrans.push({ ...t, userName: user.name || user.email }));
+            userTrans.forEach(t => {
+                allTrans.push({ ...t, userName: user.name || user.email });
+            });
         });
         allTrans.sort((a, b) => new Date(b.date) - new Date(a.date));
-        document.getElementById('transactionsList').innerHTML = allTrans.slice(0, 20).map(t => `
-            <tr>
-                <td>${t.userName}</td>
-                <td>${t.description}</td>
-                <td>RM${t.amount}</td>
-                <td>${t.date}</td>
-            </tr>
-        `).join('');
+        if (allTrans.length === 0) {
+            document.getElementById('transactionsList').innerHTML = '<tr><td colspan="4" style="text-align: center;">No transactions yet.</td></tr>';
+        } else {
+            document.getElementById('transactionsList').innerHTML = allTrans.slice(0, 20).map(t => `
+                <tr>
+                    <td>${t.userName}</td>
+                    <td>${t.description}</td>
+                    <td>RM${t.amount}</td>
+                    <td>${t.date}</td>
+                </tr>
+            `).join('');
+        }
     }
 
     window.addCreditsToUser = async (userId) => {
         const credits = prompt('Enter number of Credits to add:');
         if (credits && !isNaN(credits)) {
-            const userRef = db.collection('users').doc(userId);
-            const userDoc = await userRef.get();
-            await userRef.update({ seedsBalance: (userDoc.data().seedsBalance || 0) + parseInt(credits) });
-            alert(`Added ${credits} Credits!`);
-            loadDashboardData();
+            try {
+                const userRef = db.collection('users').doc(userId);
+                const userDoc = await userRef.get();
+                const currentSeeds = userDoc.data().seedsBalance || 0;
+                await userRef.update({ seedsBalance: currentSeeds + parseInt(credits) });
+                alert(`Added ${credits} Credits to user!`);
+                await loadDashboardData(); // Refresh the user list
+            } catch (error) {
+                console.error('Error adding credits:', error);
+                alert('Error adding credits: ' + error.message);
+            }
         }
     };
 
