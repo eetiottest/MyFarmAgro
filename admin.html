@@ -189,17 +189,6 @@
             font-size: 0.8rem;
         }
 
-        .btn-secondary {
-            background: #6c7a63;
-            color: white;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 40px;
-            font-weight: 500;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-
         table {
             width: 100%;
             background: white;
@@ -242,7 +231,7 @@
             overflow-y: auto;
         }
 
-        .modal-content input, .modal-content textarea, .modal-content select {
+        .modal-content input, .modal-content textarea {
             width: 100%;
             padding: 12px;
             border-radius: 40px;
@@ -337,12 +326,11 @@
     <div class="login-card">
         <i class="fas fa-shield-alt" style="font-size: 3rem; color: #2d6a2f; margin-bottom: 16px;"></i>
         <h2>Admin Login</h2>
-        <p style="margin-bottom: 24px; color: #6c7a63;">Login with your My FarmAgro account</p>
-        <input type="email" id="adminEmail" placeholder="Email">
+        <p style="margin-bottom: 24px; color: #6c7a63;">Enter your admin credentials</p>
+        <input type="text" id="adminUsername" placeholder="Username">
         <input type="password" id="adminPassword" placeholder="Password">
         <button id="adminLoginBtn">Login</button>
         <div id="loginError" class="error-msg"></div>
-        <p style="margin-top: 16px; font-size: 0.7rem; color: #999;">Use the same email/password from your My FarmAgro account.<br>First user automatically becomes admin.</p>
     </div>
 </div>
 
@@ -353,7 +341,7 @@
             <div class="navbar">
                 <div class="logo"><i class="fas fa-seedling"></i> My FarmAgro Admin</div>
                 <div class="nav-links">
-                    <span style="color: #2d6a2f;"><i class="fas fa-user-shield"></i> <span id="adminName">Admin</span></span>
+                    <span style="color: #2d6a2f;"><i class="fas fa-user-shield"></i> Admin</span>
                     <button class="btn-outline" id="logoutBtn" style="margin-left: 20px;">Logout</button>
                 </div>
             </div>
@@ -416,7 +404,7 @@
             <input type="text" id="builderCourseName" placeholder="Course Name">
             <input type="number" id="builderCoursePrice" placeholder="Price (Credits)">
             <input type="text" id="builderCourseImage" placeholder="Image URL">
-            <textarea id="builderCourseDescription" rows="2" placeholder="Short description (e.g., Crunchy and healthy.)"></textarea>
+            <textarea id="builderCourseDescription" rows="2" placeholder="Short description"></textarea>
         </div>
         
         <div id="weeksTab" style="display: none;">
@@ -448,15 +436,17 @@
     </div>
 </div>
 
-<!-- Firebase SDK -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
 
 <script>
-    let currentUser = null;
-    let isAdmin = false;
+    // HARDCODED ADMIN CREDENTIALS - Simple and secure enough for your use
+    const ADMIN_USERNAME = 'MyFarmAgro-Admin';
+    const ADMIN_PASSWORD = 'MFA-321';
+
     let courseData = {};
     let allUsers = [];
     let currentEditingCourse = null;
@@ -472,136 +462,74 @@
         mango: { id: 'mango', name: 'Mango', price: 20, image: 'https://images.unsplash.com/photo-1685429631345-3de21cc2eb65?w=280&h=200&fit=crop', description: 'Sweet tropical fruit.', weeks: [] }
     };
 
-    // DOM Elements
-    const loginScreen = document.getElementById('loginScreen');
-    const dashboard = document.getElementById('dashboard');
-    const adminNameSpan = document.getElementById('adminName');
-    const loginError = document.getElementById('loginError');
-
-    // Login with Firebase Auth
+    // Login with hardcoded credentials
     document.getElementById('adminLoginBtn')?.addEventListener('click', async () => {
-        const email = document.getElementById('adminEmail').value;
+        const username = document.getElementById('adminUsername').value;
         const password = document.getElementById('adminPassword').value;
         
-        if (!email || !password) {
-            loginError.style.display = 'block';
-            loginError.innerText = 'Please enter email and password';
-            return;
-        }
-        
-        try {
-            const userCredential = await auth.signInWithEmailAndPassword(email, password);
-            const user = userCredential.user;
-            
-            if (!user.emailVerified) {
-                loginError.style.display = 'block';
-                loginError.innerText = 'Please verify your email first. Check your inbox.';
-                await auth.signOut();
-                return;
-            }
-            
-            // Check if user is admin
-            const userDoc = await db.collection('users').doc(user.uid).get();
-            const userData = userDoc.data();
-            
-            // If no admin exists yet, make this user admin
-            const allUsersSnapshot = await db.collection('users').get();
-            let hasAdmin = false;
-            allUsersSnapshot.forEach(doc => {
-                if (doc.data().isAdmin === true) hasAdmin = true;
-            });
-            
-            if (!hasAdmin) {
-                await db.collection('users').doc(user.uid).update({ isAdmin: true });
-                isAdmin = true;
-            } else if (userData?.isAdmin !== true) {
-                loginError.style.display = 'block';
-                loginError.innerText = 'You do not have admin access.';
-                await auth.signOut();
-                return;
-            } else {
-                isAdmin = true;
-            }
-            
-            currentUser = user;
+        if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
             localStorage.setItem('adminLoggedIn', 'true');
-            localStorage.setItem('adminUid', user.uid);
-            loginScreen.style.display = 'none';
-            dashboard.style.display = 'block';
-            adminNameSpan.innerText = user.email.split('@')[0];
-            
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
             await loadDashboardData();
             await loadCourseData();
-            
-        } catch (error) {
-            loginError.style.display = 'block';
-            loginError.innerText = error.message;
+        } else {
+            document.getElementById('loginError').style.display = 'block';
+            document.getElementById('loginError').innerText = 'Invalid username or password';
         }
     });
 
-    // Check existing session
+    // Check if already logged in
     if (localStorage.getItem('adminLoggedIn') === 'true') {
-        const adminUid = localStorage.getItem('adminUid');
-        if (adminUid) {
-            // Try to restore session
-            auth.onAuthStateChanged(async (user) => {
-                if (user && user.uid === adminUid) {
-                    const userDoc = await db.collection('users').doc(user.uid).get();
-                    if (userDoc.exists && userDoc.data().isAdmin === true) {
-                        currentUser = user;
-                        loginScreen.style.display = 'none';
-                        dashboard.style.display = 'block';
-                        adminNameSpan.innerText = user.email.split('@')[0];
-                        await loadDashboardData();
-                        await loadCourseData();
-                    }
-                }
-            });
-        }
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        loadDashboardData();
+        loadCourseData();
     }
 
     // Logout
-    document.getElementById('logoutBtn')?.addEventListener('click', async () => {
-        await auth.signOut();
+    document.getElementById('logoutBtn')?.addEventListener('click', () => {
         localStorage.removeItem('adminLoggedIn');
-        localStorage.removeItem('adminUid');
-        currentUser = null;
-        loginScreen.style.display = 'flex';
-        dashboard.style.display = 'none';
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('dashboard').style.display = 'none';
     });
 
     async function loadDashboardData() {
-        const usersSnapshot = await db.collection('users').get();
-        allUsers = [];
-        let totalSeeds = 0, totalRevenue = 0, totalEnrollments = 0;
+        try {
+            const usersSnapshot = await db.collection('users').get();
+            allUsers = [];
+            let totalSeeds = 0, totalRevenue = 0, totalEnrollments = 0;
 
-        usersSnapshot.forEach(doc => {
-            const user = doc.data();
-            user.id = doc.id;
-            allUsers.push(user);
-            totalSeeds += user.seedsBalance || 0;
-            totalRevenue += user.totalSpent || 0;
-            totalEnrollments += (user.purchasedCourses || []).length;
-        });
+            usersSnapshot.forEach(doc => {
+                const user = doc.data();
+                user.id = doc.id;
+                allUsers.push(user);
+                totalSeeds += user.seedsBalance || 0;
+                totalRevenue += user.totalSpent || 0;
+                totalEnrollments += (user.purchasedCourses || []).length;
+            });
 
-        document.getElementById('totalUsers').innerText = allUsers.length;
-        document.getElementById('totalSeeds').innerText = totalSeeds;
-        document.getElementById('totalRevenue').innerText = `RM${totalRevenue}`;
-        document.getElementById('totalEnrollments').innerText = totalEnrollments;
+            document.getElementById('totalUsers').innerText = allUsers.length;
+            document.getElementById('totalSeeds').innerText = totalSeeds;
+            document.getElementById('totalRevenue').innerText = `RM${totalRevenue}`;
+            document.getElementById('totalEnrollments').innerText = totalEnrollments;
 
-        document.getElementById('usersList').innerHTML = allUsers.map(user => `
-            <tr>
-                <td>${user.name || '-'}</td>
-                <td>${user.email}</td>
-                <td>${user.seedsBalance || 0}</td>
-                <td>${(user.purchasedCourses || []).length}</td>
-                <td>RM${user.totalSpent || 0}</td>
-                <td>${user.memberSince || '-'}</td>
-                <td><button class="btn-warning" onclick="addCreditsToUser('${user.id}')"><i class="fas fa-plus"></i> Add Credits</button></td>
-            </tr>
-        `).join('');
+            document.getElementById('usersList').innerHTML = allUsers.map(user => `
+                <tr>
+                    <td>${user.name || '-'}</td>
+                    <td>${user.email}</td>
+                    <td>${user.seedsBalance || 0}</td>
+                    <td>${(user.purchasedCourses || []).length}</td>
+                    <td>RM${user.totalSpent || 0}</td>
+                    <td>${user.memberSince || '-'}</td>
+                    <td><button class="btn-warning" onclick="addCreditsToUser('${user.id}')"><i class="fas fa-plus"></i> Add Credits</button></td>
+                </tr>
+            `).join('');
 
-        loadTransactions();
+            loadTransactions();
+        } catch (error) {
+            console.error('Error loading users:', error);
+        }
     }
 
     async function loadCourseData() {
@@ -621,10 +549,8 @@
     }
 
     async function saveCourseData() {
-        if (!isAdmin) return;
         try {
             await db.collection('courses').doc('course_data').set({ data: courseData });
-            localStorage.setItem('admin_courses', JSON.stringify(courseData));
         } catch (error) {
             console.error('Error saving courses:', error);
         }
@@ -644,7 +570,7 @@
                     <button class="btn-warning" onclick="openCourseBuilder('${course.id}')"><i class="fas fa-edit"></i> Edit</button>
                     <button class="btn-danger" onclick="deleteCourse('${course.id}')" style="margin-left: 8px;"><i class="fas fa-trash"></i> Delete</button>
                 </td>
-            </table>
+            </tr>
         `).join('');
     }
 
