@@ -200,6 +200,31 @@
             margin-top: 10px;
             border: 1px solid #ddd;
         }
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 10px;
+        }
+        .upload-area:hover { border-color: #2d6a2f; background: #f8faf5; }
+        .upload-progress {
+            width: 100%;
+            height: 4px;
+            background: #eef3e6;
+            border-radius: 4px;
+            margin-top: 10px;
+            display: none;
+        }
+        .upload-progress-bar {
+            width: 0%;
+            height: 4px;
+            background: #2d6a2f;
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
         .tab-bar {
             display: flex;
             gap: 8px;
@@ -238,6 +263,7 @@
         }
         .task-item-builder input { flex: 1; padding: 8px 12px; border-radius: 40px; border: 1px solid #ddd; }
         .course-image-preview { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; }
+        .video-upload-preview { margin-top: 10px; font-size: 0.8rem; color: #2d6a2f; }
         
         @media (max-width: 800px) {
             th, td { padding: 10px; font-size: 0.8rem; }
@@ -289,7 +315,7 @@
         <div style="overflow-x: auto;">
             <table id="usersTable">
                 <thead><tr><th>Name</th><th>Email</th><th>Credits</th><th>Courses</th><th>Spent</th><th>Joined</th><th>Actions</th></tr></thead>
-                <tbody id="usersList"><tr><td colspan="7" style="text-align: center;">Loading users...</td></tr></tbody>
+                <tbody id="usersList"><tr><td colspan="7" style="text-align: center;">Loading users......</tbody>
             </table>
         </div>
 
@@ -300,7 +326,7 @@
         <div style="overflow-x: auto;">
             <table id="coursesTable">
                 <thead><tr><th>Image</th><th>ID</th><th>Name</th><th>Price</th><th>Weeks</th><th>Actions</th></tr></thead>
-                <tbody id="coursesList"><tr><td colspan="6" style="text-align: center;">Loading courses...</td></tr></tbody>
+                <tbody id="coursesList"><tr><td colspan="6" style="text-align: center;">Loading courses...</tbody>
             </table>
         </div>
 
@@ -310,7 +336,7 @@
         <div style="overflow-x: auto;">
             <table id="transactionsTable">
                 <thead><tr><th>User</th><th>Description</th><th>Amount</th><th>Date</th></tr></thead>
-                <tbody id="transactionsList"><tr><td colspan="4" style="text-align: center;">Loading transactions...</td></tr></tbody>
+                <tbody id="transactionsList"><tr><td colspan="4" style="text-align: center;">Loading transactions...</tbody>
             </table>
         </div>
     </main>
@@ -340,9 +366,16 @@
                 <input type="number" id="builderCoursePrice">
             </div>
             <div class="form-group">
-                <label>Course Image URL</label>
-                <input type="text" id="builderCourseImage">
+                <label>Course Image</label>
+                <div class="upload-area" id="imageUploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i> Click to upload image
+                    <input type="file" id="imageFileInput" accept="image/*" style="display: none;">
+                </div>
+                <div class="upload-progress" id="imageUploadProgress">
+                    <div class="upload-progress-bar"></div>
+                </div>
                 <img id="imagePreview" class="image-preview" style="display: none;">
+                <input type="text" id="builderCourseImage" placeholder="Or paste image URL" style="margin-top: 10px;">
             </div>
             <div class="form-group">
                 <label>Short Description</label>
@@ -379,8 +412,16 @@
             <input type="text" id="weekTitle">
         </div>
         <div class="form-group">
-            <label>YouTube Video URL (Embed link)</label>
-            <input type="text" id="weekVideoUrl">
+            <label>Video</label>
+            <div class="upload-area" id="videoUploadArea">
+                <i class="fas fa-cloud-upload-alt"></i> Click to upload video (MP4)
+                <input type="file" id="videoFileInput" accept="video/*" style="display: none;">
+            </div>
+            <div class="upload-progress" id="videoUploadProgress">
+                <div class="upload-progress-bar"></div>
+            </div>
+            <div id="videoPreview" class="video-upload-preview"></div>
+            <input type="text" id="weekVideoUrl" placeholder="Or paste YouTube URL" style="margin-top: 10px;">
         </div>
         <div class="form-group">
             <label>Lesson Content / Description</label>
@@ -400,6 +441,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
 
 <script>
@@ -408,8 +450,8 @@
     let allUsers = [];
     let currentEditingCourse = null;
     let currentEditingWeekIndex = null;
+    let storage = firebase.storage();
     
-    // Default courses
     const defaultCourses = {
         chili: { id: 'chili', name: 'Chili', price: 15, image: 'https://images.unsplash.com/photo-1518006959466-0db0b6b4c1d0?w=280&h=200&fit=crop', description: 'Spicy and versatile.', level: 'Beginner', weeks: [] },
         tomato: { id: 'tomato', name: 'Tomato', price: 20, image: 'https://images.unsplash.com/photo-1518977822534-7049a61ee0c2?w=280&h=200&fit=crop', description: 'Juicy and sweet.', level: 'Beginner', weeks: [] },
@@ -466,7 +508,6 @@
         setTimeout(() => errorDiv.style.display = 'none', 3000);
     }
     
-    // Check existing session
     if (localStorage.getItem('adminLoggedIn') === 'true') {
         auth.onAuthStateChanged(async (user) => {
             if (user) {
@@ -491,6 +532,104 @@
     });
     
     document.getElementById('refreshUsersBtn')?.addEventListener('click', () => loadAllData());
+    
+    // ============================================
+    // IMAGE UPLOAD
+    // ============================================
+    const imageUploadArea = document.getElementById('imageUploadArea');
+    const imageFileInput = document.getElementById('imageFileInput');
+    
+    imageUploadArea?.addEventListener('click', () => imageFileInput.click());
+    
+    imageFileInput?.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            await uploadImage(file);
+        }
+    });
+    
+    async function uploadImage(file) {
+        const progressBar = document.getElementById('imageUploadProgress');
+        const progressFill = progressBar.querySelector('.upload-progress-bar');
+        progressBar.style.display = 'block';
+        
+        const fileName = `course_images/${Date.now()}_${file.name}`;
+        const uploadTask = storage.ref(fileName).put(file);
+        
+        uploadTask.on('state_changed',
+            (snapshot) => {
+                const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                progressFill.style.width = percent + '%';
+            },
+            (error) => {
+                alert('Upload failed: ' + error.message);
+                progressBar.style.display = 'none';
+            },
+            async () => {
+                const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                document.getElementById('builderCourseImage').value = downloadURL;
+                const preview = document.getElementById('imagePreview');
+                preview.src = downloadURL;
+                preview.style.display = 'block';
+                progressBar.style.display = 'none';
+                alert('Image uploaded successfully!');
+            }
+        );
+    }
+    
+    // ============================================
+    // VIDEO UPLOAD
+    // ============================================
+    const videoUploadArea = document.getElementById('videoUploadArea');
+    const videoFileInput = document.getElementById('videoFileInput');
+    
+    videoUploadArea?.addEventListener('click', () => videoFileInput.click());
+    
+    videoFileInput?.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (file && file.type.startsWith('video/')) {
+            await uploadVideo(file);
+        }
+    });
+    
+    async function uploadVideo(file) {
+        const progressBar = document.getElementById('videoUploadProgress');
+        const progressFill = progressBar.querySelector('.upload-progress-bar');
+        progressBar.style.display = 'block';
+        
+        const fileName = `course_videos/${Date.now()}_${file.name}`;
+        const uploadTask = storage.ref(fileName).put(file);
+        
+        uploadTask.on('state_changed',
+            (snapshot) => {
+                const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                progressFill.style.width = percent + '%';
+            },
+            (error) => {
+                alert('Upload failed: ' + error.message);
+                progressBar.style.display = 'none';
+            },
+            async () => {
+                const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                document.getElementById('weekVideoUrl').value = downloadURL;
+                const preview = document.getElementById('videoPreview');
+                preview.innerHTML = `<i class="fas fa-check-circle" style="color:#2d6a2f;"></i> Video uploaded! <a href="${downloadURL}" target="_blank">View</a>`;
+                progressBar.style.display = 'none';
+                alert('Video uploaded successfully!');
+            }
+        );
+    }
+    
+    // Image preview from URL
+    document.getElementById('builderCourseImage')?.addEventListener('input', function() {
+        const preview = document.getElementById('imagePreview');
+        if (this.value) {
+            preview.src = this.value;
+            preview.style.display = 'block';
+        } else {
+            preview.style.display = 'none';
+        }
+    });
     
     // ============================================
     // DATA FUNCTIONS
@@ -563,7 +702,7 @@
                     <button class="btn-warning" onclick="openCourseBuilder('${course.id}')"><i class="fas fa-edit"></i> Edit</button>
                     <button class="btn-danger" onclick="deleteCourse('${course.id}')" style="margin-left:8px;"><i class="fas fa-trash"></i> Delete</button>
                 </td>
-             </tr>
+            </tr>
         `).join('');
     }
     
@@ -580,7 +719,7 @@
                 <td>${t.description}</td>
                 <td>RM${t.amount}</td>
                 <td>${t.date}</td>
-             </tr>
+            </tr>
         `).join('');
     }
     
@@ -594,17 +733,6 @@
             loadDashboardData();
         }
     };
-    
-    // Image preview
-    document.getElementById('builderCourseImage')?.addEventListener('input', function() {
-        const preview = document.getElementById('imagePreview');
-        if (this.value) {
-            preview.src = this.value;
-            preview.style.display = 'block';
-        } else {
-            preview.style.display = 'none';
-        }
-    });
     
     // Course Builder
     window.openCourseBuilder = (courseId) => {
@@ -642,6 +770,7 @@
                     </div>
                 </div>
                 <div style="font-size:0.8rem; color:#6c7a63;">Video: ${week.videoUrl ? 'Yes' : 'No'} | Tasks: ${week.tasks?.length || 0}</div>
+                ${week.videoUrl ? `<div style="font-size:0.7rem; color:#2d6a2f;"><i class="fas fa-video"></i> Video uploaded</div>` : ''}
             </div>
         `).join('');
     }
@@ -653,6 +782,11 @@
         document.getElementById('weekTitle').value = week.title || '';
         document.getElementById('weekVideoUrl').value = week.videoUrl || '';
         document.getElementById('weekContent').value = week.content || '';
+        if (week.videoUrl) {
+            document.getElementById('videoPreview').innerHTML = `<i class="fas fa-check-circle" style="color:#2d6a2f;"></i> Video uploaded. <a href="${week.videoUrl}" target="_blank">View</a>`;
+        } else {
+            document.getElementById('videoPreview').innerHTML = '';
+        }
         renderTasksList(week.tasks || []);
         document.getElementById('weekModal').style.display = 'flex';
     };

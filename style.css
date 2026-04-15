@@ -737,6 +737,206 @@ footer {
     font-size: 0.8rem;
 }
 
+/* Hero Slider */
+.hero-slider {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    border-radius: 48px;
+    margin: 32px 0 48px;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    background-size: cover;
+    background-position: center;
+    border-radius: 48px;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.slide-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: white;
+    padding: 60px 40px 40px;
+    border-radius: 48px;
+}
+
+.slide-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+.slide-content p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    max-width: 60%;
+}
+
+.slider-prev, .slider-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    transition: 0.3s;
+}
+
+.slider-prev:hover, .slider-next:hover {
+    background: rgba(0,0,0,0.8);
+}
+
+.slider-prev { left: 20px; }
+.slider-next { right: 20px; }
+
+.slider-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.dot.active {
+    background: white;
+    width: 30px;
+    border-radius: 10px;
+}
+
+/* Search & Filter Bar */
+.search-filter-bar {
+    display: flex;
+    gap: 16px;
+    margin: 40px 0 32px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.search-box {
+    flex: 1;
+    max-width: 400px;
+    position: relative;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 14px 20px 14px 48px;
+    border-radius: 60px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    background: white;
+}
+
+.search-box i {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8ba07e;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 10px 24px;
+    border-radius: 40px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 500;
+}
+
+.filter-btn.active {
+    background: #2d6a2f;
+    color: white;
+    border-color: #2d6a2f;
+}
+
+.filter-btn:hover:not(.active) {
+    background: #f0f4ea;
+}
+
+.no-results {
+    text-align: center;
+    padding: 60px;
+    color: #8ba07e;
+}
+
+/* How It Works */
+.how-it-works-step {
+    text-align: center;
+    padding: 24px;
+}
+
+.step-number {
+    width: 48px;
+    height: 48px;
+    background: #2d6a2f;
+    color: white;
+    border-radius: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin: 0 auto 16px;
+}
+
+.steps-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+    margin-bottom: 60px;
+}
+
+/* CTA Button */
+.cta-button {
+    background: white;
+    color: #2d6a2f;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
 /* Responsive */
 @media (max-width: 800px) {
     .hero-text h1 { font-size: 2.4rem; }
@@ -750,4 +950,10 @@ footer {
     .stat-number { font-size: 1.5rem; }
     .btn-primary { padding: 14px 32px; font-size: 1rem; }
     .btn-ghost { padding: 12px 24px; font-size: 0.9rem; }
+    .hero-slider { height: 350px; }
+    .slide-content h2 { font-size: 1.5rem; }
+    .slide-content p { font-size: 0.9rem; max-width: 100%; }
+    .slide-content { padding: 30px 20px 20px; }
+    .steps-container { flex-direction: column; align-items: center; }
+    .how-it-works-step { max-width: 280px; }
 }

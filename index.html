@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>My FarmAgro | Master Modern Farming</title>
-    <meta name="description" content="Learn modern farming techniques online. From chili to mango - complete from seed to harvest. Get certified and start your journey as an agropreneur.">
+    <meta name="description" content="Learn modern farming techniques online. From chili to mango - complete from seed to harvest.">
     <meta name="keywords" content="farming courses, digital agriculture, agropreneur, grow chili, grow tomato, Malaysia">
     <meta name="author" content="My FarmAgro">
     
@@ -18,106 +18,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    
-    <style>
-        .hero-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(4px);
-            padding: 6px 16px;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            margin-bottom: 20px;
-        }
-        
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #2d6a2f;
-        }
-        
-        .feature-icon {
-            width: 50px;
-            height: 50px;
-            background: #eef3e6;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-        }
-        
-        .feature-icon i {
-            font-size: 1.5rem;
-            color: #2d6a2f;
-        }
-        
-        .course-card {
-            cursor: pointer;
-        }
-        
-        .btn-ghost {
-            background: transparent;
-            border: 1px solid white;
-            color: white;
-            padding: 12px 28px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .btn-ghost:hover {
-            background: white;
-            color: #2d6a2f;
-        }
-        
-        .trust-badge {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #6c7a63;
-            font-size: 0.8rem;
-        }
-
-        .how-it-works-step {
-            text-align: center;
-            padding: 24px;
-        }
-        
-        .step-number {
-            width: 48px;
-            height: 48px;
-            background: #2d6a2f;
-            color: white;
-            border-radius: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin: 0 auto 16px;
-        }
-        
-        .loading-spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid #eef3e6;
-            border-top-color: #2d6a2f;
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        @media (max-width: 700px) {
-            .stat-number { font-size: 1.5rem; }
-        }
-    </style>
 </head>
 <body>
 
@@ -142,27 +42,29 @@
 
 <main>
     <div class="container">
-        <!-- Hero Section -->
-        <div class="hero">
-            <div class="hero-text">
-                <div class="hero-badge">
-                    <i class="fas fa-star" style="font-size: 0.7rem;"></i> Digital Agriculture Platform
-                </div>
-                <h1>Welcome to<br>My FarmAgro!</h1>
-                <p>Congratulations, you are about to embark on your journey as a modern agropreneur! At My FarmAgro, you can take online courses related to Digital Agriculture Technology - from chili to mango, complete from seed to harvest.</p>
-                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-                    <button class="btn-primary" id="heroSubscribeBtn">Explore Courses →</button>
-                    <button class="btn-ghost" onclick="document.getElementById('vegetables').scrollIntoView({ behavior: 'smooth' });">View All Courses</button>
-                </div>
-                <div style="display: flex; gap: 24px; margin-top: 32px; flex-wrap: wrap;">
-                    <div class="trust-badge"><i class="fas fa-check-circle" style="color: #2d6a2f;"></i> Expert Courses</div>
-                    <div class="trust-badge"><i class="fas fa-check-circle" style="color: #2d6a2f;"></i> Video Lessons</div>
-                    <div class="trust-badge"><i class="fas fa-check-circle" style="color: #2d6a2f;"></i> Lifetime Access</div>
+        <!-- Hero Slider -->
+        <div class="hero-slider" id="heroSlider">
+            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1200&h=500&fit=crop');">
+                <div class="slide-content">
+                    <h2>Welcome to My FarmAgro!</h2>
+                    <p>Start your journey as a modern agropreneur with our expert-led courses.</p>
                 </div>
             </div>
-            <div class="hero-img">
-                <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=600&h=400&fit=crop" alt="Modern farming field">
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1592982537447-6f2a6a0c7d9c?w=1200&h=500&fit=crop');">
+                <div class="slide-content">
+                    <h2>Learn from Experts</h2>
+                    <p>Step-by-step video lessons from experienced farmers.</p>
+                </div>
             </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1622383563227-04401ab4e5ea?w=1200&h=500&fit=crop');">
+                <div class="slide-content">
+                    <h2>Grow Your Own Food</h2>
+                    <p>From seed to harvest - master the art of farming.</p>
+                </div>
+            </div>
+            <button class="slider-prev" id="sliderPrev"><i class="fas fa-chevron-left"></i></button>
+            <button class="slider-next" id="sliderNext"><i class="fas fa-chevron-right"></i></button>
+            <div class="slider-dots" id="sliderDots"></div>
         </div>
 
         <!-- How It Works Section -->
@@ -170,18 +72,18 @@
             <h2 class="section-title" style="margin-bottom: 20px;">How It Works</h2>
             <p style="color: #6c7a63;">Start your journey in 3 simple steps</p>
         </div>
-        <div style="display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; margin-bottom: 60px;">
-            <div class="how-it-works-step" style="flex: 1; min-width: 200px;">
+        <div class="steps-container">
+            <div class="how-it-works-step">
                 <div class="step-number">1</div>
                 <h3>Register Account</h3>
                 <p style="color: #6c7a63; font-size: 0.9rem;">Create your free account to start learning.</p>
             </div>
-            <div class="how-it-works-step" style="flex: 1; min-width: 200px;">
+            <div class="how-it-works-step">
                 <div class="step-number">2</div>
                 <h3>Buy Credits</h3>
                 <p style="color: #6c7a63; font-size: 0.9rem;">Purchase credits to unlock your chosen courses.</p>
             </div>
-            <div class="how-it-works-step" style="flex: 1; min-width: 200px;">
+            <div class="how-it-works-step">
                 <div class="step-number">3</div>
                 <h3>Start Learning</h3>
                 <p style="color: #6c7a63; font-size: 0.9rem;">Follow weekly modules and start growing your harvest.</p>
@@ -189,22 +91,22 @@
         </div>
 
         <!-- Stats Section -->
-        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 32px; background: white; border-radius: 32px; padding: 40px; margin: 40px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
-            <div style="text-align: center; flex: 1;">
+        <div class="stats-grid">
+            <div class="stat-card">
                 <div class="stat-number" id="statCourses">6+</div>
-                <div style="color: #6c7a63; font-size: 0.9rem;">Expert Courses</div>
+                <div class="stat-label">Expert Courses</div>
             </div>
-            <div style="text-align: center; flex: 1;">
+            <div class="stat-card">
                 <div class="stat-number">50+</div>
-                <div style="color: #6c7a63; font-size: 0.9rem;">Video Lessons</div>
+                <div class="stat-label">Video Lessons</div>
             </div>
-            <div style="text-align: center; flex: 1;">
+            <div class="stat-card">
                 <div class="stat-number">5,000+</div>
-                <div style="color: #6c7a63; font-size: 0.9rem;">Registered Farmers</div>
+                <div class="stat-label">Registered Farmers</div>
             </div>
-            <div style="text-align: center; flex: 1;">
+            <div class="stat-card">
                 <div class="stat-number">4.9</div>
-                <div style="color: #6c7a63; font-size: 0.9rem;">★ User Rating</div>
+                <div class="stat-label">★ User Rating</div>
             </div>
         </div>
 
@@ -261,7 +163,7 @@
                     <div class="price">RM <span>48</span> <span style="font-size:0.7rem;">(save RM2)</span></div>
                 </div>
                 <div class="credit-pack" data-seeds="100" data-price="90">
-                    <div class="seed-icon">🌱🌱🌱🌱</div>
+                    <div class="seed-icon">🌱🌱🌱🌱🌱</div>
                     <div class="seeds-amount">100 Credits</div>
                     <div class="price">RM <span>90</span> <span style="font-size:0.7rem;">(save RM10)</span></div>
                 </div>
@@ -269,14 +171,23 @@
             <p style="font-size: 0.8rem; opacity: 0.8; margin-top: 16px;">✓ Instant delivery • Use Credits to unlock any course</p>
         </div>
 
+        <!-- Search & Filter Bar -->
+        <div class="search-filter-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search courses...">
+            </div>
+        </div>
+
         <!-- Dynamic Courses Section -->
         <div id="vegetables">
-            <div class="section-title">🌶️ Choose Your Course</div>
+            <div class="section-title">Choose Your Course</div>
             <div id="coursesLoading" style="text-align: center; padding: 60px;">
                 <div class="loading-spinner"></div>
                 <p style="margin-top: 16px;">Loading courses...</p>
             </div>
             <div class="course-grid" id="courseGrid" style="display: none;"></div>
+            <div id="noResults" class="no-results" style="display: none;">No courses found matching your search.</div>
         </div>
 
         <!-- Testimonials Section -->
@@ -305,7 +216,7 @@
         <div style="background: linear-gradient(135deg, #1f4f21, #2d6a2f); border-radius: 48px; padding: 48px 40px; text-align: center; color: white; margin: 60px 0;">
             <h2 style="font-size: 2rem; margin-bottom: 16px;">Ready to Start Your Farming Journey?</h2>
             <p style="margin-bottom: 24px; opacity: 0.9;">Join thousands of farmers who are growing their own food.</p>
-            <button id="ctaSubscribeBtn" style="background: white; color: #2d6a2f; border: none; padding: 14px 36px; border-radius: 60px; font-weight: 700; font-size: 1rem; cursor: pointer;">Get Started →</button>
+            <button id="ctaSubscribeBtn" class="cta-button">Get Started →</button>
         </div>
     </div>
 </main>
@@ -392,55 +303,63 @@
 <script src="firebase-config.js"></script>
 
 <script>
-    // ============================================
-    // GLOBAL VARIABLES
-    // ============================================
-    let currentUser = null;
-    let userProfile = null;
-    let courseData = {};
+    // Hero Slider
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dotsContainer = document.getElementById('sliderDots');
     
-    // DOM Elements
-    const loginLogoutBtn = document.getElementById('loginLogoutBtn');
-    const accountBtn = document.getElementById('accountBtn');
-    const seedBalanceEl = document.getElementById('seedBalance');
-    const courseGrid = document.getElementById('courseGrid');
-    const coursesLoading = document.getElementById('coursesLoading');
+    function createDots() {
+        slides.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (index === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(index));
+            dotsContainer.appendChild(dot);
+        });
+    }
     
-    // ============================================
-    // COURSE FUNCTIONS
-    // ============================================
+    function goToSlide(index) {
+        slides[currentSlide].classList.remove('active');
+        document.querySelectorAll('.dot')[currentSlide]?.classList.remove('active');
+        currentSlide = (index + slides.length) % slides.length;
+        slides[currentSlide].classList.add('active');
+        document.querySelectorAll('.dot')[currentSlide]?.classList.add('active');
+    }
     
-    async function loadCoursesFromFirestore() {
-        try {
-            const doc = await db.collection('courses').doc('course_data').get();
-            if (doc.exists && doc.data().data) {
-                courseData = doc.data().data;
-            } else {
-                // Fallback default courses
-                courseData = {
-                    chili: { id: 'chili', name: 'Chili', price: 15, image: 'https://images.unsplash.com/photo-1518006959466-0db0b6b4c1d0?w=280&h=200&fit=crop', description: 'Spicy and versatile.', weeks: [] },
-                    tomato: { id: 'tomato', name: 'Tomato', price: 20, image: 'https://images.unsplash.com/photo-1518977822534-7049a61ee0c2?w=280&h=200&fit=crop', description: 'Juicy and sweet.', weeks: [] },
-                    brinjal: { id: 'brinjal', name: 'Brinjal', price: 10, image: 'https://images.unsplash.com/photo-1659261111792-66709e46d53d?w=280&h=200&fit=crop', description: 'Glossy and versatile.', weeks: [] },
-                    bendi: { id: 'bendi', name: 'Bendi', price: 10, image: 'https://images.unsplash.com/photo-1632014530325-3911c738b779?w=280&h=200&fit=crop', description: 'Fast-growing and heat-tolerant.', weeks: [] },
-                    cilipadi: { id: 'cilipadi', name: 'Cili Padi', price: 15, image: 'https://cdn.shopify.com/s/files/1/0750/9190/2779/files/Birds-Eye-Chilli-003-700x575.webp?w=280&h=200&fit=crop', description: 'Extra spicy and aromatic.', weeks: [] },
-                    mango: { id: 'mango', name: 'Mango', price: 20, image: 'https://images.unsplash.com/photo-1685429631345-3de21cc2eb65?w=280&h=200&fit=crop', description: 'Sweet tropical fruit.', weeks: [] }
-                };
-            }
-            renderCourses();
-            document.getElementById('statCourses').innerText = Object.keys(courseData).length + '+';
-        } catch (error) {
-            console.error('Error loading courses:', error);
-            coursesLoading.innerHTML = '<p style="color: red;">Error loading courses. Please refresh.</p>';
+    createDots();
+    document.getElementById('sliderPrev')?.addEventListener('click', () => goToSlide(currentSlide - 1));
+    document.getElementById('sliderNext')?.addEventListener('click', () => goToSlide(currentSlide + 1));
+    setInterval(() => goToSlide(currentSlide + 1), 5000);
+    
+    // Search & Filter
+    let allCourses = [];
+    let currentSearch = '';
+    
+    function filterAndRenderCourses() {
+        let filtered = [...allCourses];
+        if (currentSearch) {
+            filtered = filtered.filter(course => 
+                course.name.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                (course.description && course.description.toLowerCase().includes(currentSearch.toLowerCase()))
+            );
+        }
+        const noResults = document.getElementById('noResults');
+        const courseGrid = document.getElementById('courseGrid');
+        if (filtered.length === 0) {
+            courseGrid.style.display = 'none';
+            noResults.style.display = 'block';
+        } else {
+            courseGrid.style.display = 'flex';
+            noResults.style.display = 'none';
+            renderCourses(filtered);
         }
     }
     
-    function renderCourses() {
-        coursesLoading.style.display = 'none';
-        courseGrid.style.display = 'flex';
-        
+    function renderCourses(courses) {
         const purchased = getPurchasedCourses();
+        const courseGrid = document.getElementById('courseGrid');
         
-        courseGrid.innerHTML = Object.values(courseData).map(course => `
+        courseGrid.innerHTML = courses.map(course => `
             <div class="course-card" data-course="${course.id}" data-price="${course.price}">
                 <div class="course-image">
                     <img src="${course.image || 'https://placehold.co/280x200?text=' + course.name}" alt="${course.name}" onerror="this.src='https://placehold.co/280x200?text=${course.name}'">
@@ -463,74 +382,76 @@
         `).join('');
     }
     
+    document.getElementById('searchInput')?.addEventListener('input', (e) => {
+        currentSearch = e.target.value;
+        filterAndRenderCourses();
+    });
+    
+    // Main App Logic
+    let currentUser = null;
+    let userProfile = null;
+    let courseData = {};
+    
+    const loginLogoutBtn = document.getElementById('loginLogoutBtn');
+    const accountBtn = document.getElementById('accountBtn');
+    const seedBalanceEl = document.getElementById('seedBalance');
+    const coursesLoading = document.getElementById('coursesLoading');
+    
+    async function loadCoursesFromFirestore() {
+        try {
+            const doc = await db.collection('courses').doc('course_data').get();
+            if (doc.exists && doc.data().data) {
+                courseData = doc.data().data;
+                allCourses = Object.values(courseData);
+            } else {
+                courseData = {
+                    chili: { id: 'chili', name: 'Chili', price: 15, image: 'https://images.unsplash.com/photo-1518006959466-0db0b6b4c1d0?w=280&h=200&fit=crop', description: 'Spicy and versatile.', weeks: [] },
+                    tomato: { id: 'tomato', name: 'Tomato', price: 20, image: 'https://images.unsplash.com/photo-1518977822534-7049a61ee0c2?w=280&h=200&fit=crop', description: 'Juicy and sweet.', weeks: [] },
+                    brinjal: { id: 'brinjal', name: 'Brinjal', price: 10, image: 'https://images.unsplash.com/photo-1659261111792-66709e46d53d?w=280&h=200&fit=crop', description: 'Glossy and versatile.', weeks: [] },
+                    bendi: { id: 'bendi', name: 'Bendi', price: 10, image: 'https://images.unsplash.com/photo-1632014530325-3911c738b779?w=280&h=200&fit=crop', description: 'Fast-growing and heat-tolerant.', weeks: [] },
+                    cilipadi: { id: 'cilipadi', name: 'Cili Padi', price: 15, image: 'https://cdn.shopify.com/s/files/1/0750/9190/2779/files/Birds-Eye-Chilli-003-700x575.webp?w=280&h=200&fit=crop', description: 'Extra spicy and aromatic.', weeks: [] },
+                    mango: { id: 'mango', name: 'Mango', price: 20, image: 'https://images.unsplash.com/photo-1685429631345-3de21cc2eb65?w=280&h=200&fit=crop', description: 'Sweet tropical fruit.', weeks: [] }
+                };
+                allCourses = Object.values(courseData);
+            }
+            coursesLoading.style.display = 'none';
+            document.getElementById('courseGrid').style.display = 'flex';
+            filterAndRenderCourses();
+            document.getElementById('statCourses').innerText = allCourses.length + '+';
+        } catch (error) {
+            console.error('Error loading courses:', error);
+            coursesLoading.innerHTML = '<p style="color: red;">Error loading courses. Please refresh.</p>';
+        }
+    }
+    
     function accessCourse(courseId) {
         window.location.href = `crops/course.html?id=${courseId}`;
     }
     
-    // ============================================
-    // USER DATA FUNCTIONS (Firestore)
-    // ============================================
-    
-    function getSeedBalance() {
-        return userProfile?.seedsBalance || 0;
-    }
-    
-    function setSeedBalanceLocally(amount) {
-        if (seedBalanceEl) seedBalanceEl.innerHTML = `${amount} <span>Credits</span>`;
-    }
-    
-    function getPurchasedCourses() {
-        return userProfile?.purchasedCourses || [];
-    }
-    
-    async function addTransaction(description, amount) {
-        if (!currentUser) return;
-        const transactions = userProfile?.transactions || [];
-        transactions.unshift({
-            id: Date.now(),
-            description: description,
-            amount: amount,
-            date: new Date().toLocaleDateString()
-        });
-        await db.collection('users').doc(currentUser.uid).update({ transactions: transactions.slice(0, 20) });
-        userProfile.transactions = transactions.slice(0, 20);
-    }
+    function getSeedBalance() { return userProfile?.seedsBalance || 0; }
+    function setSeedBalanceLocally(amount) { if (seedBalanceEl) seedBalanceEl.innerHTML = `${amount} <span>Credits</span>`; }
+    function getPurchasedCourses() { return userProfile?.purchasedCourses || []; }
     
     async function attemptPurchase(courseId, price) {
         if (!currentUser) { alert('Please log in first'); showLoginModal(); return; }
-        
         const balance = getSeedBalance();
         if (balance >= price) {
             const newBalance = balance - price;
             const purchased = [...getPurchasedCourses(), courseId];
-            
-            // Update Firestore
-            await db.collection('users').doc(currentUser.uid).update({
-                seedsBalance: newBalance,
-                purchasedCourses: purchased
-            });
-            
-            // Update local userProfile
+            await db.collection('users').doc(currentUser.uid).update({ seedsBalance: newBalance, purchasedCourses: purchased });
             userProfile.seedsBalance = newBalance;
             userProfile.purchasedCourses = purchased;
-            
             setSeedBalanceLocally(newBalance);
-            addTransaction(`Unlocked ${courseData[courseId]?.name || courseId} Masterclass`, price);
-            renderCourses();
+            filterAndRenderCourses();
             alert(`✅ You've unlocked ${courseData[courseId]?.name || courseId} Masterclass!`);
         } else {
-            const needed = price - balance;
-            document.getElementById('insufficientMessage').innerHTML = `You need ${needed} more Credits to unlock this course.`;
+            document.getElementById('insufficientMessage').innerHTML = `You need ${price - balance} more Credits to unlock this course.`;
             document.getElementById('insufficientModal').style.display = 'flex';
         }
     }
     
-    // ============================================
-    // CREDIT PURCHASE
-    // ============================================
-    
+    // Credit purchase
     let selectedPack = null;
-    
     document.querySelectorAll('.credit-pack').forEach(pack => {
         pack.addEventListener('click', () => {
             if (!currentUser) { alert('Please log in first'); showLoginModal(); return; }
@@ -545,44 +466,25 @@
         if (selectedPack && currentUser) {
             const newBalance = getSeedBalance() + selectedPack.seeds;
             const newTotalSpent = (userProfile?.totalSpent || 0) + selectedPack.price;
-            
-            await db.collection('users').doc(currentUser.uid).update({
-                seedsBalance: newBalance,
-                totalSpent: newTotalSpent
-            });
-            
+            await db.collection('users').doc(currentUser.uid).update({ seedsBalance: newBalance, totalSpent: newTotalSpent });
             userProfile.seedsBalance = newBalance;
             userProfile.totalSpent = newTotalSpent;
-            
             setSeedBalanceLocally(newBalance);
-            addTransaction(`Purchased ${selectedPack.seeds} Credits`, selectedPack.price);
-            
             alert(`✅ You've purchased ${selectedPack.seeds} Credits for RM ${selectedPack.price}!`);
             document.getElementById('buySeedsModal').style.display = 'none';
             selectedPack = null;
         }
     });
     
-    document.getElementById('closeBuySeedsModal')?.addEventListener('click', () => {
-        document.getElementById('buySeedsModal').style.display = 'none';
-        selectedPack = null;
-    });
-    document.getElementById('closeInsufficientModal')?.addEventListener('click', () => {
-        document.getElementById('insufficientModal').style.display = 'none';
-    });
-    document.getElementById('closeAccountModal')?.addEventListener('click', () => {
-        document.getElementById('accountModal').style.display = 'none';
-    });
+    document.getElementById('closeBuySeedsModal')?.addEventListener('click', () => { document.getElementById('buySeedsModal').style.display = 'none'; selectedPack = null; });
+    document.getElementById('closeInsufficientModal')?.addEventListener('click', () => { document.getElementById('insufficientModal').style.display = 'none'; });
+    document.getElementById('closeAccountModal')?.addEventListener('click', () => { document.getElementById('accountModal').style.display = 'none'; });
     
-    // ============================================
-    // AUTHENTICATION
-    // ============================================
-    
+    // Auth functions
     function addAuthModal() {
         if (document.getElementById('authModal')) return;
         const modalHTML = `<div id="authModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);align-items:center;justify-content:center;z-index:2000;"><div style="background:white;max-width:400px;width:90%;border-radius:48px;padding:40px;text-align:center;"><i class="fas fa-seedling" style="font-size:3rem;color:#2d6a2f;"></i><div id="loginForm"><h2>Welcome Back</h2><input type="email" id="loginEmail" placeholder="Email" style="width:100%;padding:14px;border-radius:40px;border:1px solid #ddd;margin-bottom:12px;"><input type="password" id="loginPassword" placeholder="Password" style="width:100%;padding:14px;border-radius:40px;border:1px solid #ddd;margin-bottom:12px;"><button id="doLoginBtn" style="background:#2d6a2f;color:white;padding:14px;border-radius:40px;width:100%;cursor:pointer;">Log In</button><p style="margin-top:16px;"><a href="#" id="showSignupBtn" style="color:#2d6a2f;">Sign Up</a> | <a href="#" id="forgotPasswordBtn" style="color:#2d6a2f;">Forgot Password?</a></p></div><div id="signupForm" style="display:none;"><h2>Create Account</h2><input type="text" id="signupName" placeholder="Full Name" style="width:100%;padding:14px;border-radius:40px;border:1px solid #ddd;margin-bottom:12px;"><input type="email" id="signupEmail" placeholder="Email" style="width:100%;padding:14px;border-radius:40px;border:1px solid #ddd;margin-bottom:12px;"><input type="password" id="signupPassword" placeholder="Password (min 6)" style="width:100%;padding:14px;border-radius:40px;border:1px solid #ddd;margin-bottom:12px;"><button id="doSignupBtn" style="background:#2d6a2f;color:white;padding:14px;border-radius:40px;width:100%;cursor:pointer;">Sign Up</button><p style="margin-top:16px;"><a href="#" id="showLoginBtn" style="color:#2d6a2f;">Back to Login</a></p></div><div id="forgotPasswordForm" style="display:none;"><h2>Reset Password</h2><input type="email" id="resetEmail" placeholder="Email" style="width:100%;padding:14px;border-radius:40px;border:1px solid #ddd;margin-bottom:12px;"><button id="doResetBtn" style="background:#2d6a2f;color:white;padding:14px;border-radius:40px;width:100%;cursor:pointer;">Send Reset Link</button><p style="margin-top:16px;"><a href="#" id="backToLoginBtn" style="color:#2d6a2f;">Back to Login</a></p></div><button id="closeAuthModal" style="background:none;border:none;color:#888;margin-top:20px;cursor:pointer;">Close</button></div></div>`;
         document.body.insertAdjacentHTML('beforeend', modalHTML);
-        
         document.getElementById('showSignupBtn')?.addEventListener('click', (e) => { e.preventDefault(); document.getElementById('loginForm').style.display = 'none'; document.getElementById('signupForm').style.display = 'block'; document.getElementById('forgotPasswordForm').style.display = 'none'; });
         document.getElementById('showLoginBtn')?.addEventListener('click', (e) => { e.preventDefault(); document.getElementById('signupForm').style.display = 'none'; document.getElementById('loginForm').style.display = 'block'; document.getElementById('forgotPasswordForm').style.display = 'none'; });
         document.getElementById('forgotPasswordBtn')?.addEventListener('click', (e) => { e.preventDefault(); document.getElementById('loginForm').style.display = 'none'; document.getElementById('forgotPasswordForm').style.display = 'block'; });
@@ -602,15 +504,7 @@
         try {
             const userCredential = await auth.createUserWithEmailAndPassword(email, password);
             await userCredential.user.sendEmailVerification();
-            await db.collection('users').doc(userCredential.user.uid).set({ 
-                name, email, 
-                seedsBalance: 0, 
-                purchasedCourses: [], 
-                totalSpent: 0, 
-                transactions: [],
-                progress: {},
-                memberSince: new Date().toLocaleDateString() 
-            });
+            await db.collection('users').doc(userCredential.user.uid).set({ name, email, seedsBalance: 0, purchasedCourses: [], totalSpent: 0, transactions: [], progress: {}, memberSince: new Date().toLocaleDateString() });
             alert('Account created! Please check your email to verify.');
             document.getElementById('authModal').style.display = 'none';
             await auth.signOut();
@@ -637,17 +531,7 @@
     }
     
     function showLoginModal() { addAuthModal(); document.getElementById('loginForm').style.display = 'block'; document.getElementById('signupForm').style.display = 'none'; document.getElementById('forgotPasswordForm').style.display = 'none'; document.getElementById('authModal').style.display = 'flex'; }
-    
-    function logout() { 
-        auth.signOut().then(() => { 
-            currentUser = null;
-            userProfile = null;
-            loginLogoutBtn.textContent = 'Log In';
-            accountBtn.style.display = 'none';
-            renderCourses();
-            alert('Logged out'); 
-        }); 
-    }
+    function logout() { auth.signOut().then(() => { currentUser = null; userProfile = null; loginLogoutBtn.textContent = 'Log In'; accountBtn.style.display = 'none'; setSeedBalanceLocally(0); filterAndRenderCourses(); alert('Logged out'); }); }
     
     function updateAccountModal() {
         if (!userProfile) return;
@@ -657,20 +541,15 @@
         document.getElementById('accountSeedsBalance').innerText = getSeedBalance();
         document.getElementById('accountCoursesOwned').innerText = getPurchasedCourses().length;
         document.getElementById('totalSpent').innerText = `RM${userProfile.totalSpent || 0}`;
-        
-        // Calculate completed lessons from progress
         let completedCount = 0;
         const progress = userProfile.progress || {};
         Object.values(progress).forEach(tasks => { completedCount += tasks.length; });
         document.getElementById('completedLessons').innerText = completedCount;
-        
         const subscriptionDiv = document.getElementById('subscriptionList');
         const purchased = getPurchasedCourses();
         if (purchased.length > 0) {
             subscriptionDiv.innerHTML = purchased.map(c => `<div class="subscription-item"><span><i class="fas fa-seedling"></i> ${courseData[c]?.name || c} Masterclass</span><span style="color:#2d6a2f;">Owned</span></div>`).join('');
         } else { subscriptionDiv.innerHTML = '<p style="text-align:center;color:#8ba07e;">No courses purchased yet.</p>'; }
-        
-        // Transaction history
         const transactions = userProfile.transactions || [];
         const transactionDiv = document.getElementById('transactionList');
         if (transactions.length > 0) {
@@ -683,7 +562,6 @@
         document.getElementById('accountModal').style.display = 'none';
         document.getElementById('editProfileModal').style.display = 'flex';
     });
-    
     document.getElementById('saveProfileBtn')?.addEventListener('click', async () => {
         if (currentUser && userProfile) {
             userProfile.name = document.getElementById('editName').value;
@@ -692,12 +570,12 @@
         }
         document.getElementById('editProfileModal').style.display = 'none';
     });
-    
     document.getElementById('closeEditModal')?.addEventListener('click', () => { document.getElementById('editProfileModal').style.display = 'none'; });
     
-    // ============================================
-    // AUTH STATE LISTENER (Main)
-    // ============================================
+    document.getElementById('ctaSubscribeBtn')?.addEventListener('click', () => {
+        const coursesSection = document.getElementById('vegetables');
+        if (coursesSection) coursesSection.scrollIntoView({ behavior: 'smooth' });
+    });
     
     auth.onAuthStateChanged(async (user) => {
         if (user && user.emailVerified) {
@@ -706,12 +584,11 @@
             accountBtn.style.display = 'inline-block';
             loginLogoutBtn.onclick = () => logout();
             accountBtn.onclick = () => { updateAccountModal(); document.getElementById('accountModal').style.display = 'flex'; };
-            
             const userDoc = await db.collection('users').doc(user.uid).get();
             if (userDoc.exists) {
                 userProfile = userDoc.data();
                 setSeedBalanceLocally(userProfile.seedsBalance || 0);
-                renderCourses();
+                filterAndRenderCourses();
             }
         } else {
             currentUser = null;
@@ -720,16 +597,9 @@
             accountBtn.style.display = 'none';
             loginLogoutBtn.onclick = () => showLoginModal();
             setSeedBalanceLocally(0);
-            renderCourses();
+            filterAndRenderCourses();
         }
     });
-    
-    // ============================================
-    // EVENT LISTENERS & INITIALIZATION
-    // ============================================
-    
-    document.getElementById('heroSubscribeBtn')?.addEventListener('click', () => { if (currentUser) document.getElementById('credits').scrollIntoView({ behavior: 'smooth' }); else showLoginModal(); });
-    document.getElementById('ctaSubscribeBtn')?.addEventListener('click', () => { if (currentUser) document.getElementById('credits').scrollIntoView({ behavior: 'smooth' }); else showLoginModal(); });
     
     document.querySelectorAll('.nav-links a').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
@@ -740,7 +610,6 @@
     
     window.addEventListener('click', (e) => { ['buySeedsModal', 'insufficientModal', 'accountModal', 'editProfileModal', 'authModal'].forEach(id => { const modal = document.getElementById(id); if (e.target === modal) modal.style.display = 'none'; }); });
     
-    // Initialize
     setSeedBalanceLocally(0);
     loadCoursesFromFirestore();
     
