@@ -15,7 +15,7 @@ async function sendPurchaseReceipt(userEmail, userName, credits, amount, transac
         };
         
         const response = await emailjs.send(
-            'service_6iw5qgc',     // Your Service ID
+            'service_g7wvugc',     // Your Service ID
             'template_06qc9e9',    // Your Template ID
             templateParams
         );
@@ -302,14 +302,29 @@ document.getElementById('confirmBuySeedsBtn')?.addEventListener('click', async (
             setSeedBalanceLocally(newBalance);
             
             // SEND EMAIL RECEIPT
+            // After successful purchase, before showToast
             await sendPurchaseReceipt(
-                currentUser.email,
-                userProfile?.name,
+                currentUser.email,           // Must be a valid email
+                userProfile?.name || 'Farmer',
                 selectedPack.seeds,
                 selectedPack.price,
                 Date.now().toString()
+
+        
             );
+
+                console.log('=== EMAIL DEBUG ===');
+                console.log('User email:', currentUser.email);
+                console.log('User name:', userProfile?.name);
+                console.log('Credits:', selectedPack.seeds);
+                console.log('Price:', selectedPack.price);
+                console.log('Service ID:', 'service_6iw5qgc');
+                console.log('Template ID:', 'template_06qc9e9');
+                console.log('Public Key:', 'bDahuu_rYnIhtWtsH');
+
             
+     
+
             showToast(`✅ Purchased ${selectedPack.seeds} Credits for RM ${selectedPack.price}!`, 'success');
             document.getElementById('buySeedsModal').style.display = 'none';
             selectedPack = null;
