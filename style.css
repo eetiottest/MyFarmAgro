@@ -688,10 +688,6 @@ footer {
     animation: spin 0.6s linear infinite;
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
 /* Hero Badge */
 .hero-badge {
     display: inline-block;
@@ -705,6 +701,57 @@ footer {
 }
 
 /* Stats Section */
+
+/* Stats Section - Fixed for laptop */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    background: white;
+    border-radius: 32px;
+    padding: 40px;
+    margin: 40px 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+
+.stat-card {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #2d6a2f;
+}
+
+.stat-label {
+    color: #6c7a63;
+    font-size: 0.85rem;
+    margin-top: 8px;
+}
+
+/* Make sure it's not overridden by any other rule */
+.stats-grid .stat-card {
+    display: block !important;
+    width: 100% !important;
+}
+
+/* Responsive - stacks on mobile only */
+@media (max-width: 800px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 24px;
+    }
+}
+
+@media (max-width: 500px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
 .stat-number {
     font-size: 2rem;
     font-weight: 800;
@@ -935,6 +982,123 @@ footer {
     font-weight: 700;
     font-size: 1rem;
     cursor: pointer;
+}
+
+/* Toast Notification Styles */
+.toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    background: white;
+    border-radius: 12px;
+    padding: 14px 20px;
+    min-width: 250px;
+    max-width: 350px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: slideIn 0.3s ease;
+    border-left: 4px solid;
+}
+
+.toast.success { border-left-color: #2d6a2f; }
+.toast.error { border-left-color: #e74c3c; }
+.toast.info { border-left-color: #3498db; }
+.toast.warning { border-left-color: #f5b642; }
+
+.toast i { font-size: 1.2rem; }
+.toast.success i { color: #2d6a2f; }
+.toast.error i { color: #e74c3c; }
+.toast.info i { color: #3498db; }
+.toast.warning i { color: #f5b642; }
+
+.toast-message { flex: 1; font-size: 0.85rem; color: #333; }
+.toast-close { cursor: pointer; color: #999; font-size: 0.8rem; }
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Button Loading State */
+.btn-loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.btn-loading::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+.btn-loading span { visibility: hidden; }
+
+/* Course Progress Bar */
+.course-progress-container {
+    background: #eef3e6;
+    border-radius: 20px;
+    height: 6px;
+    margin: 12px 0;
+    overflow: hidden;
+}
+
+.course-progress-fill {
+    background: #2d6a2f;
+    height: 100%;
+    width: 0%;
+    border-radius: 20px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-size: 0.7rem;
+    color: #8ba07e;
+    margin-top: 4px;
+    text-align: center;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Install Prompt Button */
+.install-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #2d6a2f;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 40px;
+    z-index: 1000;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: none;
+    font-weight: 600;
+}
+
+.install-btn:hover {
+    background: #1f4f21;
 }
 
 /* Responsive */
