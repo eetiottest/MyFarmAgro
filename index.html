@@ -11,10 +11,9 @@
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2d6a2f">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="My FarmAgro">
-    <link rel="apple-touch-icon" href="icons/icon-192.png">
     
     <meta property="og:title" content="My FarmAgro | Master Modern Farming">
     <meta property="og:description" content="Learn modern farming techniques online. From seed to harvest.">
@@ -35,14 +34,18 @@
             <div class="logo">
                 <i class="fas fa-seedling"></i> My FarmAgro
             </div>
+            <div class="language-selector">
+                <button class="lang-btn active" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="ms">BM</button>
+            </div>
             <div class="nav-links">
-                <a href="#">Home</a>
-                <a href="#courses">Courses</a>
-                <a href="#vegetables">All Courses</a>
-                <a href="#credits">Buy Credits</a>
-                <a href="#testimonials">Testimonials</a>
-                <button class="btn-outline" id="accountBtn" style="display: none;">My Account</button>
-                <button class="btn-outline" id="loginLogoutBtn">Log In</button>
+                <a href="#" data-i18n="home">Home</a>
+                <a href="#courses" data-i18n="courses">Courses</a>
+                <a href="#vegetables" data-i18n="allCourses">All Courses</a>
+                <a href="#credits" data-i18n="buyCredits">Buy Credits</a>
+                <a href="#testimonials" data-i18n="testimonials">Testimonials</a>
+                <button class="btn-outline" id="accountBtn" style="display: none;" data-i18n="myAccount">My Account</button>
+                <button class="btn-outline" id="loginLogoutBtn" data-i18n="logIn">Log In</button>
             </div>
         </div>
     </div>
@@ -54,20 +57,20 @@
         <div class="hero-slider" id="heroSlider">
             <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1200&h=500&fit=crop');">
                 <div class="slide-content">
-                    <h2>Welcome to My FarmAgro!</h2>
-                    <p>Start your journey as a modern agropreneur with our expert-led courses.</p>
+                    <h2 data-i18n="welcome">Welcome to My FarmAgro!</h2>
+                    <p data-i18n="welcomeDesc">Start your journey as a modern agropreneur with our expert-led courses.</p>
                 </div>
             </div>
             <div class="slide" style="background-image: url('https://images.pexels.com/photos/164504/pexels-photo-164504.jpeg?w=1200&h=500&fit=crop');">
                 <div class="slide-content">
-                    <h2>Learn from Experts</h2>
-                    <p>Step-by-step video lessons from experienced farmers.</p>
+                    <h2 data-i18n="learnFromExperts">Learn from Experts</h2>
+                    <p data-i18n="learnFromExpertsDesc">Step-by-step video lessons from experienced farmers.</p>
                 </div>
             </div>
             <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1622383563227-04401ab4e5ea?w=1200&h=500&fit=crop');">
                 <div class="slide-content">
-                    <h2>Grow Your Own Food</h2>
-                    <p>From seed to harvest - master the art of farming.</p>
+                    <h2 data-i18n="growOwnFood">Grow Your Own Food</h2>
+                    <p data-i18n="growOwnFoodDesc">From seed to harvest - master the art of farming.</p>
                 </div>
             </div>
             <button class="slider-prev" id="sliderPrev"><i class="fas fa-chevron-left"></i></button>
@@ -80,24 +83,24 @@
 
         <!-- How It Works Section -->
         <div style="text-align: center; margin: 80px 0 40px;">
-            <h2 class="section-title" style="margin-bottom: 20px;">How It Works</h2>
-            <p style="color: #6c7a63;">Start your journey in 3 simple steps</p>
+            <h2 class="section-title" style="margin-bottom: 20px;" data-i18n="howItWorks">How It Works</h2>
+            <p style="color: #6c7a63;" data-i18n="startJourney">Start your journey in 3 simple steps</p>
         </div>
         <div class="steps-container">
-            <div class="how-it-works-step">
+            <div class="how-it-works-step" style="text-align: center;">
                 <div class="step-number">1</div>
-                <h3>Register Account</h3>
-                <p style="color: #6c7a63; font-size: 0.9rem;">Create your free account to start learning.</p>
+                <h3 data-i18n="step1Title">Register Account</h3>
+                <p style="color: #6c7a63; font-size: 0.9rem;" data-i18n="step1Desc">Create your free account to start learning.</p>
             </div>
-            <div class="how-it-works-step">
+            <div class="how-it-works-step" style="text-align: center;">
                 <div class="step-number">2</div>
-                <h3>Buy Credits</h3>
-                <p style="color: #6c7a63; font-size: 0.9rem;">Purchase credits to unlock your chosen courses.</p>
+                <h3 data-i18n="step2Title">Buy Credits</h3>
+                <p style="color: #6c7a63; font-size: 0.9rem;" data-i18n="step2Desc">Purchase credits to unlock your chosen courses.</p>
             </div>
-            <div class="how-it-works-step">
+            <div class="how-it-works-step" style="text-align: center;">
                 <div class="step-number">3</div>
-                <h3>Start Learning</h3>
-                <p style="color: #6c7a63; font-size: 0.9rem;">Follow weekly modules and start growing your harvest.</p>
+                <h3 data-i18n="step3Title">Start Learning</h3>
+                <p style="color: #6c7a63; font-size: 0.9rem;" data-i18n="step3Desc">Follow weekly modules and start growing your harvest.</p>
             </div>
         </div>
 
@@ -105,45 +108,45 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-number" id="statCourses">6+</div>
-                <div class="stat-label">Expert Courses</div>
+                <div class="stat-label" data-i18n="expertCourses">Expert Courses</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number">50+</div>
-                <div class="stat-label">Video Lessons</div>
+                <div class="stat-label" data-i18n="videoLessons">Video Lessons</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number">5,000+</div>
-                <div class="stat-label">Registered Farmers</div>
+                <div class="stat-label" data-i18n="registeredFarmers">Registered Farmers</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number">4.9</div>
-                <div class="stat-label">★ User Rating</div>
+                <div class="stat-label" data-i18n="userRating">★ User Rating</div>
             </div>
         </div>
 
         <!-- Fundamentals Section -->
         <div id="courses">
-            <div class="section-title">🌾 Master the Fundamentals</div>
+            <div class="section-title" data-i18n="masterFundamentals">🌾 Master the Fundamentals</div>
             <div class="grid-cards">
                 <div class="card">
                     <div class="feature-icon"><i class="fas fa-dragon"></i></div>
-                    <h3>Soil & Land Prep</h3>
-                    <p>Learn soil testing, composting, and regenerative techniques to build rich farmland.</p>
+                    <h3 data-i18n="soilTitle">Soil & Land Prep</h3>
+                    <p data-i18n="soilDesc">Learn soil testing, composting, and regenerative techniques to build rich farmland.</p>
                 </div>
                 <div class="card">
                     <div class="feature-icon"><i class="fas fa-carrot"></i></div>
-                    <h3>Crop Planning</h3>
-                    <p>Seasonal calendars, companion planting, and high-value crop selection.</p>
+                    <h3 data-i18n="cropTitle">Crop Planning</h3>
+                    <p data-i18n="cropDesc">Seasonal calendars, companion planting, and high-value crop selection.</p>
                 </div>
                 <div class="card">
                     <div class="feature-icon"><i class="fas fa-water"></i></div>
-                    <h3>Irrigation Systems</h3>
-                    <p>Drip, sprinkler, rainwater harvesting — efficient water management.</p>
+                    <h3 data-i18n="irrigationTitle">Irrigation Systems</h3>
+                    <p data-i18n="irrigationDesc">Drip, sprinkler, rainwater harvesting — efficient water management.</p>
                 </div>
                 <div class="card">
                     <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
-                    <h3>Farm Economics</h3>
-                    <p>Budgeting, pricing, and selling to local markets & restaurants.</p>
+                    <h3 data-i18n="farmTitle">Farm Economics</h3>
+                    <p data-i18n="farmDesc">Budgeting, pricing, and selling to local markets & restaurants.</p>
                 </div>
             </div>
         </div>
@@ -151,73 +154,73 @@
         <!-- Credit / Seeds Section -->
         <div id="credits" class="credit-section">
             <div class="credit-balance">
-                <h3><i class="fas fa-seedling"></i> Your Credits Balance</h3>
-                <div class="balance-amount" id="seedBalance">0 <span>Credits</span></div>
-                <p style="font-size: 0.8rem; margin-top: 8px;">1 Credit = RM1 • Use Credits to unlock courses</p>
+                <h3><i class="fas fa-seedling"></i> <span data-i18n="yourCredits">Your Credits Balance</span></h3>
+                <div class="balance-amount" id="seedBalance">0 <span data-i18n="credits">Credits</span></div>
+                <p style="font-size: 0.8rem; margin-top: 8px;" data-i18n="creditDesc">1 Credit = RM1 • Use Credits to unlock courses</p>
             </div>
-            <h2 style="font-size: 1.8rem;">🌱 Buy Credits</h2>
-            <p>Purchase credits to unlock courses. One-time payment, lifetime access to each course.</p>
+            <h2 style="font-size: 1.8rem;" data-i18n="buyCreditsTitle">🌱 Buy Credits</h2>
+            <p data-i18n="buyCreditsText">Purchase credits to unlock courses. One-time payment, lifetime access to each course.</p>
             <div class="credit-packs">
                 <div class="credit-pack" data-seeds="10" data-price="10">
                     <div class="seed-icon">🌱</div>
-                    <div class="seeds-amount">10 Credits</div>
+                    <div class="seeds-amount"><span data-i18n="creditsAmount">10 Credits</span></div>
                     <div class="price">RM <span>10</span></div>
                 </div>
                 <div class="credit-pack" data-seeds="25" data-price="25">
                     <div class="seed-icon">🌱🌱</div>
-                    <div class="seeds-amount">25 Credits</div>
+                    <div class="seeds-amount"><span data-i18n="creditsAmount">25 Credits</span></div>
                     <div class="price">RM <span>25</span></div>
                 </div>
                 <div class="credit-pack" data-seeds="50" data-price="48">
                     <div class="seed-icon">🌱🌱🌱</div>
-                    <div class="seeds-amount">50 Credits</div>
+                    <div class="seeds-amount"><span data-i18n="creditsAmount">50 Credits</span></div>
                     <div class="price">RM <span>48</span> <span style="font-size:0.7rem;">(save RM2)</span></div>
                 </div>
                 <div class="credit-pack" data-seeds="100" data-price="90">
                     <div class="seed-icon">🌱🌱🌱🌱🌱</div>
-                    <div class="seeds-amount">100 Credits</div>
+                    <div class="seeds-amount"><span data-i18n="creditsAmount">100 Credits</span></div>
                     <div class="price">RM <span>90</span> <span style="font-size:0.7rem;">(save RM10)</span></div>
                 </div>
             </div>
-            <p style="font-size: 0.8rem; opacity: 0.8; margin-top: 16px;">✓ Instant delivery • Use Credits to unlock any course</p>
+            <p style="font-size: 0.8rem; opacity: 0.8; margin-top: 16px;" data-i18n="instantDelivery">✓ Instant delivery • Use Credits to unlock any course</p>
         </div>
 
         <!-- Search & Filter Bar -->
         <div class="search-filter-bar">
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Search courses...">
+                <input type="text" id="searchInput" placeholder="Search courses..." data-i18n="searchPlaceholder">
             </div>
         </div>
 
         <!-- Dynamic Courses Section -->
         <div id="vegetables">
-            <div class="section-title">Choose Your Course</div>
+            <div class="section-title" data-i18n="chooseCourse">Choose Your Course</div>
             <div id="coursesLoading" style="text-align: center; padding: 60px;">
                 <div class="loading-spinner"></div>
-                <p style="margin-top: 16px;">Loading courses...</p>
+                <p style="margin-top: 16px;" data-i18n="loadingCourses">Loading courses...</p>
             </div>
             <div class="course-grid" id="courseGrid" style="display: none;"></div>
-            <div id="noResults" class="no-results" style="display: none;">No courses found matching your search.</div>
+            <div id="noResults" class="no-results" style="display: none;" data-i18n="noResults">No courses found matching your search.</div>
         </div>
 
         <!-- Testimonials Section -->
         <div id="testimonials" class="testimonials">
-            <div class="section-title">💬 What Our Farmers Say</div>
+            <div class="section-title" data-i18n="whatFarmersSay">💬 What Our Farmers Say</div>
             <div class="testi-grid">
                 <div class="testi">
                     <i class="fas fa-quote-left"></i>
-                    <p>“I bought Credits and unlocked the Chili course. Now I'm harvesting my own chilies and selling at the local market!”</p>
+                    <p data-i18n="testimonial1">“I bought Credits and unlocked the Chili course. Now I'm harvesting my own chilies and selling at the local market!”</p>
                     <div class="user">— Sarah, Selangor</div>
                 </div>
                 <div class="testi">
                     <i class="fas fa-quote-left"></i>
-                    <p>“The Cili Padi course taught me everything. My sambal is now famous in the village!”</p>
+                    <p data-i18n="testimonial2">“The Cili Padi course taught me everything. My sambal is now famous in the village!”</p>
                     <div class="user">— Ahmad, Kuala Lumpur</div>
                 </div>
                 <div class="testi">
                     <i class="fas fa-quote-left"></i>
-                    <p>“Finally, a platform that teaches mango grafting properly. My trees are producing after 2 years!”</p>
+                    <p data-i18n="testimonial3">“Finally, a platform that teaches mango grafting properly. My trees are producing after 2 years!”</p>
                     <div class="user">— Mei Ling, Penang</div>
                 </div>
             </div>
@@ -225,9 +228,9 @@
         
         <!-- CTA Section -->
         <div style="background: linear-gradient(135deg, #1f4f21, #2d6a2f); border-radius: 48px; padding: 48px 40px; text-align: center; color: white; margin: 60px 0;">
-            <h2 style="font-size: 2rem; margin-bottom: 16px;">Ready to Start Your Farming Journey?</h2>
-            <p style="margin-bottom: 24px; opacity: 0.9;">Join thousands of farmers who are growing their own food.</p>
-            <button id="ctaSubscribeBtn" class="cta-button">Get Started →</button>
+            <h2 style="font-size: 2rem; margin-bottom: 16px;" data-i18n="readyStart">Ready to Start Your Farming Journey?</h2>
+            <p style="margin-bottom: 24px; opacity: 0.9;" data-i18n="joinFarmers">Join thousands of farmers who are growing their own food.</p>
+            <button id="ctaSubscribeBtn" class="cta-button" data-i18n="getStarted">Get Started →</button>
         </div>
     </div>
 </main>
@@ -242,7 +245,7 @@
                 <a href="#"><i class="fab fa-twitter"></i></a>
                 <a href="#"><i class="fab fa-facebook"></i></a>
             </div>
-            <div class="copyright"><p>© 2025 My FarmAgro — Cultivate knowledge, grow your future.</p></div>
+            <div class="copyright"><p data-i18n="copyright">© 2025 My FarmAgro — Cultivate knowledge, grow your future.</p></div>
         </div>
     </div>
 </footer>
@@ -251,26 +254,26 @@
 <div id="buySeedsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000;">
     <div style="background: white; max-width: 400px; width: 90%; border-radius: 48px; padding: 32px; text-align: center;">
         <i class="fas fa-seedling" style="font-size: 3rem; color: #3f8845;"></i>
-        <h3 id="modalSeedsAmount" style="margin: 16px 0;">Buy Credits</h3>
+        <h3 id="modalSeedsAmount" data-i18n="buyCreditsModal">Buy Credits</h3>
         <p id="modalSeedsPrice" style="margin-bottom: 16px;">RM0</p>
-        <button id="confirmBuySeedsBtn" class="buy-credits-btn" style="background: #2d6a2f; color: white; border: none; padding: 14px 28px; border-radius: 40px; font-weight: 700; width: 100%; cursor: pointer;">Confirm Purchase →</button>
-        <button id="closeBuySeedsModal" style="background: none; border: none; color: #888; margin-top: 16px; cursor: pointer;">Cancel</button>
+        <button id="confirmBuySeedsBtn" class="buy-credits-btn" style="background: #2d6a2f; color: white; border: none; padding: 14px 28px; border-radius: 40px; font-weight: 700; width: 100%; cursor: pointer;" data-i18n="confirmPurchase">Confirm Purchase →</button>
+        <button id="closeBuySeedsModal" style="background: none; border: none; color: #888; margin-top: 16px; cursor: pointer;" data-i18n="cancel">Cancel</button>
     </div>
 </div>
 
 <div id="insufficientModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000;">
     <div style="background: white; max-width: 400px; width: 90%; border-radius: 48px; padding: 32px; text-align: center;">
         <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #f5b642;"></i>
-        <h3 style="margin: 16px 0;">Insufficient Credits</h3>
-        <p id="insufficientMessage" style="margin-bottom: 16px;">You need more Credits to unlock this course.</p>
-        <button id="closeInsufficientModal" style="background: #2d6a2f; color: white; border: none; padding: 12px 28px; border-radius: 40px; cursor: pointer;">Buy Credits</button>
+        <h3 data-i18n="insufficientCredits">Insufficient Credits</h3>
+        <p id="insufficientMessage" style="margin-bottom: 16px;" data-i18n="needMoreCredits">You need more Credits to unlock this course.</p>
+        <button id="closeInsufficientModal" style="background: #2d6a2f; color: white; border: none; padding: 12px 28px; border-radius: 40px; cursor: pointer;" data-i18n="buyCreditsBtn">Buy Credits</button>
     </div>
 </div>
 
 <div id="accountModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000;">
     <div style="background: white; max-width: 500px; width: 90%; border-radius: 48px; padding: 32px; max-height: 85vh; overflow-y: auto;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2 style="color: #2d6a2f;"><i class="fas fa-user-circle"></i> My Account</h2>
+            <h2 style="color: #2d6a2f;"><i class="fas fa-user-circle"></i> <span data-i18n="myAccountTitle">My Account</span></h2>
             <button id="closeAccountModal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
         </div>
         <div class="account-profile">
@@ -278,31 +281,31 @@
             <div class="profile-info">
                 <h4 id="profileName">-</h4>
                 <p><i class="fas fa-envelope"></i> <span id="profileEmail">-</span></p>
-                <p><i class="fas fa-calendar-alt"></i> Member since <span id="memberSince">-</span></p>
+                <p><i class="fas fa-calendar-alt"></i> <span data-i18n="memberSince">Member since</span> <span id="memberSince">-</span></p>
             </div>
         </div>
         <div class="stat-grid">
-            <div class="stat-card"><i class="fas fa-seedling"></i><div class="stat-value" id="accountSeedsBalance">0</div><div class="stat-label">Credits</div></div>
-            <div class="stat-card"><i class="fas fa-book-open"></i><div class="stat-value" id="accountCoursesOwned">0</div><div class="stat-label">Courses Owned</div></div>
-            <div class="stat-card"><i class="fas fa-coins"></i><div class="stat-value" id="totalSpent">RM0</div><div class="stat-label">Total Spent</div></div>
-            <div class="stat-card"><i class="fas fa-trophy"></i><div class="stat-value" id="completedLessons">0</div><div class="stat-label">Lessons Completed</div></div>
+            <div class="stat-card"><i class="fas fa-seedling"></i><div class="stat-value" id="accountSeedsBalance">0</div><div class="stat-label" data-i18n="creditsAvailable">Credits</div></div>
+            <div class="stat-card"><i class="fas fa-book-open"></i><div class="stat-value" id="accountCoursesOwned">0</div><div class="stat-label" data-i18n="coursesOwned">Courses Owned</div></div>
+            <div class="stat-card"><i class="fas fa-coins"></i><div class="stat-value" id="totalSpent">RM0</div><div class="stat-label" data-i18n="totalSpent">Total Spent</div></div>
+            <div class="stat-card"><i class="fas fa-trophy"></i><div class="stat-value" id="completedLessons">0</div><div class="stat-label" data-i18n="lessonsCompleted">Lessons Completed</div></div>
         </div>
-        <h3 style="font-size: 1.1rem; margin-bottom: 12px;"><i class="fas fa-check-circle" style="color: #2d6a2f;"></i> My Courses</h3>
+        <h3 style="font-size: 1.1rem; margin-bottom: 12px;"><i class="fas fa-check-circle" style="color: #2d6a2f;"></i> <span data-i18n="myCourses">My Courses</span></h3>
         <div id="subscriptionList" class="subscription-list"></div>
-        <h3 style="font-size: 1.1rem; margin: 16px 0 12px;"><i class="fas fa-history"></i> Transaction History</h3>
+        <h3 style="font-size: 1.1rem; margin: 16px 0 12px;"><i class="fas fa-history"></i> <span data-i18n="transactionHistory">Transaction History</span></h3>
         <div id="transactionList" class="transaction-list"></div>
-        <button id="editProfileBtn" class="edit-profile-btn"><i class="fas fa-edit"></i> Edit Profile</button>
+        <button id="editProfileBtn" class="edit-profile-btn"><i class="fas fa-edit"></i> <span data-i18n="editProfile">Edit Profile</span></button>
     </div>
 </div>
 
 <div id="editProfileModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1001;">
     <div style="background: white; max-width: 400px; width: 90%; border-radius: 48px; padding: 32px;">
-        <h3 style="margin-bottom: 20px;">Edit Profile</h3>
-        <input type="text" id="editName" placeholder="Full Name" style="width: 100%; padding: 12px; border-radius: 40px; border: 1px solid #ddd; margin-bottom: 12px;">
-        <p style="font-size: 0.7rem; color: #8ba07e; margin-top: -8px; margin-bottom: 16px;">Email cannot be changed. Contact support if needed.</p>
+        <h3 style="margin-bottom: 20px;" data-i18n="editProfileTitle">Edit Profile</h3>
+        <input type="text" id="editName" placeholder="Full Name" style="width: 100%; padding: 12px; border-radius: 40px; border: 1px solid #ddd; margin-bottom: 12px;" data-i18n="fullName">
+        <p style="font-size: 0.7rem; color: #8ba07e; margin-top: -8px; margin-bottom: 16px;" data-i18n="emailCannotChange">Email cannot be changed. Contact support if needed.</p>
         <div style="display: flex; gap: 12px; margin-top: 20px;">
-            <button id="saveProfileBtn" style="background: #2d6a2f; color: white; border: none; padding: 12px; border-radius: 40px; flex: 1; cursor: pointer;">Save Changes</button>
-            <button id="closeEditModal" style="background: #ccc; color: #333; border: none; padding: 12px; border-radius: 40px; flex: 1; cursor: pointer;">Cancel</button>
+            <button id="saveProfileBtn" style="background: #2d6a2f; color: white; border: none; padding: 12px; border-radius: 40px; flex: 1; cursor: pointer;" data-i18n="saveChanges">Save Changes</button>
+            <button id="closeEditModal" style="background: #ccc; color: #333; border: none; padding: 12px; border-radius: 40px; flex: 1; cursor: pointer;" data-i18n="cancel">Cancel</button>
         </div>
     </div>
 </div>
@@ -324,10 +327,8 @@
 <script src="firebase-config.js"></script>
 
 <!-- Main App JavaScript -->
+<script src="translation.js"></script>
 <script src="app.js"></script>
-
-<!-- Install Button Element -->
-<button id="installAppBtn" class="install-btn" style="display: none;">📱 Install App</button>
 
 </body>
 </html>

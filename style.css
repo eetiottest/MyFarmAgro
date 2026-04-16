@@ -702,11 +702,11 @@ footer {
 
 /* Stats Section */
 
-/* Stats Section - Fixed for laptop */
+/* Stats Section - FORCE 4 COLUMNS */
 .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 32px;
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 32px !important;
     background: white;
     border-radius: 32px;
     padding: 40px;
@@ -715,7 +715,8 @@ footer {
 }
 
 .stat-card {
-    text-align: center;
+    text-align: center !important;
+    width: 100% !important;
 }
 
 .stat-number {
@@ -730,32 +731,20 @@ footer {
     margin-top: 8px;
 }
 
-/* Make sure it's not overridden by any other rule */
-.stats-grid .stat-card {
-    display: block !important;
-    width: 100% !important;
-}
-
-/* Responsive - stacks on mobile only */
-@media (max-width: 800px) {
+/* Mobile - only change at small screens */
+@media (max-width: 600px) {
     .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-        padding: 24px;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 20px !important;
+        padding: 24px !important;
     }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 400px) {
     .stats-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
     }
-}
-
-.stat-number {
-    font-size: 2rem;
-    font-weight: 800;
-    color: #2d6a2f;
 }
 
 /* Feature Icon */
@@ -878,6 +867,36 @@ footer {
     background: white;
     width: 30px;
     border-radius: 10px;
+}
+
+/* Language Selector */
+.language-selector {
+    display: flex;
+    gap: 5px;
+    background: #f0f4ea;
+    border-radius: 40px;
+    padding: 4px;
+}
+
+.lang-btn {
+    background: none;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: 0.2s;
+    color: #2c3e2b;
+}
+
+.lang-btn.active {
+    background: #2d6a2f;
+    color: white;
+}
+
+.lang-btn:hover:not(.active) {
+    background: #e0e8d8;
 }
 
 /* Search & Filter Bar */
