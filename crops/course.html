@@ -3,39 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">Course | My FarmAgro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <title>Course | My FarmAgro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../style.css">
     <style>
-        .course-content { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
-        .veg-hero { background: linear-gradient(135deg, #2c5e2c20, #e0e8d8); border-radius: 48px; padding: 48px 40px; margin-bottom: 32px; }
-        .veg-title h1 { font-size: 2.5rem; margin-bottom: 8px; }
-        .veg-stats { display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap; }
-        .stat { background: white; padding: 8px 18px; border-radius: 40px; font-size: 0.9rem; font-weight: 600; }
-        .release-calendar { background: white; border-radius: 24px; padding: 20px; margin: 24px 0; border: 1px solid #e0e8d8; }
-        .week-card { background: white; border-radius: 28px; padding: 28px; margin-bottom: 32px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-left: 6px solid #6aab4a; }
-        .week-card.locked { opacity: 0.7; border-left-color: #aaa; background: #f5f5f0; }
+        .course-header {
+            background: linear-gradient(135deg, #1f4f21, #2d6a2f);
+            border-radius: 32px;
+            padding: 40px;
+            margin-bottom: 32px;
+            color: white;
+        }
+        .course-header h1 { font-size: 2rem; margin-bottom: 12px; }
+        .course-meta { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 20px; }
+        .meta-item { background: rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 40px; font-size: 0.85rem; }
+        .course-progress { background: rgba(255,255,255,0.15); border-radius: 20px; height: 8px; width: 100%; max-width: 300px; margin-top: 20px; }
+        .course-progress-fill { background: #f5b642; height: 8px; border-radius: 20px; width: 0%; transition: width 0.3s; }
+        .progress-text { margin-top: 12px; font-size: 0.85rem; }
+        .week-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+        .week-nav button { background: #2d6a2f; color: white; border: none; padding: 10px 24px; border-radius: 40px; cursor: pointer; font-weight: 600; }
+        .week-nav button:disabled { background: #ccc; cursor: not-allowed; }
+        .week-selector { display: flex; gap: 8px; flex-wrap: wrap; }
+        .week-dot { width: 40px; height: 40px; border-radius: 50%; background: #eef3e6; display: flex; align-items: center; justify-content: center; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .week-dot.active { background: #2d6a2f; color: white; }
+        .week-card { background: white; border-radius: 28px; padding: 28px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-left: 6px solid #6aab4a; }
         .week-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 20px; }
-        .week-header h3 { font-size: 1.4rem; }
-        .week-badge { background: #eef3e6; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; }
-        .week-badge.locked { background: #f0e0c0; color: #a57c1c; }
+        .week-title { font-size: 1.4rem; font-weight: 700; }
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; margin: 20px 0; background: #1f2e1c; border-radius: 24px; overflow: hidden; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        .checklist-section { margin: 24px 0 20px; background: #f8faf5; border-radius: 20px; padding: 20px; }
-        .checklist-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
-        .task-list { list-style: none; }
-        .task-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; padding: 8px 0; border-bottom: 1px solid #e0e8d8; }
-        .task-item input { width: 20px; height: 20px; margin-top: 2px; cursor: pointer; accent-color: #2d6a2f; }
-        .task-text { flex: 1; line-height: 1.5; }
+        .checklist-section { background: #f8faf5; border-radius: 20px; padding: 20px; margin: 20px 0; }
+        .task-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #e0e8d8; }
+        .task-item input { width: 20px; height: 20px; cursor: pointer; }
         .task-text.completed { text-decoration: line-through; color: #8ba07e; }
-        .tips-box { background: #eef3e6; border-radius: 16px; padding: 16px; margin-top: 16px; border-left: 4px solid #f5b642; }
-        .progress-bar-container { background: white; border-radius: 20px; height: 12px; width: 100%; margin: 16px 0; }
-        .progress-fill { background: #2d6a2f; width: 0%; height: 12px; border-radius: 20px; transition: width 0.3s; }
+        .tips-box { background: #eef3e6; border-radius: 16px; padding: 16px; border-left: 4px solid #f5b642; }
+        .loading { text-align: center; padding: 60px; }
         .loading-spinner { display: inline-block; width: 40px; height: 40px; border: 4px solid #eef3e6; border-top-color: #2d6a2f; border-radius: 50%; animation: spin 0.6s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .loading { text-align: center; padding: 60px; }
-        @media (max-width: 700px) { .veg-title h1 { font-size: 1.8rem; } .week-header h3 { font-size: 1.2rem; } }
+        @media (max-width: 700px) {
+            .course-header { padding: 24px; }
+            .week-title { font-size: 1.2rem; }
+            .week-dot { width: 32px; height: 32px; font-size: 0.8rem; }
+        }
     </style>
 </head>
 <body>
@@ -47,7 +56,6 @@
             <div class="nav-links">
                 <a href="../index.html">Home</a>
                 <a href="../index.html#courses">Courses</a>
-                <a href="../index.html#vegetables">All Courses</a>
                 <button class="btn-outline" onclick="location.href='../index.html'">← Back</button>
             </div>
         </div>
@@ -56,10 +64,10 @@
 
 <main>
     <div class="container">
-        <div id="courseContent" class="course-content">
+        <div id="courseContent">
             <div class="loading">
                 <div class="loading-spinner"></div>
-                <p>Loading course content...</p>
+                <p>Loading course...</p>
             </div>
         </div>
     </div>
@@ -67,7 +75,7 @@
 
 <footer>
     <div class="container">
-        <p>© 2025 My FarmAgro — Cultivate knowledge, grow your future.</p>
+        <p>© 2025 My FarmAgro</p>
     </div>
 </footer>
 
@@ -77,19 +85,16 @@
 <script src="../firebase-config.js"></script>
 
 <script>
-    // Get course ID from URL parameter
     const urlParams = new URLSearchParams(window.location.search);
     const courseId = urlParams.get('id');
     
-    if (!courseId) {
-        window.location.href = '../index.html';
-    }
+    if (!courseId) window.location.href = '../index.html';
     
     let courseData = null;
     let currentUser = null;
-    let purchaseDate = null;
+    let currentWeek = 0;
+    let completedTasks = [];
     
-    // Check authentication
     auth.onAuthStateChanged(async (user) => {
         if (user && user.emailVerified) {
             currentUser = user;
@@ -97,38 +102,28 @@
             if (userDoc.exists) {
                 const purchased = userDoc.data().purchasedCourses || [];
                 if (!purchased.includes(courseId)) {
-                    // User doesn't own this course
                     document.getElementById('courseContent').innerHTML = `
-                        <div class="loading" style="background: #f0f4ea; border-radius: 48px;">
-                            <i class="fas fa-lock" style="font-size: 4rem; color: #6aab4a; margin-bottom: 20px;"></i>
+                        <div style="text-align: center; padding: 60px; background: #f0f4ea; border-radius: 48px;">
+                            <i class="fas fa-lock" style="font-size: 4rem; color: #6aab4a;"></i>
                             <h2>Course Locked</h2>
-                            <p style="margin: 20px 0;">You need to purchase this course to access the content.</p>
+                            <p>You need to purchase this course to access the content.</p>
                             <button onclick="window.location.href='../index.html#vegetables'" class="btn-primary">Go to Courses</button>
                         </div>
                     `;
                     return;
                 }
-                purchaseDate = localStorage.getItem(`purchase_${courseId}`) || new Date().toISOString();
-                if (!localStorage.getItem(`purchase_${courseId}`)) {
-                    localStorage.setItem(`purchase_${courseId}`, new Date().toISOString());
-                }
-            } else {
-                document.getElementById('courseContent').innerHTML = `<div class="loading"><p>Please log in to access this course. <a href="../index.html">Go back</a></p></div>`;
-                return;
+                await loadCourse();
             }
         } else {
             document.getElementById('courseContent').innerHTML = `
-                <div class="loading" style="background: #f0f4ea; border-radius: 48px;">
-                    <i class="fas fa-lock" style="font-size: 4rem; color: #6aab4a; margin-bottom: 20px;"></i>
+                <div style="text-align: center; padding: 60px; background: #f0f4ea; border-radius: 48px;">
+                    <i class="fas fa-lock" style="font-size: 4rem; color: #6aab4a;"></i>
                     <h2>Please Log In</h2>
-                    <p style="margin: 20px 0;">You need to log in to access this course.</p>
+                    <p>You need to log in to access this course.</p>
                     <button onclick="window.location.href='../index.html'" class="btn-primary">Go to Homepage</button>
                 </div>
             `;
-            return;
         }
-        
-        await loadCourse();
     });
     
     async function loadCourse() {
@@ -136,181 +131,193 @@
             const doc = await db.collection('courses').doc('course_data').get();
             if (doc.exists && doc.data().data && doc.data().data[courseId]) {
                 courseData = doc.data().data[courseId];
+                
+                const userDoc = await db.collection('users').doc(currentUser.uid).get();
+                const progress = userDoc.data()?.progress?.[courseId] || [];
+                completedTasks = progress;
+                
                 renderCourse();
-                loadProgressFromCloud();
             } else {
-                document.getElementById('courseContent').innerHTML = '<div class="loading"><p>Course not found. <a href="../index.html">Go back</a></p></div>';
+                document.getElementById('courseContent').innerHTML = '<div class="loading"><p>Course not found.</p></div>';
             }
         } catch (error) {
-            document.getElementById('courseContent').innerHTML = `<div class="loading"><p>Error loading course: ${error.message}. <a href="../index.html">Go back</a></p></div>`;
+            document.getElementById('courseContent').innerHTML = `<div class="loading"><p>Error: ${error.message}</p></div>`;
         }
     }
     
-    function getUnlockedWeeks() {
-        if (!purchaseDate) return 1;
-        const start = new Date(purchaseDate);
-        const today = new Date();
-        const daysSince = Math.floor((today - start) / (1000 * 60 * 60 * 24));
-        return Math.min(1 + Math.floor(daysSince / 7), courseData.weeks?.length || 6);
-    }
-    
-    async function loadProgressFromCloud() {
+    async function saveProgress() {
         if (!currentUser) return;
-        
-        const userDoc = await db.collection('users').doc(currentUser.uid).get();
-        const progress = userDoc.data()?.progress?.[courseId] || [];
-        completedTasks = progress;
-        
-        renderWeeks();
-        attachCheckboxListeners();
+        const updateData = {};
+        updateData[`progress.${courseId}`] = completedTasks;
+        await db.collection('users').doc(currentUser.uid).update(updateData);
         updateProgressDisplay();
     }
     
-    async function saveProgressToCloud() {
-        if (!currentUser) return;
-        
-        await db.collection('users').doc(currentUser.uid).update({
-            [`progress.${courseId}`]: completedTasks
-        });
-    }
-    
-    let completedTasks = [];
-    
-    function renderCourse() {
-        const container = document.getElementById('courseContent');
-        document.title = `${courseData.name} Masterclass | My FarmAgro`;
-        
-        container.innerHTML = `
-            <div class="veg-hero">
-                <div class="veg-title">
-                    <h1>${courseData.name} Masterclass</h1>
-                    <p>${courseData.description || 'Learn to grow ' + courseData.name + ' from seed to harvest.'}</p>
-                    <div class="veg-stats">
-                        <span class="stat"><i class="fas fa-clock"></i> ${courseData.weeks?.length || 6} weeks total</span>
-                        <span class="stat"><i class="fas fa-chart-line"></i> ${courseData.level || 'Beginner'}</span>
-                        <span class="stat"><i class="fas fa-calendar-week"></i> New module each week</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="release-calendar">
-                <h3><i class="fas fa-calendar-alt"></i> Release Schedule</h3>
-                <p style="margin-bottom: 16px;">New module released every week. Your purchase gives you access to all released content.</p>
-                <div id="releaseCalendar"></div>
-            </div>
-            
-            <div class="module-section">
-                <div class="section-title" style="font-size: 1.5rem; margin: 0 0 24px 0;">
-                    <i class="fas fa-graduation-cap"></i> Course Modules
-                </div>
-                <div id="weeksContainer"></div>
-            </div>
-            
-            <div id="progressSection" style="background: #e4f0db; border-radius: 32px; padding: 24px; margin-top: 40px;">
-                <h3><i class="fas fa-chart-simple"></i> Your Progress</h3>
-                <div class="progress-bar-container">
-                    <div id="progressFill" class="progress-fill" style="width: 0%;"></div>
-                </div>
-                <p id="progressText" style="margin-top: 12px;">0% complete</p>
-            </div>
-        `;
-        
-        updateReleaseCalendar();
-    }
-    
-    function updateReleaseCalendar() {
-        const unlockedWeeks = getUnlockedWeeks();
-        const calendar = document.getElementById('releaseCalendar');
+    function calculateOverallProgress() {
+        let totalTasks = 0;
+        let completedCount = 0;
         const weeks = courseData.weeks || [];
         
-        calendar.innerHTML = weeks.map((week, index) => `
-            <div class="release-item" style="display: flex; align-items: center; gap: 16px; padding: 12px 0; border-bottom: 1px solid #eef3e6;">
-                <div style="width: 80px; font-weight: 700;">Week ${index + 1}</div>
-                <div style="width: 100px; color: ${index < unlockedWeeks ? '#2d6a2f' : '#b88b2c'}">
-                    ${index < unlockedWeeks ? '✓ Available' : '🔒 Coming soon'}
-                </div>
-                <div>${week.title}</div>
-            </div>
-        `).join('');
-    }
-    
-    function renderWeeks() {
-        const weeksContainer = document.getElementById('weeksContainer');
-        const weeks = courseData.weeks || [];
-        const unlockedWeeks = getUnlockedWeeks();
-        
-        if (weeks.length === 0) {
-            weeksContainer.innerHTML = '<p style="text-align: center; padding: 40px;">Course modules coming soon. Check back for weekly lessons.</p>';
-            return;
-        }
-        
-        weeksContainer.innerHTML = weeks.map((week, weekIndex) => {
-            const isUnlocked = weekIndex < unlockedWeeks;
-            const lockedClass = isUnlocked ? '' : 'locked';
-            const badgeText = isUnlocked ? 'Available now' : `Releases in ${((weekIndex + 1) - unlockedWeeks) * 7} days`;
-            const badgeClass = isUnlocked ? 'week-badge' : 'week-badge locked';
-            
-            return `
-                <div class="week-card ${lockedClass}" id="week${weekIndex}">
-                    <div class="week-header">
-                        <h3>Week ${weekIndex + 1}: ${week.title}</h3>
-                        <span class="${badgeClass}">${badgeText}</span>
-                    </div>
-                    ${week.videoUrl && isUnlocked ? `
-                        <div class="video-container">
-                            <iframe src="${week.videoUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                    ` : (week.videoUrl && !isUnlocked ? `<div class="video-container" style="filter: blur(4px); pointer-events: none;"><iframe src="${week.videoUrl}" frameborder="0" allowfullscreen></iframe></div>` : '')}
-                    <div class="checklist-section" style="${!isUnlocked ? 'filter: blur(3px); pointer-events: none;' : ''}">
-                        <div class="checklist-title"><i class="fas fa-list-check"></i> Week ${weekIndex + 1} Tasks</div>
-                        <ul class="task-list" id="week${weekIndex}tasks">
-                            ${(week.tasks || []).map((task, taskIdx) => `
-                                <li class="task-item">
-                                    <input type="checkbox" class="task-checkbox" data-week="${weekIndex}" data-task="${weekIndex}_${taskIdx}" ${completedTasks.includes(`${weekIndex}_${taskIdx}`) ? 'checked' : ''} ${!isUnlocked ? 'disabled' : ''}>
-                                    <span class="task-text ${completedTasks.includes(`${weekIndex}_${taskIdx}`) ? 'completed' : ''}">${task}</span>
-                                </li>
-                            `).join('')}
-                        </ul>
-                    </div>
-                    ${week.content && isUnlocked ? `<div class="tips-box">${week.content}</div>` : ''}
-                </div>
-            `;
-        }).join('');
-    }
-    
-    function attachCheckboxListeners() {
-        document.querySelectorAll('.task-checkbox:not([disabled])').forEach(cb => {
-            cb.removeEventListener('change', handleTaskChange);
-            cb.addEventListener('change', handleTaskChange);
-        });
-    }
-    
-    async function handleTaskChange(e) {
-        const checkbox = e.target;
-        const taskId = checkbox.getAttribute('data-task');
-        const taskText = checkbox.closest('.task-item')?.querySelector('.task-text');
-        
-        if (checkbox.checked) {
-            if (!completedTasks.includes(taskId)) {
-                completedTasks.push(taskId);
-                if (taskText) taskText.classList.add('completed');
+        for (let i = 0; i < weeks.length; i++) {
+            const tasks = weeks[i].tasks || [];
+            totalTasks += tasks.length;
+            for (let j = 0; j < tasks.length; j++) {
+                if (completedTasks.includes(`${i}_${j}`)) {
+                    completedCount++;
+                }
             }
-        } else {
-            completedTasks = completedTasks.filter(id => id !== taskId);
-            if (taskText) taskText.classList.remove('completed');
         }
         
-        await saveProgressToCloud();
-        updateProgressDisplay();
+        if (totalTasks === 0) return 0;
+        return Math.floor((completedCount / totalTasks) * 100);
     }
     
     function updateProgressDisplay() {
-        const total = document.querySelectorAll('.task-checkbox').length;
-        const percent = total > 0 ? Math.floor((completedTasks.length / total) * 100) : 0;
-        const fill = document.getElementById('progressFill');
-        const text = document.getElementById('progressText');
-        if (fill) fill.style.width = percent + '%';
-        if (text) text.innerText = `${percent}% complete (${completedTasks.length}/${total} tasks done)`;
+        const percent = calculateOverallProgress();
+        const progressFill = document.querySelector('.course-progress-fill');
+        const progressText = document.querySelector('.progress-text');
+        if (progressFill) progressFill.style.width = percent + '%';
+        if (progressText) progressText.innerHTML = `${percent}% complete`;
+    }
+    
+    function renderCourse() {
+        const weeks = courseData.weeks || [];
+        const totalWeeks = weeks.length;
+        const overallProgress = calculateOverallProgress();
+        
+        document.title = `${courseData.name} | My FarmAgro`;
+        
+        const container = document.getElementById('courseContent');
+        container.innerHTML = `
+            <div class="course-header">
+                <h1>${courseData.name} Masterclass</h1>
+                <p>${courseData.description || 'Learn to grow ' + courseData.name + ' from seed to harvest.'}</p>
+                <div class="course-meta">
+                    <span class="meta-item"><i class="fas fa-clock"></i> ${totalWeeks} weeks</span>
+                    <span class="meta-item"><i class="fas fa-play-circle"></i> ${weeks.filter(w => w.videoUrl).length} videos</span>
+                </div>
+                <div class="course-progress">
+                    <div class="course-progress-fill" style="width: ${overallProgress}%;"></div>
+                </div>
+                <div class="progress-text">${overallProgress}% complete</div>
+            </div>
+            
+            <div class="week-nav">
+                <button id="prevWeekBtn" ${currentWeek === 0 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i> Previous</button>
+                <div class="week-selector" id="weekSelector"></div>
+                <button id="nextWeekBtn" ${currentWeek >= totalWeeks - 1 ? 'disabled' : ''}>Next <i class="fas fa-chevron-right"></i></button>
+            </div>
+            
+            <div id="weekContent"></div>
+        `;
+        
+        renderWeekSelector(totalWeeks);
+        renderWeekContent(weeks[currentWeek], currentWeek);
+        
+        document.getElementById('prevWeekBtn')?.addEventListener('click', () => {
+            if (currentWeek > 0) {
+                currentWeek--;
+                renderCourse();
+            }
+        });
+        
+        document.getElementById('nextWeekBtn')?.addEventListener('click', () => {
+            if (currentWeek < totalWeeks - 1) {
+                currentWeek++;
+                renderCourse();
+            }
+        });
+    }
+    
+    function renderWeekSelector(totalWeeks) {
+        const selector = document.getElementById('weekSelector');
+        selector.innerHTML = '';
+        for (let i = 0; i < totalWeeks; i++) {
+            const isActive = i === currentWeek;
+            const dot = document.createElement('div');
+            dot.className = `week-dot ${isActive ? 'active' : ''}`;
+            dot.innerHTML = i + 1;
+            dot.addEventListener('click', () => {
+                currentWeek = i;
+                renderCourse();
+            });
+            selector.appendChild(dot);
+        }
+    }
+    
+    function renderWeekContent(week, weekIndex) {
+        const container = document.getElementById('weekContent');
+        if (!week) {
+            container.innerHTML = '<p>No content for this week.</p>';
+            return;
+        }
+        
+        const weekTasks = week.tasks || [];
+        
+        container.innerHTML = `
+            <div class="week-card">
+                <div class="week-header">
+                    <h2 class="week-title">Week ${weekIndex + 1}: ${week.title}</h2>
+                </div>
+                
+                ${week.videoUrl ? `
+                    <div class="video-container">
+                        <iframe src="${week.videoUrl}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                ` : ''}
+                
+                ${week.content ? `<div class="tips-box">${week.content}</div>` : ''}
+                
+                ${weekTasks.length > 0 ? `
+                    <div class="checklist-section">
+                        <h3><i class="fas fa-list-check"></i> Week ${weekIndex + 1} Tasks</h3>
+                        <div id="tasksList"></div>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+        
+        if (weekTasks.length > 0) {
+            const tasksList = document.getElementById('tasksList');
+            tasksList.innerHTML = weekTasks.map((task, taskIdx) => {
+                const isCompleted = completedTasks.includes(`${weekIndex}_${taskIdx}`);
+                return `
+                    <div class="task-item">
+                        <input type="checkbox" id="task_${weekIndex}_${taskIdx}" data-week="${weekIndex}" data-task="${weekIndex}_${taskIdx}" ${isCompleted ? 'checked' : ''}>
+                        <label for="task_${weekIndex}_${taskIdx}" class="task-text ${isCompleted ? 'completed' : ''}">${task}</label>
+                    </div>
+                `;
+            }).join('');
+            
+            document.querySelectorAll('.task-item input').forEach(cb => {
+                cb.addEventListener('change', async (e) => {
+                    const taskId = e.target.getAttribute('data-task');
+                    const weekIdx = parseInt(e.target.getAttribute('data-week'));
+                    
+                    if (e.target.checked) {
+                        if (!completedTasks.includes(taskId)) completedTasks.push(taskId);
+                    } else {
+                        completedTasks = completedTasks.filter(t => t !== taskId);
+                    }
+                    await saveProgress();
+                    
+                    // Update UI
+                    const taskLabel = e.target.nextElementSibling;
+                    if (e.target.checked) {
+                        taskLabel.classList.add('completed');
+                    } else {
+                        taskLabel.classList.remove('completed');
+                    }
+                    
+                    // Update progress bar and text
+                    const newPercent = calculateOverallProgress();
+                    const progressFill = document.querySelector('.course-progress-fill');
+                    const progressText = document.querySelector('.progress-text');
+                    if (progressFill) progressFill.style.width = newPercent + '%';
+                    if (progressText) progressText.innerHTML = `${newPercent}% complete`;
+                });
+            });
+        }
     }
 </script>
 </body>
