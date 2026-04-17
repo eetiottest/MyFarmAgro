@@ -1,8 +1,68 @@
+// ============================================
+// GOOGLE SIGN IN
+// ============================================
+
+async function googleSignIn() {
+    try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: 'select_account' });
+        const result = await auth.signInWithPopup(provider);
+        const user = result.user;
+        
+        // Check if user exists in Firestore
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        
+        if (!userDoc.exists) {
+            // Create NEW user with Google's data
+            await db.collection('users').doc(user.uid).set({
+                name: user.displayName || user.email.split('@')[0],
+                email: user.email,
+                seedsBalance: 0,
+                purchasedCourses: [],
+                totalSpent: 0,
+                transactions: [],
+                progress: {},
+                memberSince: new Date().toLocaleDateString(),
+                isAdmin: false
+            });
+            console.log('New Google user created:', user.email);
+        }
+        
+        // Force refresh user profile
+        const freshUserDoc = await db.collection('users').doc(user.uid).get();
+        userProfile = freshUserDoc.data();
+        currentUser = user;
+        
+        // Update UI
+        if (seedBalanceEl) seedBalanceEl.innerHTML = `${userProfile.seedsBalance || 0} <span>${t('credits')}</span>`;
+        filterAndRenderCourses();
+        
+        // Update login button text
+        if (loginLogoutBtn) loginLogoutBtn.textContent = t('logOut');
+        if (accountBtn) accountBtn.style.display = 'inline-block';
+        
+        showToast(`Welcome ${userProfile.name || user.displayName}!`, 'success');
+        document.getElementById('authModal').style.display = 'none';
+        
+    } catch (error) {
+        console.error('Google sign in error:', error);
+        showToast(error.message, 'error');
+    }
+}
+
+// ============================================
+// EMAIL RECEIPTS
+// ============================================
+
 async function sendPurchaseReceipt(userEmail, userName, credits, amount, transactionId) {
     try {
         await emailjs.send('service_g7wvugc', 'template_06qc9e9', {
-            to_name: userName || 'Farmer', to_email: userEmail, credits: credits,
-            amount: amount, transaction_id: transactionId, date: new Date().toLocaleDateString(),
+            to_name: userName || 'Farmer',
+            to_email: userEmail,
+            credits: credits,
+            amount: amount,
+            transaction_id: transactionId,
+            date: new Date().toLocaleDateString(),
             site_url: window.location.origin
         });
         return true;
@@ -84,6 +144,21 @@ function filterAndRenderCourses() {
     }
 }
 
+function translateCourseText(text) {
+    if (!text || currentLang !== 'ms') return text;
+    const translations = {
+        "Chili": "Cili", "Tomato": "Tomato", "Brinjal": "Terung", "Bendi": "Bendi",
+        "Cili Padi": "Cili Padi", "Mango": "Mangga", "Durian": "Durian",
+        "Spicy and versatile.": "Pedas dan serbaguna.",
+        "Juicy and sweet.": "Manis dan berjus.",
+        "Glossy and versatile.": "Berkilat dan serbaguna.",
+        "Fast-growing and heat-tolerant.": "Tumbuh cepat dan tahan panas.",
+        "Extra spicy and aromatic.": "Extra pedas dan wangi.",
+        "Sweet tropical fruit.": "Buah tropika yang manis."
+    };
+    return translations[text] || text;
+}
+
 async function renderCourses(courses) {
     const purchased = getPurchasedCourses();
     const courseGrid = document.getElementById('courseGrid');
@@ -98,30 +173,29 @@ async function renderCourses(courses) {
     }));
     
     courseGrid.innerHTML = coursesWithProgress.map(course => {
-    const displayName = translateCourseText(course.name);
-    
-    return `
-    <div class="course-card" data-course="${course.id}" data-price="${course.price}">
-        <div class="course-image"><img src="${course.image || 'https://placehold.co/280x200?text=' + course.name}" alt="${course.name}" onerror="this.src='https://placehold.co/280x200?text=${course.name}'"></div>
-        <div class="course-info">
-            <h3>${displayName}</h3>
-            ${purchased.includes(course.id) ? `
-                <div class="course-progress-container"><div class="course-progress-fill" style="width: ${course.progress}%;"></div></div>
-                <div class="progress-text">${course.progress}% ${t('complete')}</div>
-            ` : ''}
-            <div class="course-price"><i class="fas fa-seedling"></i> ${course.price} ${t('credits')}</div>
-            <div class="course-action" id="${course.id}Action">
-                ${purchased.includes(course.id) ? 
-                    `<div class="owned-badge"><i class="fas fa-check-circle"></i> ${t('owned')}</div>
-                     <button class="access-btn" onclick="accessCourse('${course.id}')"><i class="fas fa-play-circle"></i> ${t('accessCourse')}</button>` : 
-                    `<button class="purchase-btn unlock-btn" data-course="${course.id}" data-price="${course.price}" onclick="attemptPurchaseWithLoading('${course.id}', ${course.price})">
-                        <i class="fas fa-seedling"></i> ${t('unlockWith')} ${course.price} ${t('credits')}
-                     </button>`
-                }
+        const displayName = translateCourseText(course.name);
+        return `
+        <div class="course-card" data-course="${course.id}" data-price="${course.price}">
+            <div class="course-image"><img src="${course.image || 'https://placehold.co/280x200?text=' + course.name}" alt="${course.name}" onerror="this.src='https://placehold.co/280x200?text=${course.name}'"></div>
+            <div class="course-info">
+                <h3>${displayName}</h3>
+                ${purchased.includes(course.id) ? `
+                    <div class="course-progress-container"><div class="course-progress-fill" style="width: ${course.progress}%;"></div></div>
+                    <div class="progress-text">${course.progress}% ${t('complete')}</div>
+                ` : ''}
+                <div class="course-price"><i class="fas fa-seedling"></i> ${course.price} ${t('credits')}</div>
+                <div class="course-action" id="${course.id}Action">
+                    ${purchased.includes(course.id) ? 
+                        `<div class="owned-badge"><i class="fas fa-check-circle"></i> ${t('owned')}</div>
+                         <button class="access-btn" onclick="accessCourse('${course.id}')"><i class="fas fa-play-circle"></i> ${t('accessCourse')}</button>` : 
+                        `<button class="purchase-btn unlock-btn" data-course="${course.id}" data-price="${course.price}" onclick="attemptPurchaseWithLoading('${course.id}', ${course.price})">
+                            <i class="fas fa-seedling"></i> ${t('unlockWith')} ${course.price} ${t('credits')}
+                         </button>`
+                    }
+                </div>
             </div>
         </div>
-    </div>
-`}).join('');
+    `}).join('');
 }
 
 document.getElementById('searchInput')?.addEventListener('input', (e) => {
@@ -232,7 +306,7 @@ document.getElementById('closeAccountModal')?.addEventListener('click', () => { 
 
 function addAuthModal() {
     if (document.getElementById('authModal')) return;
-    const modalHTML = `<div id="authModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);align-items:center;justify-content:center;z-index:2000;"><div style="background:white;max-width:400px;width:90%;border-radius:48px;padding:40px;text-align:center;"><i class="fas fa-seedling" style="font-size:3rem;color:#2d6a2f;"></i><div id="loginForm"><h2>${t('welcomeBack')}</h2><input type="email" id="loginEmail" placeholder="${t('email')}" style="width:100%;padding:14px;border-radius:40px;border:1px solid #ddd;margin-bottom:12px;"><input type="password" id="loginPassword" placeholder="${t('password')}" style="width:100%;padding:14px;border-radius:40px;border:1px solid #ddd;margin-bottom:12px;"><button id="doLoginBtn" style="background:#2d6a2f;color:white;padding:14px;border-radius:40px;width:100%;cursor:pointer;">${t('logInBtn')}</button><p style="margin-top:16px;"><a href="#" id="showSignupBtn" style="color:#2d6a2f;">${t('signUp')}</a> | <a href="#" id="forgotPasswordBtn" style="color:#2d6a2f;">${t('forgotPassword')}</a></p></div><div id="signupForm" style="display:none;"><h2>${t('createAccount')}</h2><input type="text" id="signupName" placeholder="${t('fullNamePlaceholder')}" style="width:100%;padding:14px;border-radius:40px;border:1px solid #ddd;margin-bottom:12px;"><input type="email" id="signupEmail" placeholder="${t('email')}" style="width:100%;padding:14px;border-radius:40px;border:1px solid #ddd;margin-bottom:12px;"><input type="password" id="signupPassword" placeholder="${t('passwordMin')}" style="width:100%;padding:14px;border-radius:40px;border:1px solid #ddd;margin-bottom:12px;"><button id="doSignupBtn" style="background:#2d6a2f;color:white;padding:14px;border-radius:40px;width:100%;cursor:pointer;">${t('signUp')}</button><p style="margin-top:16px;"><a href="#" id="showLoginBtn" style="color:#2d6a2f;">${t('backToLogin')}</a></p></div><div id="forgotPasswordForm" style="display:none;"><h2>${t('resetPassword')}</h2><input type="email" id="resetEmail" placeholder="${t('email')}" style="width:100%;padding:14px;border-radius:40px;border:1px solid #ddd;margin-bottom:12px;"><button id="doResetBtn" style="background:#2d6a2f;color:white;padding:14px;border-radius:40px;width:100%;cursor:pointer;">${t('sendResetLink')}</button><p style="margin-top:16px;"><a href="#" id="backToLoginBtn" style="color:#2d6a2f;">${t('backToLogin')}</a></p></div><button id="closeAuthModal" style="background:none;border:none;color:#888;margin-top:20px;cursor:pointer;">${t('close')}</button></div></div>`;
+    const modalHTML = `<div id="authModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);align-items:center;justify-content:center;z-index:2000;"><div style="background:white;max-width:400px;width:90%;border-radius:48px;padding:40px;text-align:center;"><i class="fas fa-seedling" style="font-size:3rem;color:#2d6a2f;"></i><div id="loginForm"><h2>${t('welcomeBack')}</h2><input type="email" id="loginEmail" placeholder="${t('email')}" style="width:100%;padding:14px;border-radius:40px;border:1px solid #ddd;margin-bottom:12px;"><input type="password" id="loginPassword" placeholder="${t('password')}" style="width:100%;padding:14px;border-radius:40px;border:1px solid #ddd;margin-bottom:12px;"><button id="doLoginBtn" style="background:#2d6a2f;color:white;padding:14px;border-radius:40px;width:100%;cursor:pointer;">${t('logInBtn')}</button><div style="text-align:center;margin:12px 0;color:#ccc;">OR</div><button id="googleSignInBtn" style="background:white;color:#333;border:1px solid #ddd;padding:12px;border-radius:40px;width:100%;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;"><i class="fab fa-google"></i> Sign in with Google</button><p style="margin-top:16px;"><a href="#" id="showSignupBtn" style="color:#2d6a2f;">${t('signUp')}</a> | <a href="#" id="forgotPasswordBtn" style="color:#2d6a2f;">${t('forgotPassword')}</a></p></div><div id="signupForm" style="display:none;"><h2>${t('createAccount')}</h2><input type="text" id="signupName" placeholder="${t('fullNamePlaceholder')}" style="width:100%;padding:14px;border-radius:40px;border:1px solid #ddd;margin-bottom:12px;"><input type="email" id="signupEmail" placeholder="${t('email')}" style="width:100%;padding:14px;border-radius:40px;border:1px solid #ddd;margin-bottom:12px;"><input type="password" id="signupPassword" placeholder="${t('passwordMin')}" style="width:100%;padding:14px;border-radius:40px;border:1px solid #ddd;margin-bottom:12px;"><button id="doSignupBtn" style="background:#2d6a2f;color:white;padding:14px;border-radius:40px;width:100%;cursor:pointer;">${t('signUp')}</button><p style="margin-top:16px;"><a href="#" id="showLoginBtn" style="color:#2d6a2f;">${t('backToLogin')}</a></p></div><div id="forgotPasswordForm" style="display:none;"><h2>${t('resetPassword')}</h2><input type="email" id="resetEmail" placeholder="${t('email')}" style="width:100%;padding:14px;border-radius:40px;border:1px solid #ddd;margin-bottom:12px;"><button id="doResetBtn" style="background:#2d6a2f;color:white;padding:14px;border-radius:40px;width:100%;cursor:pointer;">${t('sendResetLink')}</button><p style="margin-top:16px;"><a href="#" id="backToLoginBtn" style="color:#2d6a2f;">${t('backToLogin')}</a></p></div><button id="closeAuthModal" style="background:none;border:none;color:#888;margin-top:20px;cursor:pointer;">${t('close')}</button></div></div>`;
     document.body.insertAdjacentHTML('beforeend', modalHTML);
     document.getElementById('showSignupBtn')?.addEventListener('click', (e) => { e.preventDefault(); document.getElementById('loginForm').style.display = 'none'; document.getElementById('signupForm').style.display = 'block'; document.getElementById('forgotPasswordForm').style.display = 'none'; });
     document.getElementById('showLoginBtn')?.addEventListener('click', (e) => { e.preventDefault(); document.getElementById('signupForm').style.display = 'none'; document.getElementById('loginForm').style.display = 'block'; document.getElementById('forgotPasswordForm').style.display = 'none'; });
@@ -242,6 +316,7 @@ function addAuthModal() {
     document.getElementById('doSignupBtn')?.addEventListener('click', handleSignup);
     document.getElementById('doLoginBtn')?.addEventListener('click', handleLogin);
     document.getElementById('doResetBtn')?.addEventListener('click', handleResetPassword);
+    document.getElementById('googleSignInBtn')?.addEventListener('click', googleSignIn);
 }
 
 async function handleSignup() {
@@ -346,6 +421,75 @@ document.getElementById('saveProfileBtn')?.addEventListener('click', async () =>
 document.getElementById('closeEditModal')?.addEventListener('click', () => { document.getElementById('editProfileModal').style.display = 'none'; });
 document.getElementById('ctaSubscribeBtn')?.addEventListener('click', () => { document.getElementById('vegetables').scrollIntoView({ behavior: 'smooth' }); });
 
+// ============================================
+// LANGUAGE SETUP
+// ============================================
+
+function setLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('language', lang);
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        if (btn.getAttribute('data-lang') === lang) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key]) {
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                el.placeholder = translations[lang][key];
+            } else {
+                el.innerHTML = translations[lang][key];
+            }
+        }
+    });
+    document.querySelectorAll('.credit-pack .seeds-amount').forEach(el => {
+        const number = el.innerText.match(/\d+/)?.[0];
+        if (number) el.innerHTML = `${number} ${currentLang === 'ms' ? 'Kredit' : 'Credits'}`;
+    });
+    if (loginLogoutBtn) {
+        if (currentUser) loginLogoutBtn.textContent = t('logOut');
+        else loginLogoutBtn.textContent = t('logIn');
+    }
+    if (accountBtn) accountBtn.textContent = t('myAccount');
+    const modalTitle = document.querySelector('#buySeedsModal h3');
+    if (modalTitle) modalTitle.textContent = t('buyCreditsModal');
+    const insufficientTitle = document.querySelector('#insufficientModal h3');
+    if (insufficientTitle) insufficientTitle.textContent = t('insufficientCredits');
+    const accountTitle = document.querySelector('#accountModal h2');
+    if (accountTitle) accountTitle.innerHTML = `<i class="fas fa-user-circle"></i> ${t('myAccount')}`;
+    const editTitle = document.querySelector('#editProfileModal h3');
+    if (editTitle) editTitle.textContent = t('editProfileTitle');
+    const editNameInput = document.getElementById('editName');
+    if (editNameInput) editNameInput.placeholder = t('fullName');
+    const saveBtn = document.getElementById('saveProfileBtn');
+    if (saveBtn) saveBtn.textContent = t('saveChanges');
+    const cancelBtn = document.querySelector('#editProfileModal .modal-buttons button:last-child');
+    if (cancelBtn) cancelBtn.textContent = t('cancel');
+    const confirmBtn = document.getElementById('confirmBuySeedsBtn');
+    if (confirmBtn) confirmBtn.textContent = t('confirmPurchase');
+    const closeInsufficientBtn = document.getElementById('closeInsufficientModal');
+    if (closeInsufficientBtn) closeInsufficientBtn.textContent = t('buyCreditsBtn');
+    const loadingText = document.querySelector('#coursesLoading p');
+    if (loadingText) loadingText.textContent = t('loadingCourses');
+    const noResultsDiv = document.getElementById('noResults');
+    if (noResultsDiv) noResultsDiv.textContent = t('noResults');
+    filterAndRenderCourses();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => setLanguage(btn.getAttribute('data-lang')));
+    });
+    setLanguage(currentLang);
+});
+
+// ============================================
+// AUTH STATE LISTENER - FIXED FOR GOOGLE SIGN IN
+// ============================================
+
 auth.onAuthStateChanged(async (user) => {
     if (user && user.emailVerified) {
         currentUser = user;
@@ -353,14 +497,35 @@ auth.onAuthStateChanged(async (user) => {
         accountBtn.style.display = 'inline-block';
         loginLogoutBtn.onclick = () => logout();
         accountBtn.onclick = () => { updateAccountModal(); document.getElementById('accountModal').style.display = 'flex'; };
+        
+        // Always fetch fresh user data from Firestore
         const userDoc = await db.collection('users').doc(user.uid).get();
         if (userDoc.exists) {
             userProfile = userDoc.data();
             setSeedBalanceLocally(userProfile.seedsBalance || 0);
             filterAndRenderCourses();
+        } else {
+            // If user exists in Auth but not in Firestore, create them
+            console.log('User not found in Firestore, creating...');
+            await db.collection('users').doc(user.uid).set({
+                name: user.displayName || user.email.split('@')[0],
+                email: user.email,
+                seedsBalance: 0,
+                purchasedCourses: [],
+                totalSpent: 0,
+                transactions: [],
+                progress: {},
+                memberSince: new Date().toLocaleDateString(),
+                isAdmin: false
+            });
+            const newUserDoc = await db.collection('users').doc(user.uid).get();
+            userProfile = newUserDoc.data();
+            setSeedBalanceLocally(0);
+            filterAndRenderCourses();
         }
     } else {
-        currentUser = null; userProfile = null;
+        currentUser = null;
+        userProfile = null;
         loginLogoutBtn.textContent = t('logIn');
         accountBtn.style.display = 'none';
         loginLogoutBtn.onclick = () => showLoginModal();
@@ -368,6 +533,10 @@ auth.onAuthStateChanged(async (user) => {
         filterAndRenderCourses();
     }
 });
+
+// ============================================
+// NAVIGATION & EVENT LISTENERS
+// ============================================
 
 document.querySelectorAll('.nav-links a').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
