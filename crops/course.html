@@ -21,25 +21,157 @@
         .course-progress { background: rgba(255,255,255,0.15); border-radius: 20px; height: 8px; width: 100%; max-width: 300px; margin-top: 20px; }
         .course-progress-fill { background: #f5b642; height: 8px; border-radius: 20px; width: 0%; transition: width 0.3s; }
         .progress-text { margin-top: 12px; font-size: 0.85rem; }
-        .week-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
-        .week-nav button { background: #2d6a2f; color: white; border: none; padding: 10px 24px; border-radius: 40px; cursor: pointer; font-weight: 600; }
+        
+        .week-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .week-nav button {
+            background: #2d6a2f;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+        }
         .week-nav button:disabled { background: #ccc; cursor: not-allowed; }
         .week-selector { display: flex; gap: 8px; flex-wrap: wrap; }
-        .week-dot { width: 40px; height: 40px; border-radius: 50%; background: #eef3e6; display: flex; align-items: center; justify-content: center; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .week-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #eef3e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
         .week-dot.active { background: #2d6a2f; color: white; }
-        .week-card { background: white; border-radius: 28px; padding: 28px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-left: 6px solid #6aab4a; }
-        .week-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 20px; }
+        .week-dot.quiz-available { background: #f5b642; color: #2a441f; }
+        .week-dot.quiz-completed { background: #2d6a2f; color: white; }
+        
+        .week-card {
+            background: white;
+            border-radius: 28px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-left: 6px solid #6aab4a;
+        }
+        .week-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
         .week-title { font-size: 1.4rem; font-weight: 700; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; margin: 20px 0; background: #1f2e1c; border-radius: 24px; overflow: hidden; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        .checklist-section { background: #f8faf5; border-radius: 20px; padding: 20px; margin: 20px 0; }
-        .task-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #e0e8d8; }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            margin: 20px 0;
+            background: #1f2e1c;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .checklist-section {
+            background: #f8faf5;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e8d8;
+        }
         .task-item input { width: 20px; height: 20px; cursor: pointer; }
         .task-text.completed { text-decoration: line-through; color: #8ba07e; }
-        .tips-box { background: #eef3e6; border-radius: 16px; padding: 16px; border-left: 4px solid #f5b642; }
+        
+        .quiz-section {
+            background: #fefaf0;
+            border-radius: 20px;
+            padding: 24px;
+            margin: 20px 0;
+            border: 2px solid #f5b642;
+        }
+        .quiz-section.review {
+            background: #e8f5e9;
+            border-color: #2d6a2f;
+        }
+        .quiz-question {
+            margin-bottom: 24px;
+            padding: 16px;
+            background: white;
+            border-radius: 16px;
+        }
+        .quiz-choice {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .quiz-choice:hover { background: #f0f4ea; }
+        .quiz-choice input { margin-right: 12px; }
+        .quiz-submit {
+            background: #2d6a2f;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .quiz-result {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 16px;
+            text-align: center;
+        }
+        .quiz-result.pass { background: #e8f5e9; color: #2d6a2f; }
+        .quiz-result.fail { background: #fde8e8; color: #d9534f; }
+        
+        .tips-box {
+            background: #eef3e6;
+            border-radius: 16px;
+            padding: 16px;
+            border-left: 4px solid #f5b642;
+        }
         .loading { text-align: center; padding: 60px; }
-        .loading-spinner { display: inline-block; width: 40px; height: 40px; border: 4px solid #eef3e6; border-top-color: #2d6a2f; border-radius: 50%; animation: spin 0.6s linear infinite; }
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #eef3e6;
+            border-top-color: #2d6a2f;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
         @keyframes spin { to { transform: rotate(360deg); } }
+        
         @media (max-width: 700px) {
             .course-header { padding: 24px; }
             .week-title { font-size: 1.2rem; }
@@ -94,6 +226,11 @@
     let currentUser = null;
     let currentWeek = 0;
     let completedTasks = [];
+    let quizData = {};
+    let quizAnswers = {};
+    let quizSubmitted = {};
+    let quizPassed = {};
+    let quizSavedAnswers = {};
     
     auth.onAuthStateChanged(async (user) => {
         if (user && user.emailVerified) {
@@ -128,13 +265,38 @@
     
     async function loadCourse() {
         try {
-            const doc = await db.collection('courses').doc('course_data').get();
-            if (doc.exists && doc.data().data && doc.data().data[courseId]) {
-                courseData = doc.data().data[courseId];
+            // Load course data
+            const courseDoc = await db.collection('courses').doc('course_data').get();
+            if (courseDoc.exists && courseDoc.data().data && courseDoc.data().data[courseId]) {
+                courseData = courseDoc.data().data[courseId];
                 
+                // Load user progress
                 const userDoc = await db.collection('users').doc(currentUser.uid).get();
                 const progress = userDoc.data()?.progress?.[courseId] || [];
                 completedTasks = progress;
+                
+                // Load quiz data
+                const quizDoc = await db.collection('quizzes').doc('quiz_data').get();
+                if (quizDoc.exists && quizDoc.data().data) {
+                    const allQuizzes = quizDoc.data().data;
+                    for (let key in allQuizzes) {
+                        const quiz = allQuizzes[key];
+                        if (quiz.courseId === courseId) {
+                            quizData[quiz.week] = quiz;
+                        }
+                    }
+                }
+                
+                // Load saved quiz results
+                const quizResults = userDoc.data()?.quizResults?.[courseId] || {};
+                for (let week in quizResults) {
+                    quizPassed[week] = quizResults[week];
+                    quizSubmitted[week] = true;
+                }
+                
+                // Load saved quiz answers for review
+                const savedAnswers = userDoc.data()?.quizAnswers?.[courseId] || {};
+                quizSavedAnswers = savedAnswers;
                 
                 renderCourse();
             } else {
@@ -151,6 +313,50 @@
         updateData[`progress.${courseId}`] = completedTasks;
         await db.collection('users').doc(currentUser.uid).update(updateData);
         updateProgressDisplay();
+    }
+    
+    async function saveQuizResult(week, passed, score, totalQuestions) {
+        if (!currentUser) return;
+        
+        // Save quiz result
+        const updateData = {};
+        updateData[`quizResults.${courseId}.${week}`] = passed;
+        
+        // Save quiz score details
+        updateData[`quizScores.${courseId}.${week}`] = {
+            score: score,
+            total: totalQuestions,
+            percentage: Math.floor((score / totalQuestions) * 100),
+            passed: passed,
+            date: new Date().toLocaleDateString(),
+            timestamp: new Date().toISOString()
+        };
+        
+        await db.collection('users').doc(currentUser.uid).update(updateData);
+        
+        // Log recent activity
+        const activity = {
+            title: `Completed Week ${week} Quiz for ${courseData.name}`,
+            description: `Score: ${score}/${totalQuestions} (${Math.floor((score / totalQuestions) * 100)}%)`,
+            icon: passed ? 'fa-check-circle' : 'fa-chart-line',
+            date: new Date().toLocaleDateString(),
+            timestamp: new Date().toISOString(),
+            type: 'quiz'
+        };
+        
+        const userDoc = await db.collection('users').doc(currentUser.uid).get();
+        const recentActivity = userDoc.data()?.recentActivity || [];
+        recentActivity.unshift(activity);
+        const trimmed = recentActivity.slice(0, 20);
+        await db.collection('users').doc(currentUser.uid).update({ recentActivity: trimmed });
+    }
+    
+    async function saveQuizAnswers(weekNum, answers) {
+        if (!currentUser) return;
+        quizSavedAnswers[weekNum] = answers;
+        const updateData = {};
+        updateData[`quizAnswers.${courseId}.${weekNum}`] = answers;
+        await db.collection('users').doc(currentUser.uid).update(updateData);
     }
     
     function calculateOverallProgress() {
@@ -178,6 +384,20 @@
         const progressText = document.querySelector('.progress-text');
         if (progressFill) progressFill.style.width = percent + '%';
         if (progressText) progressText.innerHTML = `${percent}% complete`;
+    }
+    
+    function isWeekComplete(weekIndex) {
+        const week = courseData.weeks?.[weekIndex];
+        if (!week || !week.tasks) return true;
+        
+        let allCompleted = true;
+        for (let j = 0; j < week.tasks.length; j++) {
+            if (!completedTasks.includes(`${weekIndex}_${j}`)) {
+                allCompleted = false;
+                break;
+            }
+        }
+        return allCompleted;
     }
     
     function renderCourse() {
@@ -234,8 +454,17 @@
         selector.innerHTML = '';
         for (let i = 0; i < totalWeeks; i++) {
             const isActive = i === currentWeek;
+            const weekComplete = isWeekComplete(i);
+            const hasQuiz = quizData[i + 1] !== undefined;
+            const quizCompleted = quizPassed[i + 1];
+            
+            let dotClass = 'week-dot';
+            if (isActive) dotClass += ' active';
+            else if (quizCompleted) dotClass += ' quiz-completed';
+            else if (hasQuiz && weekComplete && !quizSubmitted[i + 1]) dotClass += ' quiz-available';
+            
             const dot = document.createElement('div');
-            dot.className = `week-dot ${isActive ? 'active' : ''}`;
+            dot.className = dotClass;
             dot.innerHTML = i + 1;
             dot.addEventListener('click', () => {
                 currentWeek = i;
@@ -253,11 +482,15 @@
         }
         
         const weekTasks = week.tasks || [];
+        const weekComplete = isWeekComplete(weekIndex);
+        const weekNum = weekIndex + 1;
+        const hasQuiz = quizData[weekNum] !== undefined;
+        const quizCompleted = quizPassed[weekNum];
         
         container.innerHTML = `
             <div class="week-card">
                 <div class="week-header">
-                    <h2 class="week-title">Week ${weekIndex + 1}: ${week.title}</h2>
+                    <h2 class="week-title">Week ${weekNum}: ${week.title}</h2>
                 </div>
                 
                 ${week.videoUrl ? `
@@ -270,10 +503,12 @@
                 
                 ${weekTasks.length > 0 ? `
                     <div class="checklist-section">
-                        <h3><i class="fas fa-list-check"></i> Week ${weekIndex + 1} Tasks</h3>
+                        <h3><i class="fas fa-list-check"></i> Week ${weekNum} Tasks</h3>
                         <div id="tasksList"></div>
                     </div>
                 ` : ''}
+                
+                <div id="quizContainer"></div>
             </div>
         `;
         
@@ -301,7 +536,6 @@
                     }
                     await saveProgress();
                     
-                    // Update UI
                     const taskLabel = e.target.nextElementSibling;
                     if (e.target.checked) {
                         taskLabel.classList.add('completed');
@@ -309,16 +543,191 @@
                         taskLabel.classList.remove('completed');
                     }
                     
-                    // Update progress bar and text
                     const newPercent = calculateOverallProgress();
                     const progressFill = document.querySelector('.course-progress-fill');
                     const progressText = document.querySelector('.progress-text');
                     if (progressFill) progressFill.style.width = newPercent + '%';
                     if (progressText) progressText.innerHTML = `${newPercent}% complete`;
+                    
+                    if (isWeekComplete(weekIdx) && quizData[weekIdx + 1] && !quizPassed[weekIdx + 1]) {
+                        renderCourse();
+                    }
                 });
             });
         }
+        
+        if (hasQuiz && weekComplete) {
+            renderQuiz(weekNum);
+        } else if (!hasQuiz && weekComplete) {
+            const quizContainer = document.getElementById('quizContainer');
+            if (quizContainer) {
+                quizContainer.innerHTML = `<div class="quiz-result pass"><i class="fas fa-check-circle"></i> Week ${weekNum} completed!</div>`;
+            }
+        }
     }
+    
+    function renderQuiz(weekNum) {
+        const quiz = quizData[weekNum];
+        if (!quiz) return;
+        
+        const container = document.getElementById('quizContainer');
+        if (!container) return;
+        
+        if (quizPassed[weekNum]) {
+            container.innerHTML = renderReviewMode(weekNum, quiz);
+            return;
+        }
+        
+        quizAnswers[weekNum] = {};
+        
+        let html = `
+            <div class="quiz-section">
+                <h3><i class="fas fa-question-circle"></i> ${quiz.title}</h3>
+                <p>Complete the quiz to earn credit for this week. You need 70% to pass.</p>
+        `;
+        
+        quiz.questions.forEach((q, qIdx) => {
+            html += `
+                <div class="quiz-question">
+                    <p><strong>${qIdx + 1}. ${q.text}</strong></p>
+                    <div id="question_${weekNum}_${qIdx}">
+            `;
+            q.choices.forEach((choice, cIdx) => {
+                html += `
+                    <div class="quiz-choice" onclick="selectAnswer(${weekNum}, ${qIdx}, ${cIdx + 1})">
+                        <input type="radio" name="q_${weekNum}_${qIdx}" value="${cIdx + 1}" id="q_${weekNum}_${qIdx}_${cIdx}">
+                        <label for="q_${weekNum}_${qIdx}_${cIdx}">${choice}</label>
+                    </div>
+                `;
+            });
+            html += `</div></div>`;
+        });
+        
+        html += `
+            <button class="quiz-submit" onclick="submitQuiz(${weekNum})">Submit Quiz</button>
+            <div id="quizResult_${weekNum}"></div>
+        </div>`;
+        
+        container.innerHTML = html;
+    }
+    
+    function renderReviewMode(weekNum, quiz) {
+        const savedAnswers = quizSavedAnswers[weekNum] || {};
+        
+        let html = `
+            <div class="quiz-section review">
+                <h3><i class="fas fa-check-circle"></i> ${quiz.title} - Review Mode</h3>
+                <p><i class="fas fa-award"></i> You passed this quiz! Below are the correct answers for review.</p>
+        `;
+        
+        quiz.questions.forEach((q, qIdx) => {
+            const isCorrect = savedAnswers[qIdx] === q.correct;
+            const userAnswer = savedAnswers[qIdx];
+            const correctChoice = q.choices[q.correct - 1];
+            
+            html += `
+                <div class="quiz-question" style="border-left: 4px solid ${isCorrect ? '#2d6a2f' : '#d9534f'};">
+                    <p><strong>${qIdx + 1}. ${q.text}</strong></p>
+                    <div style="margin-left: 20px;">
+            `;
+            
+            q.choices.forEach((choice, cIdx) => {
+                const choiceNum = cIdx + 1;
+                let style = '';
+                let icon = '';
+                
+                if (choiceNum === q.correct) {
+                    style = 'color: #2d6a2f; font-weight: bold; background: #e8f5e9; padding: 8px; margin: 4px 0; border-radius: 8px;';
+                    icon = '<i class="fas fa-check-circle" style="color:#2d6a2f; margin-right:8px;"></i>';
+                }
+                if (userAnswer === choiceNum && choiceNum !== q.correct) {
+                    style = 'color: #d9534f; text-decoration: line-through; padding: 8px; margin: 4px 0; border-radius: 8px;';
+                    icon = '<i class="fas fa-times-circle" style="color:#d9534f; margin-right:8px;"></i>';
+                }
+                if (choiceNum !== q.correct && userAnswer !== choiceNum) {
+                    style = 'padding: 8px; margin: 4px 0;';
+                }
+                
+                html += `
+                    <div style="${style}">
+                        ${icon} ${choiceNum}. ${choice}
+                        ${choiceNum === q.correct ? ' ✓ (Correct Answer)' : ''}
+                    </div>
+                `;
+            });
+            
+            if (userAnswer && userAnswer !== q.correct) {
+                html += `<div style="margin-top: 8px; padding: 8px; background: #fde8e8; border-radius: 8px; font-size: 0.85rem;">
+                    <i class="fas fa-info-circle"></i> Your answer was: "${q.choices[userAnswer - 1]}". The correct answer is "${correctChoice}".
+                </div>`;
+            } else if (userAnswer && userAnswer === q.correct) {
+                html += `<div style="margin-top: 8px; padding: 8px; background: #e8f5e9; border-radius: 8px; font-size: 0.85rem;">
+                    <i class="fas fa-thumbs-up"></i> You answered correctly!
+                </div>`;
+            }
+            
+            html += `</div></div>`;
+        });
+        
+        html += `<div style="margin-top: 20px; padding: 12px; background: #e8f5e9; border-radius: 12px; text-align: center;">
+            <i class="fas fa-certificate"></i> You have successfully completed this week's quiz!
+        </div></div>`;
+        
+        return html;
+    }
+    
+    window.selectAnswer = (weekNum, qIdx, answer) => {
+        quizAnswers[weekNum][qIdx] = answer;
+        const radio = document.getElementById(`q_${weekNum}_${qIdx}_${answer - 1}`);
+        if (radio) radio.checked = true;
+    };
+    
+    window.submitQuiz = async (weekNum) => {
+        const quiz = quizData[weekNum];
+        if (!quiz) return;
+        
+        let score = 0;
+        const userAnswers = {};
+        
+        quiz.questions.forEach((q, qIdx) => {
+            const answer = quizAnswers[weekNum][qIdx];
+            userAnswers[qIdx] = answer;
+            if (answer === q.correct) {
+                score++;
+            }
+        });
+        
+        const total = quiz.questions.length;
+        const percentage = (score / total) * 100;
+        const passed = percentage >= 70;
+        
+        const resultDiv = document.getElementById(`quizResult_${weekNum}`);
+        
+        if (passed) {
+            quizSavedAnswers[weekNum] = userAnswers;
+            await saveQuizAnswers(weekNum, userAnswers);
+            
+            resultDiv.innerHTML = `<div class="quiz-result pass"><i class="fas fa-check-circle"></i> You passed! Score: ${score}/${total} (${Math.floor(percentage)}%)<br>Your answers have been saved for review.</div>`;
+            quizSubmitted[weekNum] = true;
+            quizPassed[weekNum] = true;
+            await saveQuizResult(weekNum, true, score, total);
+            
+            setTimeout(() => {
+                renderCourse();
+            }, 1500);
+        } else {
+            resultDiv.innerHTML = `<div class="quiz-result fail"><i class="fas fa-times-circle"></i> You need 70% to pass. Score: ${score}/${total} (${Math.floor(percentage)}%). Try again!</div>`;
+            quizAnswers[weekNum] = {};
+            
+            // Reset radio buttons
+            quiz.questions.forEach((q, qIdx) => {
+                for (let c = 0; c < q.choices.length; c++) {
+                    const radio = document.getElementById(`q_${weekNum}_${qIdx}_${c}`);
+                    if (radio) radio.checked = false;
+                }
+            });
+        }
+    };
 </script>
 </body>
 </html>
