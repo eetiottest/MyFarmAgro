@@ -21,9 +21,21 @@ const toastContainer = document.getElementById('toastContainer');
 const tabCrops = document.getElementById('tabCrops');
 const tabFundamentals = document.getElementById('tabFundamentals');
 
-// Initialize EmailJS with error handling
+// Initialize EmailJS
 if (typeof emailjs !== 'undefined') {
     emailjs.init({ publicKey: "bDahuu_rYnIhtWtsH" });
+}
+
+// ============================================
+// CHECK LOGIN BEFORE NAVIGATION
+// ============================================
+function checkLoginAndRedirect(page) {
+    if (window.currentUser) {
+        window.location.href = page;
+    } else {
+        showToast('Please log in first to access Dashboard and Profile', 'warning');
+        showLoginModal();
+    }
 }
 
 // ============================================
@@ -149,16 +161,6 @@ async function renderCourses(courses) {
     `}).join('');
 }
 
-// Add this function to check login before navigating
-function checkLoginAndRedirect(page) {
-    if (window.currentUser) {
-        window.location.href = page;
-    } else {
-        showToast('Please log in first to access Dashboard and Profile', 'warning');
-        showLoginModal();
-    }
-}
-
 // ============================================
 // PAYMENT FUNCTIONS
 // ============================================
@@ -214,7 +216,7 @@ function showToast(message, type = 'success') {
 }
 
 // ============================================
-// AUTHENTICATION MODAL
+// AUTHENTICATION MODAL (FULL - Email + Google)
 // ============================================
 
 function addAuthModal() {
@@ -224,13 +226,19 @@ function addAuthModal() {
     <div id="authModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:2000;">
         <div style="background:white; max-width:400px; width:90%; border-radius:16px; padding:32px;">
             <i class="fas fa-seedling" style="font-size:2rem; color:#2d6a2f; margin-bottom:16px;"></i>
+            
+            <!-- Login Form -->
             <div id="loginForm">
                 <h2 style="margin-bottom:8px;">Welcome Back</h2>
                 <input type="email" id="loginEmail" placeholder="Email" style="width:100%; padding:12px; border-radius:8px; border:1px solid #d1d9e6; margin-bottom:12px;">
                 <input type="password" id="loginPassword" placeholder="Password" style="width:100%; padding:12px; border-radius:8px; border:1px solid #d1d9e6; margin-bottom:12px;">
                 <button id="doLoginBtn" style="background:#2d6a2f; color:white; padding:12px; border-radius:8px; width:100%; cursor:pointer; font-weight:600;">Log In</button>
+                <div style="text-align:center; margin:12px 0; color:#ccc;">OR</div>
+                <button id="googleSignInBtn" style="background:white; color:#333; border:1px solid #ddd; padding:12px; border-radius:8px; width:100%; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px;"><i class="fab fa-google"></i> Sign in with Google</button>
                 <p style="margin-top:16px; text-align:center;"><a href="#" id="showSignupBtn" style="color:#2d6a2f;">Sign Up</a> | <a href="#" id="forgotPasswordBtn" style="color:#2d6a2f;">Forgot Password?</a></p>
             </div>
+            
+            <!-- Signup Form -->
             <div id="signupForm" style="display:none;">
                 <h2 style="margin-bottom:8px;">Create Account</h2>
                 <input type="text" id="signupName" placeholder="Full Name" style="width:100%; padding:12px; border-radius:8px; border:1px solid #d1d9e6; margin-bottom:12px;">
@@ -239,18 +247,22 @@ function addAuthModal() {
                 <button id="doSignupBtn" style="background:#2d6a2f; color:white; padding:12px; border-radius:8px; width:100%; cursor:pointer; font-weight:600;">Sign Up</button>
                 <p style="margin-top:16px; text-align:center;"><a href="#" id="showLoginBtn" style="color:#2d6a2f;">Back to Login</a></p>
             </div>
+            
+            <!-- Forgot Password Form -->
             <div id="forgotPasswordForm" style="display:none;">
                 <h2 style="margin-bottom:8px;">Reset Password</h2>
                 <input type="email" id="resetEmail" placeholder="Email" style="width:100%; padding:12px; border-radius:8px; border:1px solid #d1d9e6; margin-bottom:12px;">
                 <button id="doResetBtn" style="background:#2d6a2f; color:white; padding:12px; border-radius:8px; width:100%; cursor:pointer; font-weight:600;">Send Reset Link</button>
                 <p style="margin-top:16px; text-align:center;"><a href="#" id="backToLoginBtn" style="color:#2d6a2f;">Back to Login</a></p>
             </div>
+            
             <button id="closeAuthModal" style="background:none; border:none; color:#999; margin-top:16px; width:100%; cursor:pointer;">Close</button>
         </div>
     </div>`;
     
     document.body.insertAdjacentHTML('beforeend', modalHTML);
     
+    // Event listeners
     document.getElementById('showSignupBtn')?.addEventListener('click', (e) => {
         e.preventDefault();
         document.getElementById('loginForm').style.display = 'none';
@@ -279,6 +291,7 @@ function addAuthModal() {
     document.getElementById('doSignupBtn')?.addEventListener('click', handleSignup);
     document.getElementById('doLoginBtn')?.addEventListener('click', handleLogin);
     document.getElementById('doResetBtn')?.addEventListener('click', handleResetPassword);
+    document.getElementById('googleSignInBtn')?.addEventListener('click', googleSignIn);
 }
 
 async function handleSignup() {
@@ -331,6 +344,34 @@ async function handleResetPassword() {
     } catch (error) { showToast(error.message, 'error'); }
 }
 
+async function googleSignIn() {
+    try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const result = await auth.signInWithPopup(provider);
+        const user = result.user;
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        if (!userDoc.exists) {
+            await db.collection('users').doc(user.uid).set({
+                name: user.displayName || user.email.split('@')[0],
+                email: user.email,
+                purchasedCourses: [],
+                totalSpent: 0,
+                transactions: [],
+                progress: {},
+                memberSince: new Date().toLocaleDateString(),
+                isAdmin: false,
+                bookmarks: [],
+                recentActivity: [],
+                certificates: [],
+                streak: 0
+            });
+        }
+        showToast('Logged in with Google!', 'success');
+        document.getElementById('authModal').style.display = 'none';
+        window.location.href = 'dashboard.html';
+    } catch (error) { showToast(error.message, 'error'); }
+}
+
 function showLoginModal() { 
     addAuthModal(); 
     document.getElementById('loginForm').style.display = 'block'; 
@@ -343,7 +384,6 @@ function showLoginModal() {
 // AUTH STATE LISTENER
 // ============================================
 
-// Check auth on page load
 auth.onAuthStateChanged(async (user) => {
     if (user && user.emailVerified) {
         window.currentUser = user;
@@ -519,6 +559,7 @@ setTimeout(() => {
     loadCoursesFromFirestore();
 }, 500);
 
+// Make functions global
 window.accessCourse = accessCourse;
 window.showLoginModal = showLoginModal;
 window.showPaymentModal = showPaymentModal;
