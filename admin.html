@@ -6,903 +6,201 @@
     <title>Admin Dashboard | My FarmAgro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #fefaf0; color: #1e2a1f; }
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
-        
-        .login-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #1f4f21, #2d6a2f);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        .login-card {
-            background: white;
-            max-width: 400px;
-            width: 90%;
-            border-radius: 48px;
-            padding: 48px 40px;
-            text-align: center;
-        }
-        .login-card h2 { color: #2d6a2f; margin-bottom: 8px; }
-        .login-card input {
-            width: 100%;
-            padding: 14px;
-            border-radius: 40px;
-            border: 1px solid #ddd;
-            margin-bottom: 16px;
-            font-size: 1rem;
-        }
-        .login-card button {
-            width: 100%;
-            background: #2d6a2f;
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 40px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-        .error-msg { color: #e74c3c; font-size: 0.8rem; margin-top: 12px; display: none; }
-        
-        .dashboard { display: none; }
-        header {
-            background: #ffffffdd;
-            backdrop-filter: blur(12px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid #e2e6d9;
-        }
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 0;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .logo {
-            font-size: 1.6rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #2b5e2b, #6f9e3f);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 24px;
-            margin: 32px 0;
-        }
-        .stat-card {
-            background: white;
-            border-radius: 28px;
-            padding: 24px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border: 1px solid #eef3e6;
-        }
-        .stat-card i { font-size: 2rem; color: #2d6a2f; margin-bottom: 12px; }
-        .stat-card .value { font-size: 2rem; font-weight: 800; color: #2d6a2f; }
-        .stat-card .label { color: #6c7a63; font-size: 0.8rem; }
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 32px 0 20px;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-        .section-header h2 { font-size: 1.5rem; }
-        .btn-primary {
-            background: #2d6a2f;
-            color: white;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .btn-secondary {
-            background: #6c7a63;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-weight: 500;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-        .btn-warning {
-            background: #f5b642;
-            color: #2a441f;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 40px;
-            font-weight: 500;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-        .btn-danger {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 40px;
-            font-weight: 500;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-        table {
-            width: 100%;
-            background: white;
-            border-radius: 28px;
-            overflow: hidden;
-            border-collapse: collapse;
-        }
-        th, td { padding: 16px; text-align: left; border-bottom: 1px solid #eef3e6; }
-        th { background: #f8faf5; font-weight: 600; }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background: white;
-            max-width: 800px;
-            width: 90%;
-            border-radius: 32px;
-            padding: 32px;
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-        .form-group { margin-bottom: 20px; }
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-        }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 40px;
-            border: 1px solid #ddd;
-            font-family: inherit;
-            font-size: 0.9rem;
-        }
-        .form-group textarea {
-            border-radius: 20px;
-            resize: vertical;
-        }
-        .image-preview {
-            width: 100px;
-            height: 100px;
-            border-radius: 16px;
-            object-fit: cover;
-            margin-top: 10px;
-            border: 1px solid #ddd;
-        }
-        .upload-area {
-            border: 2px dashed #ddd;
-            border-radius: 20px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 10px;
-        }
-        .upload-area:hover { border-color: #2d6a2f; background: #f8faf5; }
-        .upload-progress {
-            width: 100%;
-            height: 4px;
-            background: #eef3e6;
-            border-radius: 4px;
-            margin-top: 10px;
-            display: none;
-        }
-        .upload-progress-bar {
-            width: 0%;
-            height: 4px;
-            background: #2d6a2f;
-            border-radius: 4px;
-            transition: width 0.3s;
-        }
-        .tab-bar {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 24px;
-            border-bottom: 1px solid #eef3e6;
-            padding-bottom: 12px;
-        }
-        .tab {
-            padding: 8px 20px;
-            border-radius: 40px;
-            cursor: pointer;
-            background: #f0f4ea;
-            transition: 0.2s;
-        }
-        .tab.active { background: #2d6a2f; color: white; }
-        
-        .week-card-builder {
-            background: #f8faf5;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 16px;
-        }
-        .week-header-builder {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .task-item-builder {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 8px;
-        }
-        .task-item-builder input { flex: 1; padding: 8px 12px; border-radius: 40px; border: 1px solid #ddd; }
-        .course-image-preview { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; }
-        .video-upload-preview { margin-top: 10px; font-size: 0.8rem; color: #2d6a2f; }
-        
-        @media (max-width: 800px) {
-            th, td { padding: 10px; font-size: 0.8rem; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="admin.css">
 </head>
 <body>
 
 <!-- Login Screen -->
 <div id="loginScreen" class="login-screen">
     <div class="login-card">
-        <i class="fas fa-shield-alt" style="font-size: 3rem; color: #2d6a2f; margin-bottom: 16px;"></i>
-        <h2>Admin Login</h2>
-        <p style="margin-bottom: 24px; color: #6c7a63;">Login with your My FarmAgro account</p>
+        <i class="fas fa-leaf" style="font-size: 2.5rem; color: #2d6a2f; margin-bottom: 16px;"></i>
+        <h2>Admin Access</h2>
+        <p>Sign in to manage your platform</p>
         <input type="email" id="adminEmail" placeholder="Email">
         <input type="password" id="adminPassword" placeholder="Password">
-        <button id="adminLoginBtn">Login</button>
+        <button id="adminLoginBtn">Sign In</button>
         <div id="loginError" class="error-msg"></div>
     </div>
 </div>
 
 <!-- Admin Dashboard -->
 <div id="dashboard" class="dashboard">
-    <header>
-        <div class="container">
-            <div class="navbar">
-                <div class="logo"><i class="fas fa-seedling"></i> My FarmAgro Admin</div>
-                <div class="nav-links">
-                    <span style="color: #2d6a2f;"><i class="fas fa-user-shield"></i> <span id="adminName">Admin</span></span>
-                    <button class="btn-outline" id="logoutBtn" style="margin-left: 20px;">Logout</button>
-                </div>
-            </div>
+    <header class="admin-header">
+        <div class="header-inner">
+            <div class="logo"><i class="fas fa-leaf"></i> FarmAgro Admin</div>
+            <div><button class="logout-btn" id="logoutBtn">Sign out</button></div>
         </div>
     </header>
 
-    <main class="container">
-        <div class="stats-grid" id="statsGrid">
-            <div class="stat-card"><i class="fas fa-users"></i><div class="value" id="totalUsers">0</div><div class="label">Total Users</div></div>
-            <div class="stat-card"><i class="fas fa-coins"></i><div class="value" id="totalSeeds">0</div><div class="label">Credits Sold</div></div>
-            <div class="stat-card"><i class="fas fa-money-bill"></i><div class="value" id="totalRevenue">RM0</div><div class="label">Revenue</div></div>
-            <div class="stat-card"><i class="fas fa-book-open"></i><div class="value" id="totalEnrollments">0</div><div class="label">Enrollments</div></div>
+    <main class="admin-main">
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card"><div class="value" id="totalUsers">0</div><div class="label">Total Farmers</div><div class="trend up" id="userGrowth">+0% this month</div></div>
+            <div class="stat-card"><div class="value" id="enrollmentsToday">0</div><div class="label">Enrollments Today</div><div class="trend" id="enrollmentsTrend">Waiting for data</div></div>
+            <div class="stat-card"><div class="value" id="activeCourses">0</div><div class="label">Active Courses</div><div class="trend">With content</div></div>
+            <div class="stat-card"><div class="value" id="totalRevenue">RM0</div><div class="label">Total Revenue</div><div class="trend up" id="revenueTrend">+RM0 this month</div></div>
+            <div class="stat-card"><div class="value" id="aiChatVolume">0</div><div class="label">AI Chat Questions</div><div class="trend">Last 30 days</div></div>
+            <div class="stat-card"><div class="value" id="completionRate">0%</div><div class="label">Avg Completion</div><div class="trend">Across all courses</div></div>
         </div>
 
-        <div class="section-header">
-            <h2><i class="fas fa-users"></i> Users</h2>
-            <button class="btn-primary" id="refreshUsersBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
-        </div>
-        <div style="overflow-x: auto;">
-            <table id="usersTable">
-                <thead><tr><th>Name</th><th>Email</th><th>Credits</th><th>Courses</th><th>Spent</th><th>Joined</th><th>Actions</th></tr></thead>
-                <tbody id="usersList"><tr><td colspan="7" style="text-align: center;">Loading users......</tbody>
-            </table>
-        </div>
-
-        <div class="section-header">
-            <h2><i class="fas fa-seedling"></i> Courses</h2>
-            <button class="btn-primary" id="addCourseBtn"><i class="fas fa-plus"></i> Add Course</button>
-        </div>
-        <div style="overflow-x: auto;">
-            <table id="coursesTable">
-                <thead><tr><th>Image</th><th>ID</th><th>Name</th><th>Price</th><th>Weeks</th><th>Actions</th></tr></thead>
-                <tbody id="coursesList"><tr><td colspan="6" style="text-align: center;">Loading courses...</tbody>
-            </table>
+        <!-- Charts Row -->
+        <div class="charts-row">
+            <div class="chart-card">
+                <h3><i class="fas fa-chart-line"></i> Enrollment Trends (Last 6 Months)</h3>
+                <canvas id="enrollmentChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3><i class="fas fa-chart-pie"></i> Popular Courses</h3>
+                <div id="popularCoursesList" class="popular-list">Loading...</div>
+            </div>
         </div>
 
-        <div class="section-header">
-            <h2><i class="fas fa-history"></i> Recent Transactions</h2>
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" data-tab="overview">📊 Overview</button>
+            <button class="tab" data-tab="users">👥 Farmers</button>
+            <button class="tab" data-tab="courses">📚 Course Builder</button>
+            <button class="tab" data-tab="quizzes">📝 Quiz Maker</button>
+            <button class="tab" data-tab="prices">💰 Market Prices</button>
         </div>
-        <div style="overflow-x: auto;">
-            <table id="transactionsTable">
-                <thead><tr><th>User</th><th>Description</th><th>Amount</th><th>Date</th></tr></thead>
-                <tbody id="transactionsList"><tr><td colspan="4" style="text-align: center;">Loading transactions...</tbody>
-            </table>
+
+        <!-- Overview Tab -->
+        <div id="overviewTab">
+            <div class="stats-row">
+                <div class="stats-card">
+                    <h3><i class="fas fa-calendar-week"></i> Enrollments This Week</h3>
+                    <div class="big-number" id="weekEnrollments">0</div>
+                    <div class="small-text">Last 7 days</div>
+                </div>
+                <div class="stats-card">
+                    <h3><i class="fas fa-chart-line"></i> Completion Rate</h3>
+                    <div class="big-number" id="overallCompletion">0%</div>
+                    <div class="small-text">Users who completed courses</div>
+                </div>
+                <div class="stats-card">
+                    <h3><i class="fas fa-star"></i> Most Popular Course</h3>
+                    <div class="big-number" id="topCourse">-</div>
+                    <div class="small-text" id="topCourseCount">0 enrollments</div>
+                </div>
+                <div class="stats-card">
+                    <h3><i class="fas fa-dollar-sign"></i> Avg Revenue per User</h3>
+                    <div class="big-number" id="avgRevenue">RM0</div>
+                    <div class="small-text">Lifetime value</div>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h2>Course Completion Rates</h2>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>Course Name</th><th>Enrolled</th><th>Completed</th><th>Completion Rate</th></tr></thead>
+                    <tbody id="completionRatesList"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Users Tab -->
+        <div id="usersTab" style="display: none;">
+            <div class="section-header">
+                <h2>All Farmers</h2>
+                <button class="btn-primary" id="refreshUsersBtn">Refresh</button>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th></th><th>Name</th><th>Email</th><th>Courses</th><th>Spent</th><th>Lessons</th><th>Joined</th></tr></thead>
+                    <tbody id="usersList"><tr><td colspan="7" class="empty-state">Loading farmers...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Course Builder Tab -->
+        <div id="coursesTab" style="display: none;">
+            <div class="section-header">
+                <h2>Course Library</h2>
+                <button class="btn-primary" id="addCourseBtn">+ New Course</button>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>ID</th><th>Name</th><th>Price</th><th>Category</th><th>Actions</th></tr></thead>
+                    <tbody id="coursesList"><tr><td colspan="5" class="empty-state">Loading courses...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Quiz Maker Tab -->
+        <div id="quizzesTab" style="display: none;">
+            <div class="section-header">
+                <h2>Course Quizzes</h2>
+                <button class="btn-primary" id="addQuizBtn">+ New Quiz</button>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>ID</th><th>Course</th><th>Week</th><th>Questions</th><th>Actions</th></tr></thead>
+                    <tbody id="quizzesList"><tr><td colspan="5" class="empty-state">Loading quizzes...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Market Prices Tab -->
+        <div id="pricesTab" style="display: none;">
+            <div class="section-header">
+                <h2>Market Prices</h2>
+                <div>
+                    <button class="btn-primary" id="addPriceItemBtn" style="margin-right: 10px;">+ Add New Item</button>
+                    <button class="btn-primary" id="savePricesBtn">Save All Prices</button>
+                </div>
+            </div>
+            <div id="priceEditor" class="price-editor-grid"></div>
         </div>
     </main>
 </div>
 
-<!-- Course Builder Modal -->
-<div id="courseBuilderModal" class="modal">
+<!-- Course Modal -->
+<div id="courseModal" class="modal">
     <div class="modal-content">
-        <h3 id="builderTitle" style="margin-bottom: 20px;">Course Builder</h3>
-        
-        <div class="tab-bar">
-            <div class="tab active" data-tab="basic">Basic Info</div>
-            <div class="tab" data-tab="weeks">Weeks & Lessons</div>
-        </div>
-        
-        <div id="basicTab">
-            <div class="form-group">
-                <label>Course ID (lowercase, no spaces)</label>
-                <input type="text" id="builderCourseId" readonly style="background:#f5f5f5;">
-            </div>
-            <div class="form-group">
-                <label>Course Name</label>
-                <input type="text" id="builderCourseName">
-            </div>
-            <div class="form-group">
-                <label>Price (Credits)</label>
-                <input type="number" id="builderCoursePrice">
-            </div>
-            <div class="form-group">
-                <label>Course Image</label>
-                <div class="upload-area" id="imageUploadArea">
-                    <i class="fas fa-cloud-upload-alt"></i> Click to upload image
-                    <input type="file" id="imageFileInput" accept="image/*" style="display: none;">
-                </div>
-                <div class="upload-progress" id="imageUploadProgress">
-                    <div class="upload-progress-bar"></div>
-                </div>
-                <img id="imagePreview" class="image-preview" style="display: none;">
-                <input type="text" id="builderCourseImage" placeholder="Or paste image URL" style="margin-top: 10px;">
-            </div>
-            <div class="form-group">
-                <label>Short Description</label>
-                <textarea id="builderCourseDescription" rows="2"></textarea>
-            </div>
-            <div class="form-group">
-                <label>Difficulty Level</label>
-                <select id="builderCourseLevel">
-                    <option value="Beginner">Beginner</option>
-                    <option value="Intermediate">Intermediate</option>
-                    <option value="Advanced">Advanced</option>
-                </select>
-            </div>
-        </div>
-        
-        <div id="weeksTab" style="display: none;">
-            <div id="weeksContainer"></div>
-            <button class="btn-primary" id="addWeekBtn" style="width:100%; margin-top:16px;"><i class="fas fa-plus"></i> Add Week</button>
-        </div>
-        
-        <div class="modal-buttons" style="display: flex; gap: 12px; margin-top: 24px;">
-            <button id="saveCourseBuilderBtn" style="background: #2d6a2f; color: white; border: none; padding: 12px; border-radius: 40px; flex: 1; cursor: pointer;">Save Course</button>
-            <button id="closeBuilderModal" style="background: #ccc; border: none; padding: 12px; border-radius: 40px; flex: 1; cursor: pointer;">Cancel</button>
-        </div>
+        <h3 id="modalTitle">Edit Course</h3>
+        <div class="form-group"><label>Course ID</label><input type="text" id="courseId" placeholder="e.g., chili"></div>
+        <div class="form-group"><label>Course Name</label><input type="text" id="courseName" placeholder="e.g., Chili"></div>
+        <div class="form-group"><label>Price (RM)</label><input type="number" id="coursePrice" placeholder="15"></div>
+        <div class="form-group"><label>Category</label><select id="courseCategory"><option value="crops">Crops</option><option value="fundamentals">Farming Fundamentals</option></select></div>
+        <div class="form-group"><label>Image URL</label><input type="text" id="courseImage" placeholder="https://..."></div>
+        <div class="form-group"><label>Description</label><textarea id="courseDesc" rows="2"></textarea></div>
+        <div class="modal-buttons"><button id="saveCourseBtn" style="background:#2d6a2f;color:white;">Save</button><button id="closeModalBtn">Cancel</button></div>
     </div>
 </div>
 
-<!-- Week Editor Modal -->
-<div id="weekModal" class="modal">
+<!-- Quiz Modal -->
+<div id="quizModal" class="modal">
     <div class="modal-content">
-        <h3 id="weekModalTitle" style="margin-bottom: 20px;">Edit Week</h3>
-        <div class="form-group">
-            <label>Week Title</label>
-            <input type="text" id="weekTitle">
-        </div>
-        <div class="form-group">
-            <label>Video</label>
-            <div class="upload-area" id="videoUploadArea">
-                <i class="fas fa-cloud-upload-alt"></i> Click to upload video (MP4)
-                <input type="file" id="videoFileInput" accept="video/*" style="display: none;">
-            </div>
-            <div class="upload-progress" id="videoUploadProgress">
-                <div class="upload-progress-bar"></div>
-            </div>
-            <div id="videoPreview" class="video-upload-preview"></div>
-            <input type="text" id="weekVideoUrl" placeholder="Or paste YouTube URL" style="margin-top: 10px;">
-        </div>
-        <div class="form-group">
-            <label>Lesson Content / Description</label>
-            <textarea id="weekContent" rows="4"></textarea>
-        </div>
-        <h4 style="margin: 16px 0 8px;">Tasks Checklist</h4>
-        <div id="tasksContainer"></div>
-        <button class="btn-secondary" id="addTaskBtn" style="width:100%; margin-bottom:16px;"><i class="fas fa-plus"></i> Add Task</button>
-        <div class="modal-buttons" style="display: flex; gap: 12px;">
-            <button id="saveWeekBtn" style="background: #2d6a2f; color: white; border: none; padding: 12px; border-radius: 40px; flex: 1; cursor: pointer;">Save Week</button>
-            <button id="closeWeekModal" style="background: #ccc; border: none; padding: 12px; border-radius: 40px; flex: 1; cursor: pointer;">Cancel</button>
-        </div>
+        <h3 id="quizModalTitle">Add Quiz</h3>
+        <div class="form-group"><label>Select Course</label><select id="quizCourseId"></select></div>
+        <div class="form-group"><label>Week Number</label><input type="number" id="quizWeek" placeholder="1"></div>
+        <div class="form-group"><label>Quiz Title</label><input type="text" id="quizTitle" placeholder="e.g., Week 1 Quiz"></div>
+        <h4 style="margin: 20px 0 12px;">Questions</h4>
+        <div id="questionsContainer"></div>
+        <button type="button" class="btn-primary" id="addQuestionBtn" style="margin-bottom: 20px;">+ Add Question</button>
+        <div class="modal-buttons"><button id="saveQuizBtn" style="background:#2d6a2f;color:white;">Save Quiz</button><button id="closeQuizModalBtn">Cancel</button></div>
     </div>
 </div>
 
-<!-- Firebase -->
+<!-- Add Market Item Modal -->
+<div id="addPriceModal" class="modal">
+    <div class="modal-content" style="max-width: 400px;">
+        <h3 style="margin-bottom: 20px;">Add New Market Item</h3>
+        <div class="form-group"><label>Item Name</label><input type="text" id="newItemName" placeholder="e.g., Carrot"></div>
+        <div class="form-group"><label>Price (RM)</label><input type="number" id="newItemPrice" value="5" step="0.5"></div>
+        <div class="form-group"><label>Unit</label><input type="text" id="newItemUnit" value="kg" placeholder="kg, bunch, piece"></div>
+        <div class="modal-buttons"><button id="confirmAddPriceBtn" style="background:#2d6a2f;color:white;">Add Item</button><button id="closeAddPriceModalBtn">Cancel</button></div>
+    </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-storage-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="firebase-config.js"></script>
-
-<script>
-    let currentAdminUser = null;
-    let courseData = {};
-    let allUsers = [];
-    let currentEditingCourse = null;
-    let currentEditingWeekIndex = null;
-    let storage = firebase.storage();
-    
-    const defaultCourses = {
-        chili: { id: 'chili', name: 'Chili', price: 15, image: 'https://images.unsplash.com/photo-1518006959466-0db0b6b4c1d0?w=280&h=200&fit=crop', description: 'Spicy and versatile.', level: 'Beginner', weeks: [] },
-        tomato: { id: 'tomato', name: 'Tomato', price: 20, image: 'https://images.unsplash.com/photo-1518977822534-7049a61ee0c2?w=280&h=200&fit=crop', description: 'Juicy and sweet.', level: 'Beginner', weeks: [] },
-        brinjal: { id: 'brinjal', name: 'Brinjal', price: 10, image: 'https://images.unsplash.com/photo-1659261111792-66709e46d53d?w=280&h=200&fit=crop', description: 'Glossy and versatile.', level: 'Intermediate', weeks: [] },
-        bendi: { id: 'bendi', name: 'Bendi', price: 10, image: 'https://images.unsplash.com/photo-1632014530325-3911c738b779?w=280&h=200&fit=crop', description: 'Fast-growing and heat-tolerant.', level: 'Beginner', weeks: [] },
-        cilipadi: { id: 'cilipadi', name: 'Cili Padi', price: 15, image: 'https://cdn.shopify.com/s/files/1/0750/9190/2779/files/Birds-Eye-Chilli-003-700x575.webp?w=280&h=200&fit=crop', description: 'Extra spicy and aromatic.', level: 'Intermediate', weeks: [] },
-        mango: { id: 'mango', name: 'Mango', price: 20, image: 'https://images.unsplash.com/photo-1685429631345-3de21cc2eb65?w=280&h=200&fit=crop', description: 'Sweet tropical fruit.', level: 'Advanced', weeks: [] }
-    };
-    
-    // ============================================
-    // FIREBASE AUTH LOGIN
-    // ============================================
-    document.getElementById('adminLoginBtn')?.addEventListener('click', async () => {
-        const email = document.getElementById('adminEmail').value;
-        const password = document.getElementById('adminPassword').value;
-        
-        if (!email || !password) {
-            showError('Please enter email and password');
-            return;
-        }
-        
-        try {
-            const userCredential = await auth.signInWithEmailAndPassword(email, password);
-            const user = userCredential.user;
-            
-            if (!user.emailVerified) {
-                showError('Please verify your email first.');
-                await auth.signOut();
-                return;
-            }
-            
-            const userDoc = await db.collection('users').doc(user.uid).get();
-            if (userDoc.exists && userDoc.data().isAdmin === true) {
-                currentAdminUser = user;
-                localStorage.setItem('adminLoggedIn', 'true');
-                localStorage.setItem('adminUid', user.uid);
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                document.getElementById('adminName').innerText = user.email.split('@')[0];
-                await loadAllData();
-            } else {
-                showError('You do not have admin access.');
-                await auth.signOut();
-            }
-        } catch (error) {
-            showError(error.message);
-        }
-    });
-    
-    function showError(msg) {
-        const errorDiv = document.getElementById('loginError');
-        errorDiv.style.display = 'block';
-        errorDiv.innerText = msg;
-        setTimeout(() => errorDiv.style.display = 'none', 3000);
-    }
-    
-    if (localStorage.getItem('adminLoggedIn') === 'true') {
-        auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                const userDoc = await db.collection('users').doc(user.uid).get();
-                if (userDoc.exists && userDoc.data().isAdmin === true) {
-                    currentAdminUser = user;
-                    document.getElementById('loginScreen').style.display = 'none';
-                    document.getElementById('dashboard').style.display = 'block';
-                    document.getElementById('adminName').innerText = user.email.split('@')[0];
-                    await loadAllData();
-                }
-            }
-        });
-    }
-    
-    document.getElementById('logoutBtn')?.addEventListener('click', async () => {
-        await auth.signOut();
-        localStorage.removeItem('adminLoggedIn');
-        localStorage.removeItem('adminUid');
-        document.getElementById('loginScreen').style.display = 'flex';
-        document.getElementById('dashboard').style.display = 'none';
-    });
-    
-    document.getElementById('refreshUsersBtn')?.addEventListener('click', () => loadAllData());
-    
-    // ============================================
-    // IMAGE UPLOAD
-    // ============================================
-    const imageUploadArea = document.getElementById('imageUploadArea');
-    const imageFileInput = document.getElementById('imageFileInput');
-    
-    imageUploadArea?.addEventListener('click', () => imageFileInput.click());
-    
-    imageFileInput?.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (file && file.type.startsWith('image/')) {
-            await uploadImage(file);
-        }
-    });
-    
-    async function uploadImage(file) {
-        const progressBar = document.getElementById('imageUploadProgress');
-        const progressFill = progressBar.querySelector('.upload-progress-bar');
-        progressBar.style.display = 'block';
-        
-        const fileName = `course_images/${Date.now()}_${file.name}`;
-        const uploadTask = storage.ref(fileName).put(file);
-        
-        uploadTask.on('state_changed',
-            (snapshot) => {
-                const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                progressFill.style.width = percent + '%';
-            },
-            (error) => {
-                alert('Upload failed: ' + error.message);
-                progressBar.style.display = 'none';
-            },
-            async () => {
-                const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
-                document.getElementById('builderCourseImage').value = downloadURL;
-                const preview = document.getElementById('imagePreview');
-                preview.src = downloadURL;
-                preview.style.display = 'block';
-                progressBar.style.display = 'none';
-                alert('Image uploaded successfully!');
-            }
-        );
-    }
-    
-    // ============================================
-    // VIDEO UPLOAD
-    // ============================================
-    const videoUploadArea = document.getElementById('videoUploadArea');
-    const videoFileInput = document.getElementById('videoFileInput');
-    
-    videoUploadArea?.addEventListener('click', () => videoFileInput.click());
-    
-    videoFileInput?.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (file && file.type.startsWith('video/')) {
-            await uploadVideo(file);
-        }
-    });
-    
-    async function uploadVideo(file) {
-        const progressBar = document.getElementById('videoUploadProgress');
-        const progressFill = progressBar.querySelector('.upload-progress-bar');
-        progressBar.style.display = 'block';
-        
-        const fileName = `course_videos/${Date.now()}_${file.name}`;
-        const uploadTask = storage.ref(fileName).put(file);
-        
-        uploadTask.on('state_changed',
-            (snapshot) => {
-                const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                progressFill.style.width = percent + '%';
-            },
-            (error) => {
-                alert('Upload failed: ' + error.message);
-                progressBar.style.display = 'none';
-            },
-            async () => {
-                const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
-                document.getElementById('weekVideoUrl').value = downloadURL;
-                const preview = document.getElementById('videoPreview');
-                preview.innerHTML = `<i class="fas fa-check-circle" style="color:#2d6a2f;"></i> Video uploaded! <a href="${downloadURL}" target="_blank">View</a>`;
-                progressBar.style.display = 'none';
-                alert('Video uploaded successfully!');
-            }
-        );
-    }
-    
-    // Image preview from URL
-    document.getElementById('builderCourseImage')?.addEventListener('input', function() {
-        const preview = document.getElementById('imagePreview');
-        if (this.value) {
-            preview.src = this.value;
-            preview.style.display = 'block';
-        } else {
-            preview.style.display = 'none';
-        }
-    });
-    
-    // ============================================
-    // DATA FUNCTIONS
-    // ============================================
-    async function loadAllData() {
-        await loadDashboardData();
-        await loadCourseData();
-    }
-    
-    async function loadDashboardData() {
-        try {
-            const usersSnapshot = await db.collection('users').get();
-            allUsers = [];
-            let totalSeeds = 0, totalRevenue = 0, totalEnrollments = 0;
-            usersSnapshot.forEach(doc => {
-                const user = doc.data();
-                user.id = doc.id;
-                allUsers.push(user);
-                totalSeeds += user.seedsBalance || 0;
-                totalRevenue += user.totalSpent || 0;
-                totalEnrollments += (user.purchasedCourses || []).length;
-            });
-            document.getElementById('totalUsers').innerText = allUsers.length;
-            document.getElementById('totalSeeds').innerText = totalSeeds;
-            document.getElementById('totalRevenue').innerText = `RM${totalRevenue}`;
-            document.getElementById('totalEnrollments').innerText = totalEnrollments;
-            document.getElementById('usersList').innerHTML = allUsers.map(user => `
-                <tr>
-                    <td>${user.name || '-'}</td>
-                    <td>${user.email}</td>
-                    <td>${user.seedsBalance || 0}</td>
-                    <td>${(user.purchasedCourses || []).length}</td>
-                    <td>RM${user.totalSpent || 0}</td>
-                    <td>${user.memberSince || '-'}</td>
-                    <td><button class="btn-warning" onclick="addCreditsToUser('${user.id}')"><i class="fas fa-plus"></i> Add Credits</button></td>
-                </tr>
-            `).join('');
-            loadTransactions();
-        } catch(e) { console.error(e); }
-    }
-    
-    async function loadCourseData() {
-        try {
-            const doc = await db.collection('courses').doc('course_data').get();
-            if (doc.exists && doc.data().data) {
-                courseData = doc.data().data;
-            } else {
-                courseData = { ...defaultCourses };
-                await db.collection('courses').doc('course_data').set({ data: courseData });
-            }
-        } catch(e) { courseData = { ...defaultCourses }; }
-        renderCoursesTable();
-    }
-    
-    async function saveCourseData() {
-        await db.collection('courses').doc('course_data').set({ data: courseData });
-        renderCoursesTable();
-    }
-    
-    function renderCoursesTable() {
-        const coursesList = document.getElementById('coursesList');
-        coursesList.innerHTML = Object.values(courseData).map(course => `
-            <tr>
-                <td><img src="${course.image}" class="course-image-preview" onerror="this.src='https://placehold.co/50x50?text=No+Image'"></td>
-                <td>${course.id}</td>
-                <td>${course.name}</td>
-                <td>${course.price} Credits</td>
-                <td>${course.weeks?.length || 0} weeks</td>
-                <td>
-                    <button class="btn-warning" onclick="openCourseBuilder('${course.id}')"><i class="fas fa-edit"></i> Edit</button>
-                    <button class="btn-danger" onclick="deleteCourse('${course.id}')" style="margin-left:8px;"><i class="fas fa-trash"></i> Delete</button>
-                </td>
-            </tr>
-        `).join('');
-    }
-    
-    async function loadTransactions() {
-        let allTrans = [];
-        allUsers.forEach(user => {
-            const userTrans = user.transactions || [];
-            userTrans.forEach(t => allTrans.push({ ...t, userName: user.name || user.email }));
-        });
-        allTrans.sort((a, b) => new Date(b.date) - new Date(a.date));
-        document.getElementById('transactionsList').innerHTML = allTrans.slice(0, 20).map(t => `
-            <tr>
-                <td>${t.userName}</td>
-                <td>${t.description}</td>
-                <td>RM${t.amount}</td>
-                <td>${t.date}</td>
-            </tr>
-        `).join('');
-    }
-    
-    window.addCreditsToUser = async (userId) => {
-        const credits = prompt('Enter number of Credits to add:');
-        if (credits && !isNaN(credits)) {
-            const userRef = db.collection('users').doc(userId);
-            const userDoc = await userRef.get();
-            await userRef.update({ seedsBalance: (userDoc.data().seedsBalance || 0) + parseInt(credits) });
-            alert(`Added ${credits} Credits!`);
-            loadDashboardData();
-        }
-    };
-    
-    // Course Builder
-    window.openCourseBuilder = (courseId) => {
-        currentEditingCourse = courseId;
-        const course = courseData[courseId];
-        document.getElementById('builderTitle').innerText = `Edit Course: ${course.name}`;
-        document.getElementById('builderCourseId').value = course.id;
-        document.getElementById('builderCourseName').value = course.name;
-        document.getElementById('builderCoursePrice').value = course.price;
-        document.getElementById('builderCourseImage').value = course.image || '';
-        document.getElementById('builderCourseDescription').value = course.description || '';
-        document.getElementById('builderCourseLevel').value = course.level || 'Beginner';
-        if (course.image) {
-            document.getElementById('imagePreview').src = course.image;
-            document.getElementById('imagePreview').style.display = 'block';
-        }
-        renderWeeksList();
-        document.getElementById('courseBuilderModal').style.display = 'flex';
-    };
-    
-    function renderWeeksList() {
-        const course = courseData[currentEditingCourse];
-        const container = document.getElementById('weeksContainer');
-        if (!course.weeks || course.weeks.length === 0) {
-            container.innerHTML = '<p style="text-align:center; color:#8ba07e; padding:40px;">No weeks added yet. Click "Add Week" to create lessons.</p>';
-            return;
-        }
-        container.innerHTML = course.weeks.map((week, index) => `
-            <div class="week-card-builder">
-                <div class="week-header-builder">
-                    <strong>${week.title}</strong>
-                    <div>
-                        <button class="btn-warning" onclick="editWeek(${index})"><i class="fas fa-edit"></i> Edit</button>
-                        <button class="btn-danger" onclick="deleteWeek(${index})"><i class="fas fa-trash"></i> Delete</button>
-                    </div>
-                </div>
-                <div style="font-size:0.8rem; color:#6c7a63;">Video: ${week.videoUrl ? 'Yes' : 'No'} | Tasks: ${week.tasks?.length || 0}</div>
-                ${week.videoUrl ? `<div style="font-size:0.7rem; color:#2d6a2f;"><i class="fas fa-video"></i> Video uploaded</div>` : ''}
-            </div>
-        `).join('');
-    }
-    
-    window.editWeek = (index) => {
-        currentEditingWeekIndex = index;
-        const week = courseData[currentEditingCourse].weeks[index];
-        document.getElementById('weekModalTitle').innerText = 'Edit Week';
-        document.getElementById('weekTitle').value = week.title || '';
-        document.getElementById('weekVideoUrl').value = week.videoUrl || '';
-        document.getElementById('weekContent').value = week.content || '';
-        if (week.videoUrl) {
-            document.getElementById('videoPreview').innerHTML = `<i class="fas fa-check-circle" style="color:#2d6a2f;"></i> Video uploaded. <a href="${week.videoUrl}" target="_blank">View</a>`;
-        } else {
-            document.getElementById('videoPreview').innerHTML = '';
-        }
-        renderTasksList(week.tasks || []);
-        document.getElementById('weekModal').style.display = 'flex';
-    };
-    
-    window.deleteWeek = (index) => {
-        if (confirm('Delete this week?')) {
-            courseData[currentEditingCourse].weeks.splice(index, 1);
-            saveCourseData();
-            renderWeeksList();
-        }
-    };
-    
-    function renderTasksList(tasks) {
-        const container = document.getElementById('tasksContainer');
-        if (!tasks || tasks.length === 0) {
-            container.innerHTML = '<p style="color:#8ba07e;">No tasks yet. Click "Add Task" to create checklist items.</p>';
-            return;
-        }
-        container.innerHTML = tasks.map((task, idx) => `
-            <div class="task-item-builder">
-                <input type="text" value="${task}" onchange="updateTask(${idx}, this.value)">
-                <button class="btn-danger" onclick="removeTask(${idx})" style="padding:4px 12px;">Remove</button>
-            </div>
-        `).join('');
-    }
-    
-    window.updateTask = (index, newValue) => {
-        courseData[currentEditingCourse].weeks[currentEditingWeekIndex].tasks[index] = newValue;
-    };
-    
-    window.removeTask = (index) => {
-        const tasks = courseData[currentEditingCourse].weeks[currentEditingWeekIndex].tasks;
-        tasks.splice(index, 1);
-        renderTasksList(tasks);
-    };
-    
-    document.getElementById('addTaskBtn')?.addEventListener('click', () => {
-        const tasks = courseData[currentEditingCourse].weeks[currentEditingWeekIndex].tasks || [];
-        tasks.push('New Task');
-        renderTasksList(tasks);
-    });
-    
-    document.getElementById('saveWeekBtn')?.addEventListener('click', () => {
-        const week = {
-            title: document.getElementById('weekTitle').value,
-            videoUrl: document.getElementById('weekVideoUrl').value,
-            content: document.getElementById('weekContent').value,
-            tasks: courseData[currentEditingCourse].weeks[currentEditingWeekIndex]?.tasks || []
-        };
-        if (!week.title) { alert('Please enter a week title'); return; }
-        courseData[currentEditingCourse].weeks[currentEditingWeekIndex] = week;
-        saveCourseData();
-        renderWeeksList();
-        document.getElementById('weekModal').style.display = 'none';
-    });
-    
-    document.getElementById('closeWeekModal')?.addEventListener('click', () => {
-        document.getElementById('weekModal').style.display = 'none';
-    });
-    
-    document.getElementById('addWeekBtn')?.addEventListener('click', () => {
-        if (!courseData[currentEditingCourse].weeks) courseData[currentEditingCourse].weeks = [];
-        courseData[currentEditingCourse].weeks.push({ title: 'New Week', videoUrl: '', content: '', tasks: [] });
-        saveCourseData();
-        renderWeeksList();
-    });
-    
-    // Tab switching
-    document.querySelectorAll('.tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            const tabName = tab.getAttribute('data-tab');
-            document.getElementById('basicTab').style.display = tabName === 'basic' ? 'block' : 'none';
-            document.getElementById('weeksTab').style.display = tabName === 'weeks' ? 'block' : 'none';
-        });
-    });
-    
-    document.getElementById('saveCourseBuilderBtn')?.addEventListener('click', () => {
-        const course = courseData[currentEditingCourse];
-        course.name = document.getElementById('builderCourseName').value;
-        course.price = parseInt(document.getElementById('builderCoursePrice').value);
-        course.image = document.getElementById('builderCourseImage').value;
-        course.description = document.getElementById('builderCourseDescription').value;
-        course.level = document.getElementById('builderCourseLevel').value;
-        if (!course.name || isNaN(course.price)) { alert('Please fill in Name and Price'); return; }
-        saveCourseData();
-        document.getElementById('courseBuilderModal').style.display = 'none';
-        alert(`Course "${course.name}" saved!`);
-    });
-    
-    document.getElementById('closeBuilderModal')?.addEventListener('click', () => {
-        document.getElementById('courseBuilderModal').style.display = 'none';
-    });
-    
-    document.getElementById('addCourseBtn')?.addEventListener('click', () => {
-        const newId = prompt('Enter Course ID (lowercase, no spaces, e.g., spinach):');
-        if (!newId) return;
-        if (courseData[newId]) { alert('Course ID already exists!'); return; }
-        courseData[newId] = { id: newId, name: newId.charAt(0).toUpperCase() + newId.slice(1), price: 10, image: '', description: '', level: 'Beginner', weeks: [] };
-        saveCourseData();
-        openCourseBuilder(newId);
-    });
-    
-    window.deleteCourse = (courseId) => {
-        if (defaultCourses[courseId]) { alert('Cannot delete default courses!'); return; }
-        if (confirm(`Delete course "${courseData[courseId]?.name}"?`)) {
-            delete courseData[courseId];
-            saveCourseData();
-        }
-    };
-    
-    window.addEventListener('click', (e) => {
-        if (e.target === document.getElementById('courseBuilderModal')) document.getElementById('courseBuilderModal').style.display = 'none';
-        if (e.target === document.getElementById('weekModal')) document.getElementById('weekModal').style.display = 'none';
-    });
-</script>
+<script src="admin.js"></script>
 </body>
 </html>
