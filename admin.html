@@ -29,7 +29,12 @@
     <header class="admin-header">
         <div class="header-inner">
             <div class="logo"><i class="fas fa-leaf"></i> FarmAgro Admin</div>
-            <div><button class="logout-btn" id="logoutBtn">Sign out</button></div>
+            <div>
+                <button class="logout-btn" id="openCourseBuilderBtn" style="background: #2d6a2f; color: white; margin-right: 16px;">
+                    <i class="fas fa-building"></i> Open Course Builder
+                </button>
+                <button class="logout-btn" id="logoutBtn">Sign out</button>
+            </div>
         </div>
     </header>
 
@@ -110,21 +115,23 @@
             <div class="table-wrapper">
                 <table>
                     <thead><tr><th></th><th>Name</th><th>Email</th><th>Courses</th><th>Spent</th><th>Lessons</th><th>Joined</th></tr></thead>
-                    <tbody id="usersList"><tr><td colspan="7" class="empty-state">Loading farmers...</td></tr></tbody>
+                    <tbody id="usersList"><tr><td colspan="7" class="empty-state">Loading farmers...<\/td></tr></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Course Builder Tab -->
+        <!-- Courses Tab -->
         <div id="coursesTab" style="display: none;">
             <div class="section-header">
                 <h2>Course Library</h2>
-                <button class="btn-primary" id="addCourseBtn">+ New Course</button>
+                <button class="btn-primary" id="openCourseBuilderBtn2">
+                    <i class="fas fa-building"></i> Open Full Course Builder
+                </button>
             </div>
             <div class="table-wrapper">
                 <table>
-                    <thead><tr><th>ID</th><th>Name</th><th>Price</th><th>Category</th><th>Actions</th></tr></thead>
-                    <tbody id="coursesList"><tr><td colspan="5" class="empty-state">Loading courses...</td></tr></tbody>
+                    <thead><tr><th>ID</th><th>Name</th><th>Price</th><th>Category</th><th>Weeks</th><th>Actions</th></tr></thead>
+                    <tbody id="coursesList"><tr><td colspan="6" class="empty-state">Loading courses...<\/td></tr></tbody>
                 </table>
             </div>
         </div>
@@ -138,7 +145,7 @@
             <div class="table-wrapper">
                 <table>
                     <thead><tr><th>ID</th><th>Course</th><th>Week</th><th>Questions</th><th>Actions</th></tr></thead>
-                    <tbody id="quizzesList"><tr><td colspan="5" class="empty-state">Loading quizzes...</td></tr></tbody>
+                    <tbody id="quizzesList"><tr><td colspan="5" class="empty-state">Loading quizzes...<\/td></tr></tbody>
                 </table>
             </div>
         </div>
@@ -157,7 +164,7 @@
     </main>
 </div>
 
-<!-- Course Modal -->
+<!-- Course Modal (Simple Edit) -->
 <div id="courseModal" class="modal">
     <div class="modal-content">
         <h3 id="modalTitle">Edit Course</h3>
@@ -168,6 +175,9 @@
         <div class="form-group"><label>Image URL</label><input type="text" id="courseImage" placeholder="https://..."></div>
         <div class="form-group"><label>Description</label><textarea id="courseDesc" rows="2"></textarea></div>
         <div class="modal-buttons"><button id="saveCourseBtn" style="background:#2d6a2f;color:white;">Save</button><button id="closeModalBtn">Cancel</button></div>
+        <div style="margin-top: 16px; text-align: center;">
+            <button id="openFullBuilderBtn" style="color: #2d6a2f; background: none; border: none; cursor: pointer; text-decoration: underline;">Or use Full Course Builder to add weeks, videos & tasks →</button>
+        </div>
     </div>
 </div>
 
@@ -202,5 +212,40 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="firebase-config.js"></script>
 <script src="admin.js"></script>
+
+<script>
+    // Function to open course builder in new tab
+    function openCourseBuilder() {
+        // Try multiple possible paths
+        const possiblePaths = [
+            'course-builder.html',
+            './course-builder.html',
+            '/course-builder.html',
+            '../course-builder.html'
+        ];
+        
+        for (const path of possiblePaths) {
+            fetch(path, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        window.open(path, '_blank');
+                        return;
+                    }
+                })
+                .catch(() => {});
+        }
+        
+        // Fallback: alert user
+        setTimeout(() => {
+            alert('Could not find course-builder.html. Make sure the file exists in the same folder as admin.html');
+        }, 500);
+    }
+    
+    // Add event listeners to all course builder buttons
+    document.getElementById('openCourseBuilderBtn')?.addEventListener('click', openCourseBuilder);
+    document.getElementById('openCourseBuilderBtn2')?.addEventListener('click', openCourseBuilder);
+    document.getElementById('openFullBuilderBtn')?.addEventListener('click', openCourseBuilder);
+</script>
+
 </body>
 </html>
