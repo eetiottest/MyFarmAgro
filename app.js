@@ -1,8 +1,8 @@
 // ============================================
-// MY FARMAGRO - MAIN APPLICATION
+// MY FARMAGRO - MAIN APPLICATION (No Auth)
 // ============================================
 
-// Global state
+// Global state - auth will be managed by auth.js
 window.currentUser = null;
 window.userProfile = null;
 window.courseData = {};
@@ -34,7 +34,12 @@ function checkLoginAndRedirect(page) {
         window.location.href = page;
     } else {
         showToast('Please log in first to access Dashboard and Profile', 'warning');
-        showLoginModal();
+        // Use auth.js's showLoginModal if available, otherwise fallback
+        if (typeof window.showLoginModal === 'function') {
+            window.showLoginModal();
+        } else {
+            showToast('Please use the Log In button', 'info');
+        }
     }
 }
 
@@ -168,7 +173,9 @@ async function renderCourses(courses) {
 function showPaymentModal(courseId, price, courseName) {
     if (!window.currentUser) { 
         showToast('Please log in first', 'warning'); 
-        showLoginModal(); 
+        if (typeof window.showLoginModal === 'function') {
+            window.showLoginModal();
+        }
         return; 
     }
     window.currentPurchaseCourse = { id: courseId, price: price, name: courseName };
@@ -216,213 +223,42 @@ function showToast(message, type = 'success') {
 }
 
 // ============================================
-// AUTHENTICATION MODAL (FULL - Email + Google)
+// EXPOSE FUNCTIONS FOR auth.js TO CALL
 // ============================================
 
-function addAuthModal() {
-    if (document.getElementById('authModal')) return;
+// This will be called by auth.js when user logs in/out
+window.updateUIForAuthState = function(user, profile) {
+    window.currentUser = user;
+    window.userProfile = profile;
     
-    const modalHTML = `
-    <div id="authModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:2000;">
-        <div style="background:white; max-width:400px; width:90%; border-radius:16px; padding:32px;">
-            <i class="fas fa-seedling" style="font-size:2rem; color:#2d6a2f; margin-bottom:16px;"></i>
-            
-            <!-- Login Form -->
-            <div id="loginForm">
-                <h2 style="margin-bottom:8px;">Welcome Back</h2>
-                <input type="email" id="loginEmail" placeholder="Email" style="width:100%; padding:12px; border-radius:8px; border:1px solid #d1d9e6; margin-bottom:12px;">
-                <input type="password" id="loginPassword" placeholder="Password" style="width:100%; padding:12px; border-radius:8px; border:1px solid #d1d9e6; margin-bottom:12px;">
-                <button id="doLoginBtn" style="background:#2d6a2f; color:white; padding:12px; border-radius:8px; width:100%; cursor:pointer; font-weight:600;">Log In</button>
-                <div style="text-align:center; margin:12px 0; color:#ccc;">OR</div>
-                <button id="googleSignInBtn" style="background:white; color:#333; border:1px solid #ddd; padding:12px; border-radius:8px; width:100%; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px;"><i class="fab fa-google"></i> Sign in with Google</button>
-                <p style="margin-top:16px; text-align:center;"><a href="#" id="showSignupBtn" style="color:#2d6a2f;">Sign Up</a> | <a href="#" id="forgotPasswordBtn" style="color:#2d6a2f;">Forgot Password?</a></p>
-            </div>
-            
-            <!-- Signup Form -->
-            <div id="signupForm" style="display:none;">
-                <h2 style="margin-bottom:8px;">Create Account</h2>
-                <input type="text" id="signupName" placeholder="Full Name" style="width:100%; padding:12px; border-radius:8px; border:1px solid #d1d9e6; margin-bottom:12px;">
-                <input type="email" id="signupEmail" placeholder="Email" style="width:100%; padding:12px; border-radius:8px; border:1px solid #d1d9e6; margin-bottom:12px;">
-                <input type="password" id="signupPassword" placeholder="Password (min 6)" style="width:100%; padding:12px; border-radius:8px; border:1px solid #d1d9e6; margin-bottom:12px;">
-                <button id="doSignupBtn" style="background:#2d6a2f; color:white; padding:12px; border-radius:8px; width:100%; cursor:pointer; font-weight:600;">Sign Up</button>
-                <p style="margin-top:16px; text-align:center;"><a href="#" id="showLoginBtn" style="color:#2d6a2f;">Back to Login</a></p>
-            </div>
-            
-            <!-- Forgot Password Form -->
-            <div id="forgotPasswordForm" style="display:none;">
-                <h2 style="margin-bottom:8px;">Reset Password</h2>
-                <input type="email" id="resetEmail" placeholder="Email" style="width:100%; padding:12px; border-radius:8px; border:1px solid #d1d9e6; margin-bottom:12px;">
-                <button id="doResetBtn" style="background:#2d6a2f; color:white; padding:12px; border-radius:8px; width:100%; cursor:pointer; font-weight:600;">Send Reset Link</button>
-                <p style="margin-top:16px; text-align:center;"><a href="#" id="backToLoginBtn" style="color:#2d6a2f;">Back to Login</a></p>
-            </div>
-            
-            <button id="closeAuthModal" style="background:none; border:none; color:#999; margin-top:16px; width:100%; cursor:pointer;">Close</button>
-        </div>
-    </div>`;
-    
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-    
-    // Event listeners
-    document.getElementById('showSignupBtn')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('signupForm').style.display = 'block';
-        document.getElementById('forgotPasswordForm').style.display = 'none';
-    });
-    document.getElementById('showLoginBtn')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        document.getElementById('signupForm').style.display = 'none';
-        document.getElementById('loginForm').style.display = 'block';
-        document.getElementById('forgotPasswordForm').style.display = 'none';
-    });
-    document.getElementById('forgotPasswordBtn')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('forgotPasswordForm').style.display = 'block';
-    });
-    document.getElementById('backToLoginBtn')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        document.getElementById('forgotPasswordForm').style.display = 'none';
-        document.getElementById('loginForm').style.display = 'block';
-    });
-    document.getElementById('closeAuthModal')?.addEventListener('click', () => {
-        document.getElementById('authModal').style.display = 'none';
-    });
-    document.getElementById('doSignupBtn')?.addEventListener('click', handleSignup);
-    document.getElementById('doLoginBtn')?.addEventListener('click', handleLogin);
-    document.getElementById('doResetBtn')?.addEventListener('click', handleResetPassword);
-    document.getElementById('googleSignInBtn')?.addEventListener('click', googleSignIn);
-}
-
-async function handleSignup() {
-    const name = document.getElementById('signupName').value;
-    const email = document.getElementById('signupEmail').value;
-    const password = document.getElementById('signupPassword').value;
-    
-    if (!name || !email || !password) { showToast('Please fill in all fields', 'warning'); return; }
-    if (password.length < 6) { showToast('Password must be at least 6 characters', 'warning'); return; }
-    
-    try {
-        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-        await userCredential.user.sendEmailVerification();
-        await db.collection('users').doc(userCredential.user.uid).set({ 
-            name, email, purchasedCourses: [], totalSpent: 0, transactions: [], progress: {}, 
-            memberSince: new Date().toLocaleDateString(), isAdmin: false,
-            bookmarks: [], recentActivity: [], certificates: [], streak: 0
-        });
-        showToast('Account created! Please check your email to verify.', 'success');
-        document.getElementById('authModal').style.display = 'none';
-        await auth.signOut();
-    } catch (error) { showToast(error.message, 'error'); }
-}
-
-async function handleLogin() {
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-    if (!email || !password) { showToast('Please enter email and password', 'warning'); return; }
-    try {
-        const userCredential = await auth.signInWithEmailAndPassword(email, password);
-        if (!userCredential.user.emailVerified) { 
-            await auth.signOut(); 
-            showToast('Please verify your email first.', 'warning');
-            return; 
-        }
-        showToast('Logged in successfully!', 'success');
-        document.getElementById('authModal').style.display = 'none';
-        window.location.href = 'dashboard.html';
-    } catch (error) { showToast(error.message, 'error'); }
-}
-
-async function handleResetPassword() {
-    const email = document.getElementById('resetEmail').value;
-    if (!email) { showToast('Please enter your email', 'warning'); return; }
-    try {
-        await auth.sendPasswordResetEmail(email);
-        showToast(`Reset email sent to ${email}`, 'success');
-        document.getElementById('forgotPasswordForm').style.display = 'none';
-        document.getElementById('loginForm').style.display = 'block';
-    } catch (error) { showToast(error.message, 'error'); }
-}
-
-async function googleSignIn() {
-    try {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        const result = await auth.signInWithPopup(provider);
-        const user = result.user;
-        const userDoc = await db.collection('users').doc(user.uid).get();
-        if (!userDoc.exists) {
-            await db.collection('users').doc(user.uid).set({
-                name: user.displayName || user.email.split('@')[0],
-                email: user.email,
-                purchasedCourses: [],
-                totalSpent: 0,
-                transactions: [],
-                progress: {},
-                memberSince: new Date().toLocaleDateString(),
-                isAdmin: false,
-                bookmarks: [],
-                recentActivity: [],
-                certificates: [],
-                streak: 0
-            });
-        }
-        showToast('Logged in with Google!', 'success');
-        document.getElementById('authModal').style.display = 'none';
-        window.location.href = 'dashboard.html';
-    } catch (error) { showToast(error.message, 'error'); }
-}
-
-function showLoginModal() { 
-    addAuthModal(); 
-    document.getElementById('loginForm').style.display = 'block'; 
-    document.getElementById('signupForm').style.display = 'none'; 
-    document.getElementById('forgotPasswordForm').style.display = 'none'; 
-    document.getElementById('authModal').style.display = 'flex'; 
-}
-
-// ============================================
-// AUTH STATE LISTENER
-// ============================================
-
-auth.onAuthStateChanged(async (user) => {
-    if (user && user.emailVerified) {
-        window.currentUser = user;
-        if (loginLogoutBtn) loginLogoutBtn.textContent = 'Log Out';
-        if (accountBtn) {
+    // Update buttons
+    if (loginLogoutBtn) {
+        loginLogoutBtn.textContent = user ? 'Log Out' : 'Log In';
+    }
+    if (accountBtn) {
+        if (user) {
             accountBtn.textContent = 'My Dashboard';
             accountBtn.style.display = 'inline-block';
-        }
-        
-        const userDoc = await db.collection('users').doc(user.uid).get();
-        if (userDoc.exists) {
-            window.userProfile = userDoc.data();
         } else {
-            const newProfile = {
-                name: user.displayName || user.email.split('@')[0],
-                email: user.email,
-                purchasedCourses: [],
-                totalSpent: 0,
-                transactions: [],
-                progress: {},
-                memberSince: new Date().toLocaleDateString(),
-                isAdmin: false,
-                bookmarks: [],
-                recentActivity: [],
-                certificates: [],
-                streak: 0
-            };
-            await db.collection('users').doc(user.uid).set(newProfile);
-            window.userProfile = newProfile;
+            accountBtn.style.display = 'none';
         }
-        if (typeof filterAndRenderCourses === 'function') filterAndRenderCourses();
-    } else {
-        window.currentUser = null;
-        window.userProfile = null;
-        if (loginLogoutBtn) loginLogoutBtn.textContent = 'Log In';
-        if (accountBtn) accountBtn.style.display = 'none';
-        if (typeof filterAndRenderCourses === 'function') filterAndRenderCourses();
     }
-});
+    
+    // Hide Home link when logged in (handled in HTML via CSS class)
+    const homeLink = document.querySelector('.nav-links a[href="index.html"]');
+    if (homeLink) {
+        if (user) {
+            homeLink.style.display = 'none';
+        } else {
+            homeLink.style.display = 'inline-block';
+        }
+    }
+    
+    // Refresh courses
+    if (typeof filterAndRenderCourses === 'function') {
+        filterAndRenderCourses();
+    }
+};
 
 // ============================================
 // EVENT LISTENERS
@@ -431,11 +267,18 @@ auth.onAuthStateChanged(async (user) => {
 if (loginLogoutBtn) {
     loginLogoutBtn.onclick = () => {
         if (window.currentUser) {
-            auth.signOut();
-            showToast('Logged out', 'info');
-            setTimeout(() => location.reload(), 500);
+            // Logout via auth.js if available
+            if (typeof window.logout === 'function') {
+                window.logout();
+            } else {
+                auth.signOut();
+                showToast('Logged out', 'info');
+                setTimeout(() => location.reload(), 500);
+            }
         } else {
-            showLoginModal();
+            if (typeof window.showLoginModal === 'function') {
+                window.showLoginModal();
+            }
         }
     };
 }
@@ -561,6 +404,5 @@ setTimeout(() => {
 
 // Make functions global
 window.accessCourse = accessCourse;
-window.showLoginModal = showLoginModal;
 window.showPaymentModal = showPaymentModal;
 window.checkLoginAndRedirect = checkLoginAndRedirect;
