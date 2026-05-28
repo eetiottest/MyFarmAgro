@@ -157,7 +157,7 @@ window.toggleDetails = (idx) => {
 document.getElementById('refreshUsersBtn').addEventListener('click', () => loadUsers());
 
 // ============================================
-// COURSE BUILDER
+// COURSE FUNCTIONS (NO RENDER TABLE - FIXED)
 // ============================================
 async function loadCourses() {
     try {
@@ -165,93 +165,14 @@ async function loadCourses() {
         if (doc.exists && doc.data().data) {
             courseData = doc.data().data;
         } else {
-            courseData = {
-                chili: { id: 'chili', name: 'Chili', price: 15, category: 'crops', image: '', description: '', weeks: [] },
-                tomato: { id: 'tomato', name: 'Tomato', price: 20, category: 'crops', image: '', description: '', weeks: [] },
-                soil: { id: 'soil', name: 'Soil Preparation', price: 10, category: 'fundamentals', image: '', description: '', weeks: [] }
-            };
-            await db.collection('courses').doc('course_data').set({ data: courseData });
+            courseData = {};
         }
-        renderCoursesTable();
+        // renderCoursesTable();  <-- THIS LINE IS REMOVED
         
         const activeCount = Object.values(courseData).filter(c => c.weeks && c.weeks.length > 0).length;
         document.getElementById('activeCourses').innerText = activeCount;
     } catch(e) { console.error(e); }
 }
-
-function renderCoursesTable() {
-    const tbody = document.getElementById('coursesList');
-    const courses = Object.values(courseData);
-    if (courses.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No courses</td></tr>';
-        return;
-    }
-    tbody.innerHTML = courses.map(c => `
-        <tr>
-            <td><code>${c.id}</code></td>
-            <td><strong>${c.name}</strong></td>
-            <td>RM${c.price}</td>
-            <td><span style="background:#e8f0ea;padding:2px 10px;border-radius:20px;">${c.category === 'crops' ? '🌱 Crops' : '📚 Fundamentals'}</span></td>
-            <td><button class="btn-edit" onclick="editCourse('${c.id}')">Edit</button><button class="btn-danger" onclick="deleteCourse('${c.id}')">Delete</button></td>
-        </tr>
-    `).join('');
-}
-
-window.editCourse = (id) => {
-    const c = courseData[id];
-    document.getElementById('modalTitle').innerText = 'Edit Course';
-    document.getElementById('courseId').value = c.id;
-    document.getElementById('courseId').disabled = true;
-    document.getElementById('courseName').value = c.name;
-    document.getElementById('coursePrice').value = c.price;
-    document.getElementById('courseCategory').value = c.category;
-    document.getElementById('courseImage').value = c.image || '';
-    document.getElementById('courseDesc').value = c.description || '';
-    document.getElementById('courseModal').style.display = 'flex';
-};
-
-document.getElementById('addCourseBtn').addEventListener('click', () => {
-    document.getElementById('modalTitle').innerText = 'New Course';
-    document.getElementById('courseId').value = '';
-    document.getElementById('courseId').disabled = false;
-    document.getElementById('courseName').value = '';
-    document.getElementById('coursePrice').value = '';
-    document.getElementById('courseCategory').value = 'crops';
-    document.getElementById('courseImage').value = '';
-    document.getElementById('courseDesc').value = '';
-    document.getElementById('courseModal').style.display = 'flex';
-});
-
-document.getElementById('saveCourseBtn').addEventListener('click', async () => {
-    const id = document.getElementById('courseId').value.trim().toLowerCase();
-    const name = document.getElementById('courseName').value.trim();
-    const price = parseInt(document.getElementById('coursePrice').value);
-    const cat = document.getElementById('courseCategory').value;
-    const img = document.getElementById('courseImage').value;
-    const desc = document.getElementById('courseDesc').value;
-    
-    if (!id || !name || isNaN(price)) { alert('Fill required fields'); return; }
-    if (!id.match(/^[a-z]+$/)) { alert('ID must be lowercase letters only'); return; }
-    
-    courseData[id] = { id, name, price, category: cat, image: img, description: desc, weeks: courseData[id]?.weeks || [] };
-    await db.collection('courses').doc('course_data').set({ data: courseData });
-    await loadCourses();
-    document.getElementById('courseModal').style.display = 'none';
-    alert('Course saved');
-});
-
-window.deleteCourse = async (id) => {
-    if (confirm('Delete this course?')) {
-        delete courseData[id];
-        await db.collection('courses').doc('course_data').set({ data: courseData });
-        await loadCourses();
-        alert('Course deleted');
-    }
-};
-
-document.getElementById('closeModalBtn').addEventListener('click', () => {
-    document.getElementById('courseModal').style.display = 'none';
-});
 
 // ============================================
 // QUIZ MAKER
@@ -273,7 +194,7 @@ function renderQuizzesTable() {
     const tbody = document.getElementById('quizzesList');
     const quizzes = Object.values(quizData);
     if (quizzes.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No quizzes yet. Click "New Quiz"<\/td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No quizzes yet. Click "New Quiz"</td></tr>';
         return;
     }
     tbody.innerHTML = quizzes.map(q => `
@@ -478,13 +399,10 @@ async function loadAnalytics() {
         }
     }
     
-    // Update stats
     document.getElementById('enrollmentsToday').innerText = enrollmentsToday;
     document.getElementById('weekEnrollments').innerText = weekEnrollments;
-    const revenueTrend = revenueThisMonth > 0 ? `+RM${revenueThisMonth} this month` : 'No revenue this month';
-    document.getElementById('revenueTrend').innerHTML = revenueTrend;
+    document.getElementById('revenueTrend').innerHTML = revenueThisMonth > 0 ? `+RM${revenueThisMonth} this month` : 'No revenue this month';
     
-    // Completion rate
     let totalCompletedCourses = 0;
     let totalEnrolledCourses = 0;
     for (const [courseId, enrolled] of Object.entries(courseEnrollCount)) {
@@ -495,11 +413,9 @@ async function loadAnalytics() {
     document.getElementById('completionRate').innerText = avgCompletion + '%';
     document.getElementById('overallCompletion').innerText = avgCompletion + '%';
     
-    // Avg revenue per user
     const avgRev = allUsers.length > 0 ? Math.floor(totalRevenue / allUsers.length) : 0;
     document.getElementById('avgRevenue').innerText = `RM${avgRev}`;
     
-    // Most popular course
     let topCourseId = null;
     let topCourseCount = 0;
     for (const [id, count] of Object.entries(courseEnrollCount)) {
@@ -512,7 +428,6 @@ async function loadAnalytics() {
     document.getElementById('topCourse').innerText = topCourse;
     document.getElementById('topCourseCount').innerText = `${topCourseCount} enrollments`;
     
-    // Completion rates table
     const completionTbody = document.getElementById('completionRatesList');
     let completionHtml = '';
     for (const [courseId, enrolled] of Object.entries(courseEnrollCount)) {
@@ -525,7 +440,6 @@ async function loadAnalytics() {
     }
     completionTbody.innerHTML = completionHtml || '<tr><td colspan="4" class="empty-state">No enrollment data yet</td></tr>';
     
-    // Popular courses list
     const popularList = document.getElementById('popularCoursesList');
     const sortedCourses = Object.entries(courseEnrollCount).sort((a, b) => b[1] - a[1]).slice(0, 5);
     if (sortedCourses.length === 0) {
@@ -549,7 +463,6 @@ async function loadAnalytics() {
         popularList.innerHTML = popularHtml;
     }
     
-    // Enrollment chart
     const chartLabels = [];
     const chartData = [];
     for (let i = 5; i >= 0; i--) {

@@ -17,13 +17,6 @@
             background: #f5f7fa;
             color: #1a2533;
         }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-        
-        /* Header */
         .admin-header {
             background: white;
             border-bottom: 1px solid #e4e9f0;
@@ -53,9 +46,6 @@
             color: #4a5b6e;
             margin-left: 24px;
         }
-        .nav-links a:hover {
-            color: #2d6a2f;
-        }
         .logout-btn {
             background: none;
             border: 1px solid #d1d9e6;
@@ -64,15 +54,37 @@
             cursor: pointer;
             margin-left: 24px;
         }
-        
-        /* Main */
         .main-content {
             max-width: 1400px;
             margin: 0 auto;
             padding: 32px 24px;
         }
-        
-        /* Course Selector */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #e4e9f0;
+            padding-bottom: 12px;
+        }
+        .tab {
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #6b7a8a;
+            font-weight: 500;
+        }
+        .tab.active {
+            background: #2d6a2f;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
         .course-selector {
             background: white;
             border-radius: 16px;
@@ -130,8 +142,6 @@
             cursor: pointer;
             font-weight: 600;
         }
-        
-        /* Course Info */
         .course-info {
             background: white;
             border-radius: 16px;
@@ -161,36 +171,12 @@
             border: 1px solid #d1d9e6;
             font-family: inherit;
         }
-        
-        /* Week Builder */
-        .weeks-section {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            border: 1px solid #e4e9f0;
-        }
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-        .section-header h2 {
-            font-size: 1.25rem;
-        }
-        
         .week-card {
             background: #fafbfc;
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
             border: 1px solid #e4e9f0;
-            transition: box-shadow 0.2s;
-        }
-        .week-card:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
         .week-header {
             display: flex;
@@ -218,32 +204,20 @@
             border-radius: 8px;
             cursor: pointer;
         }
-        
-        .week-video {
-            margin-bottom: 16px;
-        }
-        .week-video label, .week-content label, .tasks-label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: #4a5b6e;
-        }
         .week-video input, .week-content textarea {
             width: 100%;
             padding: 10px 12px;
             border-radius: 8px;
             border: 1px solid #d1d9e6;
             font-family: inherit;
+            margin-top: 6px;
         }
         .week-content textarea {
             min-height: 80px;
             resize: vertical;
         }
-        
         .tasks-list {
             margin: 16px 0;
-            padding-left: 0;
         }
         .task-item {
             display: flex;
@@ -257,15 +231,7 @@
             border: 1px solid #d1d9e6;
             border-radius: 6px;
         }
-        .remove-task-btn {
-            background: none;
-            border: none;
-            color: #d9534f;
-            cursor: pointer;
-            font-size: 1rem;
-            padding: 8px;
-        }
-        .add-task-btn {
+        .add-task-btn, .add-week-btn {
             background: #e8f0ea;
             color: #2d6a2f;
             border: none;
@@ -273,21 +239,13 @@
             border-radius: 6px;
             cursor: pointer;
             margin-top: 8px;
-            font-size: 0.8rem;
         }
-        
         .add-week-btn {
-            background: #2d6a2f;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
+            width: 100%;
+            padding: 12px;
             margin: 20px 0;
             font-weight: 600;
-            width: 100%;
         }
-        
         .action-buttons {
             display: flex;
             gap: 16px;
@@ -295,13 +253,11 @@
             padding-top: 24px;
             border-top: 1px solid #e4e9f0;
         }
-        
         .empty-state {
             text-align: center;
             padding: 60px;
             color: #8a9bb0;
         }
-        
         .toast {
             position: fixed;
             bottom: 20px;
@@ -321,12 +277,76 @@
             to { transform: translateX(0); opacity: 1; }
         }
         
+        /* Quiz styles */
+        .quiz-list {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #e4e9f0;
+        }
+        .quiz-item {
+            background: #fafbfc;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #e4e9f0;
+        }
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .quiz-title {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .quiz-question-item {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            border-left: 3px solid #2d6a2f;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal-content input, .modal-content select, .modal-content textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        .question-block {
+            background: #f5f7fa;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
         @media (max-width: 900px) {
             .info-grid {
                 grid-template-columns: 1fr;
-            }
-            .week-title-input {
-                width: 100%;
             }
         }
     </style>
@@ -344,73 +364,114 @@
 </header>
 
 <main class="main-content">
-    <!-- Course Selector -->
-    <div class="course-selector">
-        <div class="selector-row">
-            <div class="selector-group">
-                <label>Select Course to Edit</label>
-                <select id="courseSelect">
-                    <option value="">-- Select a course --</option>
-                </select>
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab active" data-tab="courses">📚 Courses</button>
+        <button class="tab" data-tab="quizzes">📝 Quizzes</button>
+    </div>
+
+    <!-- Courses Tab -->
+    <div id="coursesTab" class="tab-content active">
+        <div class="course-selector">
+            <div class="selector-row">
+                <div class="selector-group">
+                    <label>Select Course to Edit</label>
+                    <select id="courseSelect">
+                        <option value="">-- Select a course --</option>
+                    </select>
+                </div>
+                <div class="selector-group">
+                    <label>Or Create New Course ID</label>
+                    <input type="text" id="newCourseId" placeholder="e.g., cucumber">
+                </div>
+                <div>
+                    <button class="btn-primary" id="loadCourseBtn">Load Course</button>
+                    <button class="btn-secondary" id="newCourseBtn">+ New Course</button>
+                </div>
             </div>
-            <div class="selector-group">
-                <label>Or Create New Course ID</label>
-                <input type="text" id="newCourseId" placeholder="e.g., cucumber">
+        </div>
+
+        <div id="courseInfoSection" class="course-info" style="display: none;">
+            <h3 style="margin-bottom: 20px;">Course Information</h3>
+            <div class="info-grid">
+                <div class="info-field">
+                    <label>Course ID</label>
+                    <input type="text" id="courseId" readonly style="background:#f5f7fa;">
+                </div>
+                <div class="info-field">
+                    <label>Course Name</label>
+                    <input type="text" id="courseName" placeholder="e.g., Cucumber Masterclass">
+                </div>
+                <div class="info-field">
+                    <label>Price (RM)</label>
+                    <input type="number" id="coursePrice" placeholder="15">
+                </div>
+                <div class="info-field">
+                    <label>Category</label>
+                    <select id="courseCategory">
+                        <option value="crops">Crops</option>
+                        <option value="fundamentals">Farming Fundamentals</option>
+                    </select>
+                </div>
+                <div class="info-field">
+                    <label>Image URL</label>
+                    <input type="text" id="courseImage" placeholder="https://images.unsplash.com/...">
+                </div>
+                <div class="info-field">
+                    <label>Description</label>
+                    <textarea id="courseDesc" rows="2" placeholder="Learn to grow..."></textarea>
+                </div>
             </div>
-            <div>
-                <button class="btn-primary" id="loadCourseBtn">Load Course</button>
-                <button class="btn-secondary" id="newCourseBtn">+ New Course</button>
+        </div>
+
+        <div id="weeksSection" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Course Modules (Weeks)</h2>
+                <button class="btn-secondary" id="addWeekBtn">+ Add Week</button>
+            </div>
+            <div id="weeksContainer"></div>
+            <div class="action-buttons">
+                <button class="btn-primary" id="saveCourseBtn">Save Course</button>
+                <button class="btn-danger" id="deleteCourseBtn">Delete Course</button>
             </div>
         </div>
     </div>
 
-    <!-- Course Info -->
-    <div id="courseInfoSection" class="course-info" style="display: none;">
-        <h3 style="margin-bottom: 20px;"><i class="fas fa-info-circle"></i> Course Information</h3>
-        <div class="info-grid">
-            <div class="info-field">
-                <label>Course ID</label>
-                <input type="text" id="courseId" readonly style="background:#f5f7fa;">
-            </div>
-            <div class="info-field">
-                <label>Course Name</label>
-                <input type="text" id="courseName" placeholder="e.g., Cucumber Masterclass">
-            </div>
-            <div class="info-field">
-                <label>Price (RM)</label>
-                <input type="number" id="coursePrice" placeholder="15">
-            </div>
-            <div class="info-field">
-                <label>Category</label>
-                <select id="courseCategory">
-                    <option value="crops">🌱 Crops</option>
-                    <option value="fundamentals">📚 Farming Fundamentals</option>
-                </select>
-            </div>
-            <div class="info-field">
-                <label>Image URL</label>
-                <input type="text" id="courseImage" placeholder="https://images.unsplash.com/...">
-            </div>
-            <div class="info-field">
-                <label>Description</label>
-                <textarea id="courseDesc" rows="2" placeholder="Learn to grow..."></textarea>
-            </div>
+    <!-- Quizzes Tab -->
+    <div id="quizzesTab" class="tab-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <h2>Course Quizzes</h2>
+            <button class="btn-primary" id="addQuizBtn">+ New Quiz</button>
         </div>
-    </div>
-
-    <!-- Weeks Builder -->
-    <div id="weeksSection" class="weeks-section" style="display: none;">
-        <div class="section-header">
-            <h2><i class="fas fa-calendar-week"></i> Course Modules (Weeks)</h2>
-            <button class="btn-secondary" id="addWeekBtn">+ Add Week</button>
-        </div>
-        <div id="weeksContainer"></div>
-        <div class="action-buttons">
-            <button class="btn-primary" id="saveCourseBtn">💾 Save Course</button>
-            <button class="btn-danger" id="deleteCourseBtn">🗑️ Delete Course</button>
-        </div>
+        <div id="quizzesList" class="quiz-list">Loading...</div>
     </div>
 </main>
+
+<!-- Quiz Modal -->
+<div id="quizModal" class="modal">
+    <div class="modal-content">
+        <h3 id="quizModalTitle">Add Quiz</h3>
+        <div class="form-group">
+            <label>Select Course</label>
+            <select id="quizCourseId"></select>
+        </div>
+        <div class="form-group">
+            <label>Week Number</label>
+            <input type="number" id="quizWeek" placeholder="1">
+        </div>
+        <div class="form-group">
+            <label>Quiz Title</label>
+            <input type="text" id="quizTitle" placeholder="e.g., Week 1 Quiz">
+        </div>
+        <h4>Questions</h4>
+        <div id="questionsContainer"></div>
+        <button class="btn-secondary" id="addQuestionBtn" style="margin: 10px 0;">+ Add Question</button>
+        <div style="display: flex; gap: 12px; margin-top: 20px;">
+            <button class="btn-primary" id="saveQuizBtn">Save Quiz</button>
+            <button class="btn-danger" id="closeQuizModalBtn">Cancel</button>
+        </div>
+    </div>
+</div>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
@@ -420,145 +481,126 @@
 <script>
     let currentUser = null;
     let courseData = {};
+    let quizData = {};
     let currentCourseId = null;
     let weeks = [];
+    let currentEditingQuizId = null;
+    let currentQuestions = [];
 
-    // Toast notification
     function showToast(message, isError = false) {
         const toast = document.createElement('div');
-        toast.className = 'toast';
-        if (isError) toast.classList.add('error');
+        toast.className = 'toast' + (isError ? ' error' : '');
         toast.innerHTML = message;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
     }
 
-    // Logout
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
+    document.getElementById('logoutBtn').onclick = async () => {
         await auth.signOut();
         window.location.href = 'admin.html';
+    };
+
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.onclick = () => {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            const name = tab.getAttribute('data-tab');
+            document.getElementById('coursesTab').classList.toggle('active', name === 'courses');
+            document.getElementById('quizzesTab').classList.toggle('active', name === 'quizzes');
+            if (name === 'quizzes') loadQuizzes();
+        };
     });
 
-    // Load all courses into select dropdown
+    // ========== COURSE FUNCTIONS ==========
     async function loadCourseList() {
-        try {
-            const doc = await db.collection('courses').doc('course_data').get();
-            if (doc.exists && doc.data().data) {
-                courseData = doc.data().data;
-            } else {
-                courseData = {};
-            }
-            
-            const select = document.getElementById('courseSelect');
-            select.innerHTML = '<option value="">-- Select a course --</option>';
-            for (const [id, course] of Object.entries(courseData)) {
-                select.innerHTML += `<option value="${id}">${course.name} (${id})</option>`;
-            }
-        } catch (error) {
-            console.error('Error loading courses:', error);
+        const doc = await db.collection('courses').doc('course_data').get();
+        courseData = doc.exists ? doc.data().data || {} : {};
+        const select = document.getElementById('courseSelect');
+        select.innerHTML = '<option value="">-- Select a course --</option>';
+        for (const [id, course] of Object.entries(courseData)) {
+            select.innerHTML += `<option value="${id}">${course.name} (${id})</option>`;
         }
     }
 
-    // Render weeks in the UI
+    function escapeHtml(text) {
+        if (!text) return '';
+        return text.replace(/[&<>]/g, function(m) {
+            return m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;');
+        });
+    }
+
     function renderWeeks() {
         const container = document.getElementById('weeksContainer');
         if (!weeks.length) {
-            container.innerHTML = '<div class="empty-state"><i class="fas fa-plus-circle" style="font-size: 3rem;"></i><p>No weeks yet. Click "Add Week" to start building your course.</p></div>';
+            container.innerHTML = '<div class="empty-state">No weeks yet. Click "Add Week" to start building your course.</div>';
             return;
         }
-        
         container.innerHTML = weeks.map((week, idx) => `
-            <div class="week-card" data-week-index="${idx}">
+            <div class="week-card">
                 <div class="week-header">
                     <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-                        <span style="background: #2d6a2f; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">Week ${idx + 1}</span>
-                        <input type="text" class="week-title-input" value="${escapeHtml(week.title || '')}" placeholder="Week Title (e.g., Site Selection & Soil Prep)" data-week="${idx}" data-field="title">
+                        <span style="background: #2d6a2f; color: white; padding: 4px 12px; border-radius: 20px;">Week ${idx + 1}</span>
+                        <input type="text" class="week-title-input" value="${escapeHtml(week.title || '')}" placeholder="Week Title" data-week="${idx}" data-field="title">
                     </div>
-                    <button class="remove-week-btn" onclick="removeWeek(${idx})"><i class="fas fa-trash"></i> Remove Week</button>
+                    <button class="remove-week-btn" onclick="removeWeek(${idx})">Remove Week</button>
                 </div>
-                
                 <div class="week-video">
-                    <label>🎥 Video URL (YouTube embed)</label>
-                    <input type="text" value="${escapeHtml(week.videoUrl || '')}" placeholder="https://www.youtube.com/embed/VIDEO_ID" data-week="${idx}" data-field="videoUrl">
+                    <label>Video URL (YouTube embed)</label>
+                    <input type="text" value="${escapeHtml(week.videoUrl || '')}" placeholder="https://www.youtube.com/embed/..." data-week="${idx}" data-field="videoUrl">
                 </div>
-                
                 <div class="week-content">
-                    <label>📝 Tips / Content</label>
-                    <textarea rows="3" placeholder="Add helpful tips, notes, or content for this week..." data-week="${idx}" data-field="content">${escapeHtml(week.content || '')}</textarea>
+                    <label>Tips / Content</label>
+                    <textarea rows="3" placeholder="Add helpful tips..." data-week="${idx}" data-field="content">${escapeHtml(week.content || '')}</textarea>
                 </div>
-                
                 <div>
-                    <label class="tasks-label">✅ Tasks Checklist</label>
+                    <label>Tasks Checklist</label>
                     <div class="tasks-list" id="tasks-list-${idx}">
                         ${(week.tasks || []).map((task, taskIdx) => `
                             <div class="task-item">
-                                <input type="text" value="${escapeHtml(task)}" placeholder="Task description" data-week="${idx}" data-task="${taskIdx}" data-field="task">
-                                <button class="remove-task-btn" onclick="removeTask(${idx}, ${taskIdx})"><i class="fas fa-times-circle"></i></button>
+                                <input type="text" value="${escapeHtml(task)}" placeholder="Task" data-week="${idx}" data-task="${taskIdx}" data-field="task">
+                                <button class="remove-week-btn" onclick="removeTask(${idx}, ${taskIdx})" style="padding: 4px 8px;">✕</button>
                             </div>
                         `).join('')}
                     </div>
-                    <button class="add-task-btn" onclick="addTask(${idx})"><i class="fas fa-plus"></i> Add Task</button>
+                    <button class="add-task-btn" onclick="addTask(${idx})">+ Add Task</button>
                 </div>
             </div>
         `).join('');
         
-        // Add event listeners for all inputs
         document.querySelectorAll('[data-week][data-field]').forEach(input => {
             input.addEventListener('change', (e) => {
                 const weekIdx = parseInt(e.target.getAttribute('data-week'));
                 const field = e.target.getAttribute('data-field');
-                if (weeks[weekIdx]) {
-                    weeks[weekIdx][field] = e.target.value;
-                }
+                if (weeks[weekIdx]) weeks[weekIdx][field] = e.target.value;
             });
         });
-        
-        document.querySelectorAll('.week-content textarea').forEach(textarea => {
-            textarea.addEventListener('change', (e) => {
+        document.querySelectorAll('.week-content textarea').forEach(ta => {
+            ta.addEventListener('change', (e) => {
                 const weekIdx = parseInt(e.target.getAttribute('data-week'));
-                if (weeks[weekIdx]) {
-                    weeks[weekIdx].content = e.target.value;
-                }
+                if (weeks[weekIdx]) weeks[weekIdx].content = e.target.value;
             });
         });
     }
-    
-    function escapeHtml(text) {
-        if (!text) return '';
-        return text.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
-    
+
     window.addTask = (weekIdx) => {
         if (!weeks[weekIdx]) return;
         if (!weeks[weekIdx].tasks) weeks[weekIdx].tasks = [];
         weeks[weekIdx].tasks.push('');
         renderWeeks();
     };
-    
     window.removeTask = (weekIdx, taskIdx) => {
-        if (!weeks[weekIdx]) return;
         weeks[weekIdx].tasks.splice(taskIdx, 1);
         renderWeeks();
     };
-    
     window.removeWeek = (weekIdx) => {
         weeks.splice(weekIdx, 1);
         renderWeeks();
     };
-    
-    // Load course into editor
+
     function loadCourse(courseId) {
         const course = courseData[courseId];
-        if (!course) {
-            showToast('Course not found', true);
-            return false;
-        }
-        
+        if (!course) { showToast('Course not found', true); return false; }
         currentCourseId = courseId;
         document.getElementById('courseId').value = course.id;
         document.getElementById('courseName').value = course.name || '';
@@ -566,147 +608,227 @@
         document.getElementById('courseCategory').value = course.category || 'crops';
         document.getElementById('courseImage').value = course.image || '';
         document.getElementById('courseDesc').value = course.description || '';
-        
         weeks = course.weeks ? JSON.parse(JSON.stringify(course.weeks)) : [];
         renderWeeks();
-        
         document.getElementById('courseInfoSection').style.display = 'block';
         document.getElementById('weeksSection').style.display = 'block';
-        
         showToast(`Loaded: ${course.name}`);
         return true;
     }
-    
-    // Save course to Firestore
+
     async function saveCourse() {
-        if (!currentCourseId) {
-            showToast('No course selected. Create a new course first.', true);
-            return;
-        }
-        
+        if (!currentCourseId) { showToast('No course selected', true); return; }
         const courseName = document.getElementById('courseName').value.trim();
         const coursePrice = parseInt(document.getElementById('coursePrice').value);
-        const courseCategory = document.getElementById('courseCategory').value;
-        const courseImage = document.getElementById('courseImage').value;
-        const courseDesc = document.getElementById('courseDesc').value;
-        
-        if (!courseName || isNaN(coursePrice)) {
-            showToast('Please fill in course name and price', true);
-            return;
-        }
-        
-        // Clean up weeks data
-        const cleanWeeks = weeks.filter(week => week.title && week.title.trim()).map(week => ({
-            title: week.title || '',
-            videoUrl: week.videoUrl || '',
-            content: week.content || '',
-            tasks: (week.tasks || []).filter(t => t && t.trim())
+        if (!courseName || isNaN(coursePrice)) { showToast('Fill in name and price', true); return; }
+        const cleanWeeks = weeks.filter(w => w.title && w.title.trim()).map(w => ({
+            title: w.title || '',
+            videoUrl: w.videoUrl || '',
+            content: w.content || '',
+            tasks: (w.tasks || []).filter(t => t && t.trim())
         }));
-        
-        const updatedCourse = {
+        courseData[currentCourseId] = {
             id: currentCourseId,
             name: courseName,
             price: coursePrice,
-            category: courseCategory,
-            image: courseImage,
-            description: courseDesc,
+            category: document.getElementById('courseCategory').value,
+            image: document.getElementById('courseImage').value,
+            description: document.getElementById('courseDesc').value,
             weeks: cleanWeeks
         };
-        
-        courseData[currentCourseId] = updatedCourse;
-        
-        try {
-            await db.collection('courses').doc('course_data').set({ data: courseData });
-            showToast(`✅ Course "${courseName}" saved successfully!`);
-            await loadCourseList();
-        } catch (error) {
-            showToast('Error saving: ' + error.message, true);
-        }
+        await db.collection('courses').doc('course_data').set({ data: courseData });
+        showToast(`Course "${courseName}" saved!`);
+        await loadCourseList();
     }
-    
-    // Create new course
+
+    async function deleteCourse() {
+        if (!currentCourseId) return;
+        if (!confirm(`Delete "${courseData[currentCourseId]?.name}"?`)) return;
+        delete courseData[currentCourseId];
+        await db.collection('courses').doc('course_data').set({ data: courseData });
+        showToast('Course deleted');
+        currentCourseId = null;
+        document.getElementById('courseInfoSection').style.display = 'none';
+        document.getElementById('weeksSection').style.display = 'none';
+        await loadCourseList();
+    }
+
     function createNewCourse() {
         const newId = document.getElementById('newCourseId').value.trim().toLowerCase();
-        if (!newId) {
-            showToast('Please enter a course ID (e.g., cucumber)', true);
-            return;
-        }
-        if (!/^[a-z]+$/.test(newId)) {
-            showToast('Course ID must be lowercase letters only (a-z)', true);
-            return;
-        }
-        if (courseData[newId]) {
-            showToast('Course ID already exists!', true);
-            return;
-        }
-        
-        courseData[newId] = {
-            id: newId,
-            name: '',
-            price: 0,
-            category: 'crops',
-            image: '',
-            description: '',
-            weeks: []
-        };
-        
+        if (!newId) { showToast('Enter course ID', true); return; }
+        if (!/^[a-z]+$/.test(newId)) { showToast('Lowercase letters only', true); return; }
+        if (courseData[newId]) { showToast('Course ID exists', true); return; }
+        courseData[newId] = { id: newId, name: '', price: 0, category: 'crops', image: '', description: '', weeks: [] };
         document.getElementById('newCourseId').value = '';
         loadCourseList().then(() => {
             document.getElementById('courseSelect').value = newId;
             loadCourse(newId);
         });
     }
-    
-    // Delete course
-    async function deleteCourse() {
-        if (!currentCourseId) return;
-        if (!confirm(`Are you sure you want to delete "${courseData[currentCourseId]?.name}"? This action cannot be undone.`)) return;
-        
-        delete courseData[currentCourseId];
-        
-        try {
-            await db.collection('courses').doc('course_data').set({ data: courseData });
-            showToast(`Course deleted`);
-            currentCourseId = null;
-            document.getElementById('courseInfoSection').style.display = 'none';
-            document.getElementById('weeksSection').style.display = 'none';
-            document.getElementById('courseSelect').value = '';
-            await loadCourseList();
-        } catch (error) {
-            showToast('Error deleting: ' + error.message, true);
-        }
+
+    // ========== QUIZ FUNCTIONS ==========
+    async function loadQuizzes() {
+        const doc = await db.collection('quizzes').doc('quiz_data').get();
+        quizData = doc.exists ? doc.data().data || {} : {};
+        renderQuizzesList();
     }
-    
-    // Event Listeners
-    document.getElementById('loadCourseBtn').addEventListener('click', () => {
-        const courseId = document.getElementById('courseSelect').value;
-        if (!courseId) {
-            showToast('Please select a course', true);
+
+    function renderQuizzesList() {
+        const container = document.getElementById('quizzesList');
+        const quizzes = Object.values(quizData);
+        if (quizzes.length === 0) {
+            container.innerHTML = '<div class="empty-state">No quizzes yet. Click "New Quiz" to create one.</div>';
             return;
         }
-        loadCourse(courseId);
-    });
-    
-    document.getElementById('newCourseBtn').addEventListener('click', createNewCourse);
-    document.getElementById('saveCourseBtn').addEventListener('click', saveCourse);
-    document.getElementById('deleteCourseBtn').addEventListener('click', deleteCourse);
-    document.getElementById('addWeekBtn').addEventListener('click', () => {
-        weeks.push({
-            title: '',
-            videoUrl: '',
-            content: '',
-            tasks: []
-        });
+        container.innerHTML = quizzes.map(q => `
+            <div class="quiz-item">
+                <div class="quiz-header">
+                    <div>
+                        <div class="quiz-title">${escapeHtml(q.title)}</div>
+                        <div style="font-size: 0.8rem; color: #6b7a8a;">${courseData[q.courseId]?.name || q.courseId} - Week ${q.week}</div>
+                    </div>
+                    <div>
+                        <button class="btn-secondary" onclick="editQuiz('${q.id}')" style="margin-right: 8px;">Edit</button>
+                        <button class="btn-danger" onclick="deleteQuizItem('${q.id}')">Delete</button>
+                    </div>
+                </div>
+                <div><strong>${q.questions?.length || 0} questions</strong></div>
+                ${(q.questions || []).slice(0, 2).map((question, idx) => `
+                    <div class="quiz-question-item">
+                        <strong>Q${idx + 1}:</strong> ${escapeHtml(question.text.substring(0, 100))}...
+                    </div>
+                `).join('')}
+                ${q.questions?.length > 2 ? `<div style="font-size: 0.8rem; color: #8a9bb0; margin-top: 8px;">+ ${q.questions.length - 2} more questions</div>` : ''}
+            </div>
+        `).join('');
+    }
+
+    function populateCourseSelect() {
+        const select = document.getElementById('quizCourseId');
+        select.innerHTML = '<option value="">Select Course</option>';
+        for (const [id, course] of Object.entries(courseData)) {
+            select.innerHTML += `<option value="${id}">${course.name}</option>`;
+        }
+    }
+
+    function renderQuestionEditor() {
+        const container = document.getElementById('questionsContainer');
+        if (!currentQuestions.length) {
+            container.innerHTML = '<div class="empty-state">No questions yet. Click "Add Question"</div>';
+            return;
+        }
+        container.innerHTML = currentQuestions.map((q, idx) => `
+            <div class="question-block">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <strong>Question ${idx + 1}</strong>
+                    <button class="btn-danger" onclick="removeQuestion(${idx})" style="padding: 4px 8px;">Remove</button>
+                </div>
+                <input type="text" id="q_text_${idx}" value="${escapeHtml(q.text)}" placeholder="Question text">
+                <textarea id="q_choices_${idx}" rows="3" placeholder="Choices (one per line)">${q.choices ? q.choices.join('\n') : ''}</textarea>
+                <input type="number" id="q_correct_${idx}" value="${q.correct || 1}" min="1" max="4" placeholder="Correct answer (1-4)">
+            </div>
+        `).join('');
+    }
+
+    window.removeQuestion = (idx) => {
+        currentQuestions.splice(idx, 1);
+        renderQuestionEditor();
+    };
+
+    function collectQuestions() {
+        const questions = [];
+        for (let i = 0; i < currentQuestions.length; i++) {
+            const text = document.getElementById(`q_text_${i}`)?.value || '';
+            const choicesText = document.getElementById(`q_choices_${i}`)?.value || '';
+            const choices = choicesText.split('\n').filter(c => c.trim());
+            const correct = parseInt(document.getElementById(`q_correct_${i}`)?.value) || 1;
+            if (text && choices.length >= 2) {
+                questions.push({ text, choices, correct });
+            }
+        }
+        return questions;
+    }
+
+    window.editQuiz = (id) => {
+        currentEditingQuizId = id;
+        const quiz = quizData[id];
+        populateCourseSelect();
+        document.getElementById('quizCourseId').value = quiz.courseId;
+        document.getElementById('quizWeek').value = quiz.week;
+        document.getElementById('quizTitle').value = quiz.title || '';
+        currentQuestions = quiz.questions ? JSON.parse(JSON.stringify(quiz.questions)) : [];
+        renderQuestionEditor();
+        document.getElementById('quizModalTitle').innerText = 'Edit Quiz';
+        document.getElementById('quizModal').style.display = 'flex';
+    };
+
+    window.deleteQuizItem = async (id) => {
+        if (confirm('Delete this quiz?')) {
+            delete quizData[id];
+            await db.collection('quizzes').doc('quiz_data').set({ data: quizData });
+            loadQuizzes();
+            showToast('Quiz deleted');
+        }
+    };
+
+    async function saveQuiz() {
+        const courseId = document.getElementById('quizCourseId').value;
+        const week = parseInt(document.getElementById('quizWeek').value);
+        const title = document.getElementById('quizTitle').value;
+        const questions = collectQuestions();
+        if (!courseId) { showToast('Select a course', true); return; }
+        if (!week) { showToast('Enter week number', true); return; }
+        if (!title) { showToast('Enter quiz title', true); return; }
+        if (questions.length === 0) { showToast('Add at least one question', true); return; }
+        const quizId = currentEditingQuizId || `${courseId}_week${week}`;
+        quizData[quizId] = { id: quizId, courseId, week, title, questions, createdAt: new Date().toISOString() };
+        await db.collection('quizzes').doc('quiz_data').set({ data: quizData });
+        showToast('Quiz saved!');
+        document.getElementById('quizModal').style.display = 'none';
+        loadQuizzes();
+    }
+
+    // Event Listeners
+    document.getElementById('loadCourseBtn').onclick = () => {
+        const id = document.getElementById('courseSelect').value;
+        if (id) loadCourse(id);
+        else showToast('Select a course', true);
+    };
+    document.getElementById('newCourseBtn').onclick = createNewCourse;
+    document.getElementById('saveCourseBtn').onclick = saveCourse;
+    document.getElementById('deleteCourseBtn').onclick = deleteCourse;
+    document.getElementById('addWeekBtn').onclick = () => {
+        weeks.push({ title: '', videoUrl: '', content: '', tasks: [] });
         renderWeeks();
-    });
-    
+    };
+    document.getElementById('addQuizBtn').onclick = () => {
+        currentEditingQuizId = null;
+        populateCourseSelect();
+        document.getElementById('quizCourseId').value = '';
+        document.getElementById('quizWeek').value = '';
+        document.getElementById('quizTitle').value = '';
+        currentQuestions = [];
+        renderQuestionEditor();
+        document.getElementById('quizModalTitle').innerText = 'Add New Quiz';
+        document.getElementById('quizModal').style.display = 'flex';
+    };
+    document.getElementById('addQuestionBtn').onclick = () => {
+        currentQuestions.push({ text: '', choices: ['', '', '', ''], correct: 1 });
+        renderQuestionEditor();
+    };
+    document.getElementById('saveQuizBtn').onclick = saveQuiz;
+    document.getElementById('closeQuizModalBtn').onclick = () => {
+        document.getElementById('quizModal').style.display = 'none';
+    };
+
     // Auth check
     auth.onAuthStateChanged(async (user) => {
         if (user && user.emailVerified) {
-            const userDoc = await db.collection('users').doc(user.uid).get();
-            if (userDoc.exists && userDoc.data().isAdmin === true) {
+            const doc = await db.collection('users').doc(user.uid).get();
+            if (doc.exists && doc.data().isAdmin === true) {
                 currentUser = user;
                 await loadCourseList();
+                await loadQuizzes();
                 return;
             }
         }

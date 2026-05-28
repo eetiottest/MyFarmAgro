@@ -92,6 +92,17 @@
             width: 100%;
             margin-top: 12px;
         }
+        .btn-buy {
+            background: #f5b642;
+            color: #2a441f;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 12px;
+            font-weight: 600;
+        }
         .completed-badge { color: #2d6a2f; margin: 8px 0; }
         .empty-state {
             text-align: center;
@@ -328,6 +339,18 @@
     </div>
 </main>
 
+<!-- Purchase Modal -->
+<div id="purchaseModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 2000;">
+    <div style="background: white; max-width: 400px; width: 90%; border-radius: 16px; padding: 28px; text-align: center;">
+        <i class="fas fa-credit-card" style="font-size: 2rem; color: #2d6a2f; margin-bottom: 16px;"></i>
+        <h3 id="modalCourseName" style="margin: 16px 0;">Confirm Purchase</h3>
+        <p id="modalPrice" style="margin-bottom: 16px; font-size: 1.5rem; font-weight: 700; color: #2d6a2f;">RM0</p>
+        <p style="margin-bottom: 24px; font-size: 0.75rem; color: #6b7a8a;">One-time payment. Lifetime access.</p>
+        <button id="confirmPurchaseBtn" style="background: #2d6a2f; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 600; width: 100%; cursor: pointer;">Confirm Purchase</button>
+        <button id="closePurchaseModal" style="background: none; border: none; color: #999; margin-top: 16px; cursor: pointer;">Cancel</button>
+    </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
@@ -340,6 +363,7 @@
     let allCourses = [];
     let marketPrices = {};
 
+    // Tab switching
     document.querySelectorAll('.tab').forEach(tab => {
         tab.addEventListener('click', () => {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -350,6 +374,7 @@
         });
     });
 
+    // Logout
     document.getElementById('logoutBtn').addEventListener('click', async () => {
         await auth.signOut();
         window.location.href = 'index.html';
@@ -365,6 +390,78 @@
         }).replace(/\n/g, '<br>');
     }
 
+    // Purchase Modal Functions
+    window.currentPurchaseCourse = null;
+
+    document.getElementById('closePurchaseModal').addEventListener('click', () => {
+        document.getElementById('purchaseModal').style.display = 'none';
+        window.currentPurchaseCourse = null;
+    });
+
+    document.getElementById('confirmPurchaseBtn').addEventListener('click', async () => {
+        if (window.currentPurchaseCourse && currentUser) {
+            const btn = document.getElementById('confirmPurchaseBtn');
+            btn.disabled = true;
+            btn.innerHTML = 'Processing...';
+            
+            try {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                const purchased = [...(userProfile.purchasedCourses || []), window.currentPurchaseCourse.id];
+                const newTotalSpent = (userProfile.totalSpent || 0) + window.currentPurchaseCourse.price;
+                
+                await db.collection('users').doc(currentUser.uid).update({ 
+                    purchasedCourses: purchased,
+                    totalSpent: newTotalSpent
+                });
+                
+                userProfile.purchasedCourses = purchased;
+                userProfile.totalSpent = newTotalSpent;
+                
+                const transaction = {
+                    description: `Purchased ${window.currentPurchaseCourse.name} course`,
+                    amount: window.currentPurchaseCourse.price,
+                    date: new Date().toLocaleDateString()
+                };
+                const transactions = userProfile?.transactions || [];
+                transactions.unshift(transaction);
+                await db.collection('users').doc(currentUser.uid).update({ transactions: transactions });
+                userProfile.transactions = transactions;
+                
+                alert(`✅ Purchased ${window.currentPurchaseCourse.name}!`);
+                document.getElementById('purchaseModal').style.display = 'none';
+                window.currentPurchaseCourse = null;
+                
+                // Refresh the page to update all lists
+                location.reload();
+                
+            } catch (error) {
+                console.error('Purchase error:', error);
+                alert('Purchase failed. Please try again.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Confirm Purchase';
+            }
+        }
+    });
+
+    window.showPurchaseModal = function(courseId, price, courseName) {
+        window.currentPurchaseCourse = { id: courseId, price: price, name: courseName };
+        document.getElementById('modalCourseName').innerText = courseName;
+        document.getElementById('modalPrice').innerHTML = `RM${price}`;
+        document.getElementById('purchaseModal').style.display = 'flex';
+    };
+
+    // Close modal on outside click
+    window.addEventListener('click', (e) => {
+        const modal = document.getElementById('purchaseModal');
+        if (e.target === modal) {
+            modal.style.display = 'none';
+            window.currentPurchaseCourse = null;
+        }
+    });
+
+    // AI Chat Functions
     async function saveChatMessage(message, isUser, response) {
         if (!currentUser) return;
         const chatMessage = {
@@ -472,6 +569,7 @@
         } catch(e) { console.error(e); }
     }
 
+    // Auth State Listener
     auth.onAuthStateChanged(async (user) => {
         if (user && user.emailVerified) {
             currentUser = user;
@@ -505,30 +603,71 @@
             const priceDoc = await db.collection('settings').doc('market_prices').get();
             marketPrices = priceDoc.exists ? priceDoc.data() : { chili: { name: 'Chili', price: 8, unit: 'kg' }, tomato: { name: 'Tomato', price: 5, unit: 'kg' } };
             
-            // Simple render functions (abbreviated for brevity - same as before)
+            // Render Enrolled Courses
             const enrolledContainer = document.getElementById('enrolledList');
-            if (purchased.length === 0) enrolledContainer.innerHTML = '<div class="empty-state">No courses enrolled.</div>';
+            if (purchased.length === 0) enrolledContainer.innerHTML = '<div class="empty-state">No courses enrolled. Browse courses to get started!</div>';
             else {
                 let html = '<div class="course-grid">';
                 for (let id of purchased) {
                     const c = courseData[id];
-                    if (c) html += `<div class="course-card"><div class="image"><img src="${c.image || 'https://placehold.co/280x160'}"></div><div class="info"><div class="title">${c.name}</div><button class="btn-continue" onclick="window.location.href='crops/course.html?id=${id}'">Continue →</button></div></div>`;
+                    if (c) html += `<div class="course-card"><div class="image"><img src="${c.image || 'https://placehold.co/280x160'}" onerror="this.src='https://placehold.co/280x160'"></div><div class="info"><div class="title">${c.name}</div><button class="btn-continue" onclick="window.location.href='crops/course.html?id=${id}'">Continue →</button></div></div>`;
                 }
                 enrolledContainer.innerHTML = html + '</div>';
             }
             
+            // Render Browse Courses (with purchase modal instead of redirect)
             const browseContainer = document.getElementById('browseList');
             let browseHtml = '<div class="course-grid">';
-            for (let c of allCourses) browseHtml += `<div class="course-card"><div class="image"><img src="${c.image || 'https://placehold.co/280x160'}"></div><div class="info"><div class="title">${c.name}</div><div>RM${c.price}</div><button class="btn-continue" onclick="window.location.href='index.html?buy=${c.id}'">Buy →</button></div></div>`;
+            for (let c of allCourses) {
+                const isPurchased = purchased.includes(c.id);
+                if (isPurchased) {
+                    browseHtml += `<div class="course-card"><div class="image"><img src="${c.image || 'https://placehold.co/280x160'}" onerror="this.src='https://placehold.co/280x160'"></div><div class="info"><div class="title">${c.name}</div><div style="color:#2d6a2f; margin-bottom:8px;">✅ Already Owned</div><button class="btn-continue" onclick="window.location.href='crops/course.html?id=${c.id}'">Access →</button></div></div>`;
+                } else {
+                    browseHtml += `<div class="course-card"><div class="image"><img src="${c.image || 'https://placehold.co/280x160'}" onerror="this.src='https://placehold.co/280x160'"></div><div class="info"><div class="title">${c.name}</div><div style="margin: 8px 0; font-weight: 700; color: #2d6a2f;">RM${c.price}</div><button class="btn-buy" onclick="showPurchaseModal('${c.id}', ${c.price}, '${c.name.replace(/'/g, "\\'")}')">Buy Now →</button></div></div>`;
+                }
+            }
             browseContainer.innerHTML = browseHtml + '</div>';
             
+            // Render Completed Courses
+            const completedContainer = document.getElementById('completedList');
+            let completedCourses = [];
+            for (let id of purchased) {
+                const c = courseData[id];
+                if (c && c.weeks) {
+                    let totalTasks = 0;
+                    let completedTasks = 0;
+                    const prog = progress[id] || [];
+                    for (let w = 0; w < c.weeks.length; w++) {
+                        const tasks = c.weeks[w].tasks || [];
+                        totalTasks += tasks.length;
+                        for (let t = 0; t < tasks.length; t++) {
+                            if (prog.includes(w + '_' + t)) completedTasks++;
+                        }
+                    }
+                    if (totalTasks > 0 && completedTasks === totalTasks) {
+                        completedCourses.push(c);
+                    }
+                }
+            }
+            if (completedCourses.length === 0) completedContainer.innerHTML = '<div class="empty-state">No completed courses yet. Keep learning!</div>';
+            else {
+                let html = '<div class="course-grid">';
+                for (let c of completedCourses) {
+                    html += `<div class="course-card"><div class="image"><img src="${c.image || 'https://placehold.co/280x160'}" onerror="this.src='https://placehold.co/280x160'"></div><div class="info"><div class="title">${c.name}</div><div class="completed-badge"><i class="fas fa-trophy"></i> Completed! 🎉</div><button class="btn-continue" onclick="window.location.href='crops/course.html?id=${c.id}'">Review →</button></div></div>`;
+                }
+                completedContainer.innerHTML = html + '</div>';
+            }
+            
+            // Render Market Prices
             const pricesContainer = document.getElementById('marketPricesList');
             let priceHtml = '';
             for (let item of Object.values(marketPrices)) priceHtml += `<div class="market-item"><span class="name">${item.name}</span><span class="price">RM${item.price}</span><span class="unit">/${item.unit}</span></div>`;
             pricesContainer.innerHTML = priceHtml;
             
             await loadQuizScores();
-        } else { window.location.href = 'index.html'; }
+        } else { 
+            window.location.href = 'index.html'; 
+        }
     });
 
     document.getElementById('chatHistoryBtn')?.addEventListener('click', showChatHistory);
