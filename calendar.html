@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer's Calendar | My FarmAgro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .calendar-container { max-width: 1400px; margin: 0 auto; padding: 32px 24px; }
+        .calendar-header { background: linear-gradient(135deg, #2d6a2f, #1a472a); border-radius: 16px; padding: 32px; color: white; margin-bottom: 32px; text-align: center; }
+        .tabs { display: flex; gap: 12px; margin-bottom: 24px; border-bottom: 1px solid #e4e9f0; padding-bottom: 12px; flex-wrap: wrap; }
+        .tab { padding: 10px 24px; border-radius: 40px; cursor: pointer; background: none; border: none; font-weight: 600; color: #6b7a8a; }
+        .tab.active { background: #2d6a2f; color: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .crop-form { background: white; border-radius: 16px; padding: 24px; margin-bottom: 32px; border: 1px solid #e4e9f0; }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 6px; color: #1a2533; font-size: 0.8rem; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #d1d9e6; font-family: inherit; font-size: 0.9rem; }
+        .btn-primary { background: #2d6a2f; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .btn-danger { background: #fde8e8; color: #d9534f; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+        .btn-small { background: #e8f0ea; color: #2d6a2f; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        .crops-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 24px; margin-top: 24px; }
+        .crop-card { background: white; border-radius: 16px; border: 1px solid #e4e9f0; overflow: hidden; }
+        .crop-header { background: #2d6a2f; color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+        .crop-name { font-size: 1.2rem; font-weight: 700; }
+        .crop-status { padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
+        .crop-status.planted { background: #4caf50; }
+        .crop-status.growing { background: #ff9800; }
+        .crop-status.harvested { background: #2196f3; }
+        .crop-body { padding: 20px; }
+        .crop-detail { margin-bottom: 12px; display: flex; justify-content: space-between; flex-wrap: wrap; border-bottom: 1px solid #f0f2f5; padding-bottom: 8px; }
+        .crop-detail-label { font-weight: 600; color: #4a5b6e; }
+        .activities-list { margin-top: 16px; max-height: 200px; overflow-y: auto; }
+        .activity-item { background: #f8faf5; border-radius: 12px; padding: 10px; margin-bottom: 8px; font-size: 0.8rem; border-left: 3px solid #2d6a2f; }
+        .activity-type-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; margin-right: 8px; }
+        .activity-type-badge.pesticide { background: #fde8e8; color: #d9534f; }
+        .activity-type-badge.fertilizer { background: #e8f0ea; color: #2d6a2f; }
+        .activity-type-badge.water { background: #e3f2fd; color: #2196f3; }
+        .activity-type-badge.weeding { background: #fff3e0; color: #ff9800; }
+        .activity-type-badge.harvest { background: #e8f5e9; color: #4caf50; }
+        .reminders-list { background: white; border-radius: 16px; padding: 20px; border: 1px solid #e4e9f0; }
+        .reminder-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #f0f2f5; flex-wrap: wrap; gap: 12px; }
+        .reminder-item.overdue { background: #fde8e8; border-radius: 8px; }
+        .empty-state { text-align: center; padding: 40px; color: #8a9bb0; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 2000; }
+        .modal-content { background: white; border-radius: 16px; padding: 28px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; }
+        .modal-buttons { display: flex; gap: 12px; margin-top: 20px; }
+        @media (max-width: 700px) { .crops-grid { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo"><i class="fas fa-seedling"></i> My FarmAgro</div>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="marketplace.html">Marketplace</a>
+                <a href="calendar.html" style="color:#2d6a2f; font-weight:700;">Calendar</a>
+                <a href="profile.html">Profile</a>
+                <button class="btn-outline" id="logoutBtn">Log Out</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <h1><i class="fas fa-calendar-alt"></i> Farmer's Calendar</h1>
+            <p>Track your crops, activities, and schedule reminders</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="crops">My Crops</button>
+            <button class="tab" data-tab="reminders">Reminders</button>
+        </div>
+
+        <div id="cropsTab" class="tab-content active">
+            <div class="crop-form">
+                <h3>Add New Crop</h3>
+                <form id="cropForm">
+                    <div class="form-row">
+                        <div class="form-group"><label>Crop Name</label><input type="text" id="cropName" required></div>
+                        <div class="form-group"><label>Variety</label><input type="text" id="cropVariety"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Planting Date</label><input type="date" id="plantingDate" required></div>
+                        <div class="form-group"><label>Expected Harvest Date</label><input type="date" id="harvestDate"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Area (m²)</label><input type="number" id="cropArea"></div>
+                        <div class="form-group"><label>Quantity</label><input type="number" id="cropQuantity"></div>
+                    </div>
+                    <div class="form-group"><label>Notes</label><textarea id="cropNotes" rows="2"></textarea></div>
+                    <button type="submit" class="btn-primary">Add Crop</button>
+                </form>
+            </div>
+            <div id="cropsGrid" class="crops-grid"><div class="empty-state">Loading crops...</div></div>
+        </div>
+
+        <div id="remindersTab" class="tab-content">
+            <div id="remindersList" class="reminders-list"><div class="empty-state">Loading reminders...</div></div>
+        </div>
+    </div>
+</main>
+
+<!-- Add Activity Modal -->
+<div id="activityModal" class="modal">
+    <div class="modal-content">
+        <h3 id="activityModalTitle">Add Activity</h3>
+        <form id="activityForm">
+            <input type="hidden" id="activityCropId">
+            <input type="hidden" id="activityCropName">
+            <div class="form-group"><label>Activity Type</label>
+                <select id="activityType" required>
+                    <option value="pesticide">Pesticide Application</option>
+                    <option value="fertilizer">Fertilizer Application</option>
+                    <option value="water">Watering</option>
+                    <option value="weeding">Weeding</option>
+                    <option value="harvest">Harvesting</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Date</label><input type="date" id="activityDate" required></div>
+            <div class="form-group"><label>Product</label><input type="text" id="activityProduct"></div>
+            <div class="form-group"><label>Quantity</label><input type="text" id="activityAmount"></div>
+            <div class="form-group"><label>Notes</label><textarea id="activityNotes" rows="2"></textarea></div>
+            <div class="form-group"><label>Next Application Date</label><input type="date" id="reminderDate"></div>
+            <div class="form-group"><label>Reminder Message</label><input type="text" id="reminderMessage" placeholder="Apply pesticide again"></div>
+            <div class="modal-buttons"><button type="submit" class="btn-primary">Save Activity</button><button type="button" class="btn-danger" id="closeActivityModalBtn">Cancel</button></div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Reminder Modal -->
+<div id="editReminderModal" class="modal">
+    <div class="modal-content">
+        <h3>Edit Reminder</h3>
+        <form id="editReminderForm">
+            <input type="hidden" id="editReminderId">
+            <input type="hidden" id="editCropId">
+            <div class="form-group"><label>Crop</label><input type="text" id="editCropName" disabled style="background:#f5f7fa;"></div>
+            <div class="form-group"><label>Activity Type</label>
+                <select id="editType" required>
+                    <option value="pesticide">Pesticide Application</option>
+                    <option value="fertilizer">Fertilizer Application</option>
+                    <option value="water">Watering</option>
+                    <option value="weeding">Weeding</option>
+                    <option value="harvest">Harvesting</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Reminder Date</label><input type="date" id="editReminderDate" required></div>
+            <div class="form-group"><label>Reminder Message</label><input type="text" id="editReminderMessage" required></div>
+            <div class="modal-buttons"><button type="submit" class="btn-primary">Save Changes</button><button type="button" class="btn-danger" id="closeEditModalBtn">Cancel</button></div>
+        </form>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+
+<script>
+    let currentUser = null;
+
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.onclick = () => {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            const tabName = tab.getAttribute('data-tab');
+            document.getElementById('cropsTab').classList.toggle('active', tabName === 'crops');
+            document.getElementById('remindersTab').classList.toggle('active', tabName === 'reminders');
+            if (tabName === 'crops') loadCrops();
+            if (tabName === 'reminders') loadReminders();
+        };
+    });
+
+    document.getElementById('logoutBtn').onclick = async () => {
+        await auth.signOut();
+        window.location.href = 'index.html';
+    };
+
+    // Add Crop
+    document.getElementById('cropForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const crop = {
+            name: document.getElementById('cropName').value,
+            variety: document.getElementById('cropVariety').value,
+            plantingDate: document.getElementById('plantingDate').value,
+            harvestDate: document.getElementById('harvestDate').value,
+            area: parseInt(document.getElementById('cropArea').value) || 0,
+            quantity: parseInt(document.getElementById('cropQuantity').value) || 0,
+            notes: document.getElementById('cropNotes').value,
+            farmerId: currentUser.uid,
+            farmerName: currentUser?.displayName || currentUser?.email?.split('@')[0],
+            activities: [],
+            createdAt: new Date().toISOString()
+        };
+        try {
+            await db.collection('farmer_crops').add(crop);
+            alert('Crop added');
+            document.getElementById('cropForm').reset();
+            loadCrops();
+        } catch (error) { alert('Error: ' + error.message); }
+    };
+
+    // Load Crops
+    async function loadCrops() {
+        const container = document.getElementById('cropsGrid');
+        container.innerHTML = '<div class="empty-state">Loading...</div>';
+        if (!currentUser) return;
+        try {
+            const snapshot = await db.collection('farmer_crops').where('farmerId', '==', currentUser.uid).get();
+            if (snapshot.empty) { container.innerHTML = '<div class="empty-state">No crops added yet</div>'; return; }
+            let crops = [];
+            snapshot.forEach(doc => { const crop = doc.data(); crop.id = doc.id; crops.push(crop); });
+            let html = '';
+            for (const crop of crops) {
+                let daysSince = 0;
+                if (crop.plantingDate) {
+                    const plantDate = new Date(crop.plantingDate);
+                    daysSince = Math.max(0, Math.floor((new Date() - plantDate) / (1000 * 60 * 60 * 24)));
+                }
+                
+                html += `
+                    <div class="crop-card">
+                        <div class="crop-header">
+                            <span class="crop-name">${escapeHtml(crop.name)} ${crop.variety ? `(${crop.variety})` : ''}</span>
+                            <span class="crop-status growing">Growing</span>
+                        </div>
+                        <div class="crop-body">
+                            <div class="crop-detail"><span class="crop-detail-label">Planted:</span><span>${crop.plantingDate || '-'} (${daysSince} days ago)</span></div>
+                            <div class="crop-detail"><span class="crop-detail-label">Expected Harvest:</span><span>${crop.harvestDate || 'Not set'}</span></div>
+                            
+                            <div class="activities-list">
+                                <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                                    <strong>Activities</strong>
+                                    <button class="btn-small" onclick="openActivityModal('${crop.id}', '${escapeHtml(crop.name)}')">+ Add Activity</button>
+                                </div>
+                                ${crop.activities && crop.activities.length > 0 ? crop.activities.slice().reverse().map(act => `
+                                    <div class="activity-item">
+                                        <span class="activity-type-badge ${act.type}">${act.type}</span>
+                                        <strong>${act.date || '-'}</strong>
+                                        ${act.product ? `<div>Product: ${escapeHtml(act.product)}</div>` : ''}
+                                        ${act.amount ? `<div>Amount: ${escapeHtml(act.amount)}</div>` : ''}
+                                        ${act.notes ? `<div>Note: ${escapeHtml(act.notes)}</div>` : ''}
+                                    </div>
+                                `).join('') : '<div class="empty-state" style="padding:20px;">No activities</div>'}
+                            </div>
+                            <button class="btn-danger" onclick="deleteCrop('${crop.id}')" style="width:100%; margin-top:16px;">Delete Crop</button>
+                        </div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        } catch (error) { container.innerHTML = '<div class="empty-state">Error loading crops</div>'; }
+    }
+
+    window.openActivityModal = (cropId, cropName) => {
+        document.getElementById('activityCropId').value = cropId;
+        document.getElementById('activityCropName').value = cropName;
+        document.getElementById('activityModalTitle').innerHTML = `Add Activity - ${cropName}`;
+        document.getElementById('activityDate').value = new Date().toISOString().split('T')[0];
+        document.getElementById('activityType').value = 'pesticide';
+        document.getElementById('activityProduct').value = '';
+        document.getElementById('activityAmount').value = '';
+        document.getElementById('activityNotes').value = '';
+        document.getElementById('reminderDate').value = '';
+        document.getElementById('reminderMessage').value = '';
+        document.getElementById('activityModal').style.display = 'flex';
+    };
+
+    // Save Activity AND automatically create reminder
+    document.getElementById('activityForm').onsubmit = async (e) => {
+        e.preventDefault();
+        
+        const cropId = document.getElementById('activityCropId').value;
+        const cropName = document.getElementById('activityCropName').value;
+        const activityType = document.getElementById('activityType').value;
+        const reminderDate = document.getElementById('reminderDate').value;
+        
+        const activity = {
+            type: activityType,
+            date: document.getElementById('activityDate').value,
+            product: document.getElementById('activityProduct').value,
+            amount: document.getElementById('activityAmount').value,
+            notes: document.getElementById('activityNotes').value,
+            createdAt: new Date().toISOString()
+        };
+        
+        try {
+            // Save to crop activities
+            const cropRef = db.collection('farmer_crops').doc(cropId);
+            const cropDoc = await cropRef.get();
+            const activities = cropDoc.data()?.activities || [];
+            activities.push(activity);
+            await cropRef.update({ activities: activities });
+            
+            // Create a reminder if next application date is set
+            if (reminderDate) {
+                const reminderData = {
+                    cropId: cropId,
+                    cropName: cropName,
+                    type: activityType,
+                    reminderDate: reminderDate,
+                    message: document.getElementById('reminderMessage').value || `${activityType} reminder for ${cropName}`,
+                    farmerId: currentUser.uid,
+                    isRead: false,
+                    createdAt: new Date().toISOString()
+                };
+                await db.collection('farmer_reminders').add(reminderData);
+                alert('Activity saved. Reminder scheduled for ' + reminderDate);
+            } else {
+                alert('Activity saved.');
+            }
+            
+            document.getElementById('activityModal').style.display = 'none';
+            loadCrops();
+            loadReminders();
+        } catch (error) {
+            alert('Error: ' + error.message);
+        }
+    };
+
+    window.deleteCrop = async (cropId) => {
+        if (confirm('Delete this crop? All activities and reminders will be deleted.')) {
+            // Delete all reminders for this crop
+            const reminders = await db.collection('farmer_reminders').where('cropId', '==', cropId).get();
+            reminders.forEach(doc => doc.ref.delete());
+            // Delete the crop
+            await db.collection('farmer_crops').doc(cropId).delete();
+            loadCrops();
+            loadReminders();
+        }
+    };
+
+    // Load Reminders
+    async function loadReminders() {
+        const container = document.getElementById('remindersList');
+        container.innerHTML = '<div class="empty-state">Loading reminders...</div>';
+        if (!currentUser) return;
+        
+        try {
+            const snapshot = await db.collection('farmer_reminders')
+                .where('farmerId', '==', currentUser.uid)
+                .where('isRead', '==', false)
+                .get();
+            
+            if (snapshot.empty) {
+                container.innerHTML = '<div class="empty-state">No pending reminders</div>';
+                return;
+            }
+            
+            let reminders = [];
+            snapshot.forEach(doc => {
+                const r = doc.data();
+                r.id = doc.id;
+                reminders.push(r);
+            });
+            
+            reminders.sort((a, b) => {
+                if (a.reminderDate < b.reminderDate) return -1;
+                return 1;
+            });
+            
+            const today = new Date().toISOString().split('T')[0];
+            let html = '';
+            for (const r of reminders) {
+                const isOverdue = r.reminderDate < today;
+                html += `
+                    <div class="reminder-item ${isOverdue ? 'overdue' : ''}">
+                        <div>
+                            <strong>${escapeHtml(r.cropName)}</strong><br>
+                            <span class="activity-type-badge ${r.type}">${r.type}</span>
+                            <span>${escapeHtml(r.message)}</span><br>
+                            <small>Due: ${r.reminderDate}</small>
+                        </div>
+                        <div>
+                            <button onclick="editReminder('${r.id}', '${escapeHtml(r.cropName)}', '${r.type}', '${r.reminderDate}', '${escapeHtml(r.message)}', '${r.cropId}')" class="btn-small" style="margin-right:5px;">Edit</button>
+                            <button onclick="markReminderDone('${r.id}')" class="btn-small" style="margin-right:5px;">Done</button>
+                            <button onclick="deleteReminder('${r.id}')" class="btn-small" style="background:#fde8e8;">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        } catch (error) {
+            console.error('Error loading reminders:', error);
+            container.innerHTML = '<div class="empty-state">Error loading reminders</div>';
+        }
+    }
+
+    // Edit Reminder - updates only the reminder, NOT the activity
+    window.editReminder = (id, cropName, type, reminderDate, message, cropId) => {
+        document.getElementById('editReminderId').value = id;
+        document.getElementById('editCropId').value = cropId;
+        document.getElementById('editCropName').value = cropName;
+        document.getElementById('editType').value = type;
+        document.getElementById('editReminderDate').value = reminderDate;
+        document.getElementById('editReminderMessage').value = message;
+        document.getElementById('editReminderModal').style.display = 'flex';
+    };
+
+    // Save edited reminder - updates ONLY the reminder
+    document.getElementById('editReminderForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const reminderId = document.getElementById('editReminderId').value;
+        const newType = document.getElementById('editType').value;
+        const newReminderDate = document.getElementById('editReminderDate').value;
+        const newMessage = document.getElementById('editReminderMessage').value;
+        
+        try {
+            // Update only the reminder document
+            await db.collection('farmer_reminders').doc(reminderId).update({
+                type: newType,
+                reminderDate: newReminderDate,
+                message: newMessage
+            });
+            
+            alert('Reminder updated successfully');
+            document.getElementById('editReminderModal').style.display = 'none';
+            loadReminders();
+        } catch (error) {
+            alert('Error: ' + error.message);
+        }
+    };
+
+    window.markReminderDone = async (id) => {
+        await db.collection('farmer_reminders').doc(id).update({ isRead: true });
+        loadReminders();
+        loadCrops();
+    };
+
+    window.deleteReminder = async (id) => {
+        if (confirm('Delete this reminder?')) {
+            await db.collection('farmer_reminders').doc(id).delete();
+            loadReminders();
+        }
+    };
+
+    document.getElementById('closeActivityModalBtn').onclick = () => {
+        document.getElementById('activityModal').style.display = 'none';
+    };
+    
+    document.getElementById('closeEditModalBtn').onclick = () => {
+        document.getElementById('editReminderModal').style.display = 'none';
+    };
+    
+    window.onclick = (e) => {
+        if (e.target === document.getElementById('activityModal')) {
+            document.getElementById('activityModal').style.display = 'none';
+        }
+        if (e.target === document.getElementById('editReminderModal')) {
+            document.getElementById('editReminderModal').style.display = 'none';
+        }
+    };
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // Auth
+    auth.onAuthStateChanged(async (user) => {
+        if (user && user.emailVerified) {
+            currentUser = user;
+            loadCrops();
+            loadReminders();
+        } else {
+            window.location.href = 'index.html';
+        }
+    });
+</script>
+
+</body>
+</html>
