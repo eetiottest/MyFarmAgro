@@ -13,6 +13,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .hidden-nav {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -26,8 +31,8 @@
                 <a href="index.html" id="homeLink">Home</a>
                 <a href="#all-courses">All Courses</a>
                 <a href="#testimonials">Testimonials</a>
-                <a href="javascript:void(0)" onclick="checkLoginAndRedirect('dashboard.html')">Dashboard</a>
-                <a href="javascript:void(0)" onclick="checkLoginAndRedirect('profile.html')">Profile</a>
+                <a href="javascript:void(0)" onclick="checkLoginAndRedirect('dashboard.html')" id="dashboardLink" class="hidden-nav">Dashboard</a>
+                <a href="javascript:void(0)" onclick="checkLoginAndRedirect('profile.html')" id="profileLink" class="hidden-nav">Profile</a>
                 <button class="btn-outline" id="loginLogoutBtn">Log In</button>
             </div>
         </div>
@@ -179,6 +184,27 @@
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script src="app.js"></script>
+
+<script>
+    // Additional script to handle nav visibility based on login state
+    document.addEventListener('DOMContentLoaded', function() {
+        const dashboardLink = document.getElementById('dashboardLink');
+        const profileLink = document.getElementById('profileLink');
+        
+        // Check if user is logged in
+        auth.onAuthStateChanged(function(user) {
+            if (user && user.emailVerified) {
+                // User is logged in - show Dashboard and Profile links
+                if (dashboardLink) dashboardLink.classList.remove('hidden-nav');
+                if (profileLink) profileLink.classList.remove('hidden-nav');
+            } else {
+                // User is not logged in - hide Dashboard and Profile links
+                if (dashboardLink) dashboardLink.classList.add('hidden-nav');
+                if (profileLink) profileLink.classList.add('hidden-nav');
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
