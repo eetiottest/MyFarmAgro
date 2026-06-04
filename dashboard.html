@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Dashboard specific styles - NO NAVIGATION STYLES HERE */
         .dashboard-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -253,6 +252,41 @@
             font-weight: 600;
         }
         
+        /* Calendar styles for dashboard */
+        .calendar-preview {
+            background: #f8faf5;
+            border-radius: 12px;
+            padding: 16px;
+        }
+        .reminder-preview-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #e4e9f0;
+        }
+        .reminder-preview-item:last-child {
+            border-bottom: none;
+        }
+        .reminder-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .reminder-badge.pesticide { background: #fde8e8; color: #d9534f; }
+        .reminder-badge.fertilizer { background: #e8f0ea; color: #2d6a2f; }
+        .view-calendar-btn {
+            display: inline-block;
+            margin-top: 16px;
+            background: #2d6a2f;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            text-align: center;
+        }
+        
         @media (max-width: 800px) {
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .quiz-scores-grid { grid-template-columns: 1fr; }
@@ -269,7 +303,6 @@
             <div class="nav-links">
                 <a href="dashboard.html">Dashboard</a>
                 <a href="marketplace.html">Marketplace</a>
-                <a href="calendar.html">Calendar</a>
                 <a href="profile.html">Profile</a>
                 <button class="btn-outline" id="logoutBtn">Log Out</button>
             </div>
@@ -297,6 +330,7 @@
             <button class="tab" data-tab="completed">✅ Completed</button>
             <button class="tab" data-tab="quizzes">📝 Quiz Scores</button>
             <button class="tab" data-tab="prices">💰 Market Prices</button>
+            <button class="tab" data-tab="calendar">📅 Calendar</button>
             <button class="tab" data-tab="ai">🤖 AI Assistant</button>
         </div>
 
@@ -314,6 +348,15 @@
         </div>
         <div id="pricesTab" class="tab-content">
             <div class="section"><div class="section-title">💰 Daily Market Prices</div><div id="marketPricesList" class="market-grid">Loading...</div></div>
+        </div>
+        <div id="calendarTab" class="tab-content">
+            <div class="section">
+                <div class="section-title"><span><i class="fas fa-calendar-alt"></i> Upcoming Reminders</span></div>
+                <div id="upcomingRemindersList" class="calendar-preview">
+                    <div class="empty-state">Loading reminders...</div>
+                </div>
+                <a href="calendar.html" class="view-calendar-btn" style="display: block; text-align: center;">View Full Calendar →</a>
+            </div>
         </div>
         <div id="aiTab" class="tab-content">
             <div class="section">
@@ -373,6 +416,7 @@
             const tabName = tab.getAttribute('data-tab');
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             document.getElementById(tabName + 'Tab').classList.add('active');
+            if (tabName === 'calendar') loadUpcomingReminders();
         });
     });
 
@@ -434,7 +478,6 @@
                 document.getElementById('purchaseModal').style.display = 'none';
                 window.currentPurchaseCourse = null;
                 
-                // Refresh the page to update all lists
                 location.reload();
                 
             } catch (error) {
@@ -454,7 +497,6 @@
         document.getElementById('purchaseModal').style.display = 'flex';
     };
 
-    // Close modal on outside click
     window.addEventListener('click', (e) => {
         const modal = document.getElementById('purchaseModal');
         if (e.target === modal) {
@@ -571,6 +613,59 @@
         } catch(e) { console.error(e); }
     }
 
+    // Load upcoming reminders for calendar tab
+    async function loadUpcomingReminders() {
+        const container = document.getElementById('upcomingRemindersList');
+        if (!currentUser) {
+            container.innerHTML = '<div class="empty-state">Please log in to see reminders</div>';
+            return;
+        }
+        
+        try {
+            const snapshot = await db.collection('farmer_reminders')
+                .where('farmerId', '==', currentUser.uid)
+                .where('isRead', '==', false)
+                .get();
+            
+            if (snapshot.empty) {
+                container.innerHTML = '<div class="empty-state">No upcoming reminders. Go to Calendar to add crop activities!</div>';
+                return;
+            }
+            
+            let reminders = [];
+            snapshot.forEach(doc => {
+                const r = doc.data();
+                r.id = doc.id;
+                reminders.push(r);
+            });
+            
+            reminders.sort((a, b) => {
+                if (a.reminderDate < b.reminderDate) return -1;
+                return 1;
+            });
+            
+            const today = new Date().toISOString().split('T')[0];
+            let html = '';
+            for (const r of reminders.slice(0, 5)) {
+                const isOverdue = r.reminderDate < today;
+                html += `
+                    <div class="reminder-preview-item" style="${isOverdue ? 'background:#fde8e8; border-radius:8px;' : ''}">
+                        <div>
+                            <strong>${escapeHtml(r.cropName)}</strong><br>
+                            <span class="reminder-badge ${r.type}">${r.type}</span>
+                            <span>${escapeHtml(r.message)}</span><br>
+                            <small>Due: ${r.reminderDate}</small>
+                        </div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        } catch (error) {
+            console.error('Error loading reminders:', error);
+            container.innerHTML = '<div class="empty-state">No upcoming reminders</div>';
+        }
+    }
+
     // Auth State Listener
     auth.onAuthStateChanged(async (user) => {
         if (user && user.emailVerified) {
@@ -617,7 +712,7 @@
                 enrolledContainer.innerHTML = html + '</div>';
             }
             
-            // Render Browse Courses (with purchase modal instead of redirect)
+            // Render Browse Courses
             const browseContainer = document.getElementById('browseList');
             let browseHtml = '<div class="course-grid">';
             for (let c of allCourses) {
@@ -667,6 +762,7 @@
             pricesContainer.innerHTML = priceHtml;
             
             await loadQuizScores();
+            await loadUpcomingReminders();
         } else { 
             window.location.href = 'index.html'; 
         }
